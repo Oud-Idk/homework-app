@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Install dependencies only when package files change
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # ---- Builder Stage ----
 # This stage builds your Next.js application
@@ -17,7 +17,10 @@ COPY --from=base /app/node_modules ./node_modules
 COPY . .
 
 ARG NEXT_PUBLIC_API_URL
+ARG MONGO_URI
+
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV MONGO_URI=${MONGO_URI}
 
 # Build the Next.js application for production
 RUN npm run build
