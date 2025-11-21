@@ -15,6 +15,8 @@ services:
       args:
         - NEXT_PUBLIC_API_URL=/api
         - MONGO_URI=mongodb://mongo:27017/homeworkapp?replicaSet=rs0
+        - AUTH_SECRET=${AUTH_SECRET}
+        - NEXTAUTH_URL=https://homework.solartuff.co.id
     restart: always
     environment:
       - INTERNAL_API_URL=http://api:8080
