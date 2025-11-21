@@ -17,6 +17,8 @@ services:
         - MONGO_URI=mongodb://mongo:27017/homeworkapp?replicaSet=rs0
         - AUTH_SECRET=${AUTH_SECRET}
         - NEXTAUTH_URL=https://homework.solartuff.co.id
+        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+        - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
     restart: always
     environment:
       - INTERNAL_API_URL=http://api:8080
