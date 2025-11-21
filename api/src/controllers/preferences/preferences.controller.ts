@@ -32,10 +32,9 @@ export const getAllPreferences = async (req: Request, res: Response) => {
 
 
 export const updateViewPreferences = async (req: Request, res: Response) => {
-    const { hideCompletedDays, hidePastDueDays } = req.body;
+    const { hidePastDueDays } = req.body;
 
-    // Basic validation
-    if (typeof hideCompletedDays !== 'number' || typeof hidePastDueDays !== 'number') {
+    if (typeof hidePastDueDays !== 'number') {
         return res.status(400).json({ message: 'Invalid view preference data' });
     }
 
@@ -44,11 +43,7 @@ export const updateViewPreferences = async (req: Request, res: Response) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
-        // Mongoose will create the object if it doesn't exist due to the schema default
-        user.viewPreferences.hideCompletedDays = hideCompletedDays;
         user.viewPreferences.hidePastDueDays = hidePastDueDays;
-
         await user.save();
         res.status(200).json(user.viewPreferences);
     } catch (error) {
@@ -56,6 +51,7 @@ export const updateViewPreferences = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Server Error" });
     }
 };
+
 
 export const addNotificationPreference  = async (req: Request, res: Response) => {
     const { daysBefore, timeOfDay } = req.body;

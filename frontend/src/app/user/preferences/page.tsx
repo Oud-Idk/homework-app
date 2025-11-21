@@ -55,7 +55,6 @@ export default function PreferencesPage() {
                 const res = await reqToApi('preferences', session);
                 if (!res.ok) throw new Error('Failed to load preferences.');
 
-                // Handle the case where there's no new data
                 const serverData = await res.json();
                 if (serverData.viewPreferences) {
                     setViewPreferences(serverData.viewPreferences);
@@ -92,16 +91,8 @@ export default function PreferencesPage() {
                 <form onSubmit={saveViewPreferences}>
                     <p className="mb-4">Automatically hide old homework from your main list to keep it tidy.</p>
                     <div className="space-y-4">
-                        <div className="flex items-center gap-4">
-                            <label htmlFor="hideCompletedDays" className="flex-shrink-0">Hide completed homework older than</label>
-                            <input
-                                id="hideCompletedDays" type="number"
-                                value={viewPreferences.hideCompletedDays}
-                                onChange={e => setViewPreferences(p => ({ ...p, hideCompletedDays: Number(e.target.value) }))}
-                                min="0" className="w-20 px-2 py-1 border rounded-md"
-                            />
-                            <span>days.</span>
-                        </div>
+                        {/* REMOVED: Hide Completed Days Input */}
+
                         <div className="flex items-center gap-4">
                             <label htmlFor="hidePastDueDays" className="flex-shrink-0">Hide past-due homework older than</label>
                             <input

@@ -95,7 +95,6 @@ export const getHomeworks = async (req: Request, res: Response) => {
 
         const allHomeworks = [...homeworksFromCache, ...homeworksFromDb];
 
-        // --- Personalization Logic ---
         const completedIdsSet = new Set(userCompleted.map(id => id.toString()));
         const followedIdsSet = new Set(userFollows.map(f => f.homework.toString()));
 
@@ -105,7 +104,6 @@ export const getHomeworks = async (req: Request, res: Response) => {
             isFollowing: followedIdsSet.has(hw._id.toString()),
         }));
 
-        // Re-sort the final merged array to ensure correct order
         finalResult.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
 
         res.status(200).json(finalResult);

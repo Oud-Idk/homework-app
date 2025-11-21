@@ -23,11 +23,6 @@ const PushSubscriptionSchema = new Schema({
 }, { _id: false });
 
 const ViewPreferencesSchema = new Schema({
-    hideCompletedDays: {
-        type: Number,
-        required: true,
-        default: 7 // Sensible default
-    },
     hidePastDueDays: {
         type: Number,
         required: true,

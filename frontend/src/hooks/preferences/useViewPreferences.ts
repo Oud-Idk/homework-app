@@ -4,12 +4,10 @@ import { reqToApi } from '@/lib/utils';
 import { useNotification } from "@/context/NotificationsContext";
 
 export interface ViewPreferences {
-    hideCompletedDays: number;
     hidePastDueDays: number;
 }
 
 const defaultPreferences: ViewPreferences = {
-    hideCompletedDays: 7,
     hidePastDueDays: 30,
 };
 
