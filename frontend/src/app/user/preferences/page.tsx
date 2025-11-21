@@ -85,14 +85,11 @@ export default function PreferencesPage() {
         <main className="container mx-auto p-2">
             <h1 className="text-4xl font-bold mb-8">Preferences</h1>
 
-            {/* View Preferences Form */}
             <div className="mb-8 p-6 border rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4">Homework Display Options</h2>
                 <form onSubmit={saveViewPreferences}>
                     <p className="mb-4">Automatically hide old homework from your main list to keep it tidy.</p>
                     <div className="space-y-4">
-                        {/* REMOVED: Hide Completed Days Input */}
-
                         <div className="flex items-center gap-4">
                             <label htmlFor="hidePastDueDays" className="flex-shrink-0">Hide past-due homework older than</label>
                             <input
