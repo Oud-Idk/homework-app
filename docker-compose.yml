@@ -1,0 +1,209 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: always
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - app_net
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - NEXT_PUBLIC_API_URL=/api
+    restart: always
+    environment:
+      - INTERNAL_API_URL=http://api:8080
+      - NEXT_PUBLIC_VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+      - AUTH_SECRET=${AUTH_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - NODE_ENV=production
+      - AUTH_URL=https://homework.solartuff.co.id
+      - NEXTAUTH_URL=https://homework.solartuff.co.id
+      - MONGO_URI=mongodb://mongo:27017/homeworkapp?replicaSet=rs0
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - app_net
+
+  api:
+    build: ./api
+    restart: always
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/homeworkapp?replicaSet=rs0
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - MEILISEARCH_HOST=http://meilisearch:7700
+      - MEILISEARCH_API_KEY=${MEILI_MASTER_KEY}
+      - MINIO_ENDPOINT=minio
+      - MINIO_PORT=9000
+      - MINIO_PUBLIC_URL=https://storage.solartuff.co.id
+      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER}
+      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD}
+      - MINIO_BUCKET=user-uploads
+      - AUTH_SECRET=${AUTH_SECRET}
+      - NODE_ENV=production
+      - PORT=8080
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      meilisearch:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - app_net
+
+  worker:
+    build: ./worker
+    restart: always
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/homeworkapp?replicaSet=rs0
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
+      - VAPID_SUBJECT=${VAPID_SUBJECT}
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - app_net
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    command: [ "--replSet", "rs0", "--bind_ip_all" ]
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    networks:
+      - app_net
+
+  mongo-init-replica:
+    image: mongo:latest
+    restart: 'no'
+    depends_on:
+      mongo:
+        condition: service_healthy
+    command: >
+      mongosh --host mongo:27017 --eval 
+      'try { rs.status() } catch (err) { rs.initiate({_id: "rs0", members: [{_id: 0, host: "mongo:27017"}]}) }'
+    networks:
+      - app_net
+
+  redis:
+    image: redis:latest
+    restart: always
+    volumes:
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_net
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_net
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    restart: always
+    environment:
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+      - MEILI_ENV=production
+    volumes:
+      - meili_data:/meili_data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_net
+
+  minio-setup:
+    image: minio/mc
+    restart: 'no'
+    depends_on:
+      minio:
+        condition: service_healthy
+    volumes:
+      - ./config/minio:/config
+    entrypoint: >
+      /bin/sh -c "
+      set -ex;
+      echo 'Waiting for MinIO to fully initialize...';
+      sleep 5;
+      echo '1. Setting up alias for myminio...';
+      /usr/bin/mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      echo '2. Creating bucket: user-uploads...';
+      /usr/bin/mc mb myminio/user-uploads --ignore-existing;
+      echo '3. Setting public read policy for user-uploads...';
+      /usr/bin/mc anonymous set myminio/user-uploads /config/public-read-policy.json;
+      echo 'MinIO setup complete.';
+      "
+    networks:
+      - app_net
+
+  minio:
+    image: minio/minio
+    restart: always
+    volumes:
+      - minio_data:/data
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_net
+
+volumes:
+  mongo-data:
+  rabbitmq_data:
+  meili_data:
+  minio_data:
+
+networks:
+  app_net:
+    driver: bridge
+    enable_ipv6: true

@@ -1,0 +1,99 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+}
+
+@theme {
+    --font-jetbrains-mono: var(--font-jetbrains-mono), monospace;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: theme('colors.neutral.200');
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: theme('colors.neutral.400');
+    border-radius: 6px;
+    border: 2px solid theme('colors.neutral.200');
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: theme('colors.neutral.500');
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.neutral.400') theme('colors.neutral.200');
+}
+
+.dark *::-webkit-scrollbar-track {
+    background: theme('colors.neutral.900');
+}
+
+.dark *::-webkit-scrollbar-thumb {
+    background-color: theme('colors.neutral.800');
+    border-color: theme('colors.neutral.900');
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+    background-color: theme('colors.neutral.700');
+}
+
+.dark * {
+    scrollbar-color: theme('colors.neutral.800') theme('colors.neutral.900');
+}
+
+html, body {
+    overscroll-behavior: none;
+    scroll-behavior: auto !important;
+}
+
+.prose {
+    max-width: none;
+}
+
+.prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    margin: 0.2rem 0;
+}
+
+.prose pre {
+    background-color: theme('colors.neutral.900');
+    padding: .3rem;
+    overflow-x: auto;
+}
+
+pre div div {
+    margin: 0!important;
+    padding: 0.3rem!important;
+}
+
+.prose code {
+    font-weight: 400;
+}
+
+blockquote {
+    font-style: normal;
+    font-weight: 400;
+}
+
+.prose :where(blockquote) {
+    border-left-color: #6a6a6a;
+}
+
+.prose :where(blockquote p:first-of-type):before {
+    content: normal;
+}
+
+input[type="checkbox" i]:disabled {
+    background-color: #ffffff;
+}

@@ -1,0 +1,71 @@
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+
+  mongo-init-replica:
+    image: mongo:latest
+    depends_on:
+      - mongo
+    command: >
+      mongosh --host mongo:27017 --eval 
+      '
+        try {
+          rs.status();
+          print("Replica set already initialized.");
+        } catch (e) {
+          print("Initializing replica set...");
+          rs.initiate({ _id: "rs0", members: [{ _id: 0, host: "mongo:27017" }] });
+          print("Replica set initialized.");
+        }
+      '
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    command:
+      - "redis-server"
+      - "/usr/local/etc/redis/redis.conf"
+    volumes:
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  rabbitmq:
+    build: ./rabbitmq
+    ports:
+      - "5672:5672"
+      - "16672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: meilisearch
+    ports:
+      - "7700:7700"
+    environment:
+      - MEILI_MASTER_KEY=changeAtProdIdiot # TODO Change at prod
+      - MEILI_ENV=development
+    volumes:
+      - meili_data:/meili_data
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"  # API Port
+      - "9001:9001"  # Console/UI Port
+    volumes:
+      - minio_data:/data
+    environment:
+      - MINIO_ROOT_USER=changeAtProdIdiot # TODO Change at prod
+      - MINIO_ROOT_PASSWORD=changeAtProdIdiot # TODO Change at prod
+    command: server /data --console-address ":9001"
+
+volumes:
+  mongo-data:
+  rabbitmq_data:
+  meili_data:
+  minio_data:
