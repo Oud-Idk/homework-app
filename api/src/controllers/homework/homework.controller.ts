@@ -43,17 +43,13 @@ export const getHomeworks = async (req: Request, res: Response) => {
             userCompleted = user.completedHomework ?? []; // The critical fix
             const hidePastDueDays = user.viewPreferences?.hidePastDueDays ?? 0;
 
-            const completedHomeworkIds = userCompleted.map(id => id.toString());
             const now = new Date();
             const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             const pastDueCutoff = new Date(startOfToday);
             pastDueCutoff.setDate(startOfToday.getDate() - hidePastDueDays);
 
             const query = {
-                $or: [
-                    { _id: { $in: completedHomeworkIds } },
-                    { _id: { $nin: completedHomeworkIds }, dueDate: { $gte: pastDueCutoff } }
-                ]
+                dueDate: { $gte: pastDueCutoff }
             };
             const homeworks = await Homework.find(query).select('_id').sort({ dueDate: -1 }).limit(100).lean();
             homeworkIdsToFetch = homeworks.map(hw => hw._id.toString());
