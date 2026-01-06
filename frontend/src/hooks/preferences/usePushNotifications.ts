@@ -13,8 +13,6 @@ export function usePushNotifications(session: Session | null) {
     const [error] = useState<string | null>(null);
     const { showError } = useNotification();
 
-    // In usePushNotifications.ts
-
     const checkSubscriptionStatus = useCallback(async (serverSubscriptions: ServerPushSubscription[] = []) => {
         if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
             console.log("Push notifications not supported by this browser.");
