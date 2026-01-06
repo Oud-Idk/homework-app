@@ -51,20 +51,16 @@ export const connectToRabbitMQ = async () => {
 };
 
 export const setupTopology = async (channel: amqp.Channel) => {
-    await channel.assertExchange(rabbitmqConfig.NOTIFICATION_EXCHANGE, 'x-delayed-message', {
+    await channel.assertExchange(rabbitmqConfig.NOTIFICATION_EXCHANGE, 'direct', {
         durable: true,
-        arguments: { 'x-delayed-type': 'direct' },
     });
+
     await channel.assertExchange(rabbitmqConfig.EVENTS_EXCHANGE, "topic", { durable: true });
 
-    // Assert all queues
     for (const queue of Object.values(rabbitmqConfig.QUEUES)) {
-        if (typeof queue === "string") {
-            await channel.assertQueue(queue, { durable: true });
-        }
+        await channel.assertQueue(queue, {durable: true});
     }
 
-    // Set up all bindings
     await channel.bindQueue(rabbitmqConfig.QUEUES.HOMEWORK_DUE_NOTIFICATION, rabbitmqConfig.NOTIFICATION_EXCHANGE, rabbitmqConfig.ROUTING_KEYS.NOTIFICATION_SEND);
     await channel.bindQueue(rabbitmqConfig.QUEUES.POST_FANOUT, rabbitmqConfig.EVENTS_EXCHANGE, rabbitmqConfig.ROUTING_KEYS.POST_CREATED);
 
