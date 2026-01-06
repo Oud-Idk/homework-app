@@ -19,6 +19,11 @@ export const handleVote = async (req: Request, res: Response) => {
     if (!userId) {
         return res.status(401).json({message: "Unauthorized: User ID not found in token."});
     }
+
+    if (!postId) {
+        return res.status(400).json({message: "id not provided."});
+    }
+
     const {voteType} = validation.data;
 
     const upvotesKey = `post:${postId}:upvotes`;

@@ -88,6 +88,10 @@ export const getReplies = async (req: Request, res: Response) => {
     const {id: parentId} = req.params;
     const userId = req.user?.sub;
 
+    if (!parentId) {
+        return res.status(400).json({ message: "No id found." });
+    }
+
     try {
         const replies = await Post.find({parent: parentId})
             .sort({createdAt: 'asc'})
@@ -99,7 +103,6 @@ export const getReplies = async (req: Request, res: Response) => {
             return res.status(200).json([]);
         }
 
-        // --- VOTE ENRICHMENT LOGIC (Same as getAllPosts) ---
         const replyIds = replies.map(r => r._id.toString());
 
         const redisMulti = redisClient.multi();

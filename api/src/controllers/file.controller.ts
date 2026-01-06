@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { minioClient } from "../services/minio.service.js";
 import { meiliClient } from "../services/meilisearch.service.js";
 import FileModel, { IFile } from "../models/file.model.js";
-import mongoose, { FilterQuery } from "mongoose";
+import mongoose from "mongoose";
 
 const constructPublicUrl = (file: IFile ) => {
     return `${process.env.MINIO_PUBLIC_URL}/${file.bucket}/${file.filename}`;
@@ -54,7 +54,7 @@ export const uploadFile = async (req: Request, res: Response) => {
 
         res.status(200).json({
             message: 'File uploaded and indexed successfully!',
-            fileId: newFile._id, // Send back the Mongo ID
+            fileId: newFile._id,
             filename: newFile.filename,
             url: publicUrl,
         });
@@ -78,10 +78,11 @@ export const deleteFile = async (req: Request, res: Response) => {
         const file = await FileModel.findById(id);
 
         if (!file) return res.status(404).send('File not found.');
-        console.log(userRole)
-        console.log(file.uploadedBy)
-        console.log(new mongoose.Types.ObjectId(userId))
-        if (!file.uploadedBy.equals(userId) && userRole !== 'admin') return res.status(401).send(`Not allowed to delete other people's file!`);
+
+        // Safety check: ensure strictly defined values before comparison
+        if (userId && !file.uploadedBy.equals(userId) && userRole !== 'admin') {
+            return res.status(401).send(`Not allowed to delete other people's file!`);
+        }
 
         await minioClient.removeObject(file.bucket, file.filename);
         console.log(`File ${file.filename} deleted from MinIO bucket ${file.bucket}.`);
@@ -109,24 +110,27 @@ export const getFiles = async (req: Request, res: Response) => {
 
     const page = parseInt(req.query.page as string, 10) || 1;
     const limit = parseInt(req.query.limit as string, 10) || 10;
-    const search = req.query.search as string; // Get search term from query
+    const search = req.query.search as string;
     const skip = (page - 1) * limit;
 
     try {
-        // Build the query object
-        const query: FilterQuery<IFile> = { uploadedBy: userId };
+        // FIX: Use 'any' or 'Record<string, any>' to avoid "FilterQuery not found" error
+        // while still ensuring strict ObjectId types for the data.
+        const query: Record<string, any> = {
+            uploadedBy: new mongoose.Types.ObjectId(userId)
+        };
+
         if (search) {
-            // Add a case-insensitive regex search on the originalName field
             query.originalName = { $regex: search, $options: 'i' };
         }
 
         const [filesFromDb, totalFiles] = await Promise.all([
-            FileModel.find(query) // Use the dynamic query object
+            FileModel.find(query)
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit)
                 .lean(),
-            FileModel.countDocuments(query) // Use the same query for accurate counting
+            FileModel.countDocuments(query)
         ]);
 
         const files = filesFromDb.map(file => ({
@@ -152,19 +156,24 @@ export const getFiles = async (req: Request, res: Response) => {
 export const getAllFiles = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const limit = parseInt(req.query.limit as string, 10) || 10;
-    const search = req.query.search as string; // Get search term from query
+    const search = req.query.search as string;
     const skip = (page - 1) * limit;
 
     try {
-        // Build the query object
-        const query: FilterQuery<IFile> = {};
+        // FIX: Use 'Record<string, any>' to allow dynamic regex property
+        const query: Record<string, any> = {};
+
         if (search) {
             query.originalName = { $regex: search, $options: 'i' };
         }
 
         const [filesFromDb, totalFiles] = await Promise.all([
-            FileModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
-            FileModel.countDocuments(query) // Use the same query for accurate counting
+            FileModel.find(query)
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit)
+                .lean(),
+            FileModel.countDocuments(query)
         ]);
 
         const files = filesFromDb.map(file => ({

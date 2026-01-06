@@ -114,7 +114,8 @@ export const getUserPosts = async (req: Request, res: Response) => {
             postIds = searchResult.hits.map(p => new mongoose.Types.ObjectId(p._id as string));
             totalPosts = searchResult.totalHits ?? 0;
         } else {
-            const postsQuery = { author: new mongoose.Types.ObjectId(targetUserId), parent: null };
+            // FIX: Ensure targetUserId is treated as a string to satisfy TypeScript strictness
+            const postsQuery = { author: new mongoose.Types.ObjectId(targetUserId as string), parent: null };
             totalPosts = await Post.countDocuments(postsQuery);
             const postsForIds = await Post.find(postsQuery)
                 .sort({ createdAt: -1 })
@@ -132,16 +133,14 @@ export const getUserPosts = async (req: Request, res: Response) => {
             });
         }
 
-        // --- TYPE CORRECTION USING .lean<T>() ---
         const postsFromDb = await Post.find({ '_id': { $in: postIds } })
             .populate('author', 'name')
             .populate('homework', 'title')
-            .lean<PopulatedPost[]>(); // This provides the correct type to TypeScript
+            .lean<PopulatedPost[]>();
 
         const postsMap = new Map(postsFromDb.map(p => [p._id.toString(), p]));
         const posts = postIds.map(id => postsMap.get(id.toString())).filter((p): p is PopulatedPost => !!p);
 
-        // --- REFACTORED: Use the helper for enrichment ---
         const enrichedPosts = await enrichPostsWithVotes(posts, viewerId);
 
         res.status(200).json({
@@ -157,6 +156,12 @@ export const getUserPosts = async (req: Request, res: Response) => {
 
 export const getHomeworkPost = async (req: Request, res: Response) => {
     const { homeworkId } = req.params;
+
+    // Ensure we have a valid ID before proceeding, serving as a runtime guard
+    if (!homeworkId) {
+        return res.status(400).json({ message: "Homework ID is required" });
+    }
+
     const cacheKey = `posts:for-homework:${homeworkId}`;
 
     try {
@@ -167,7 +172,10 @@ export const getHomeworkPost = async (req: Request, res: Response) => {
         }
 
         console.log(`Serving posts for ${homeworkId} from DATABASE`);
-        const posts = await Post.find({ homework: homeworkId })
+
+        // FIX: Explicitly cast homeworkId to string and create a new ObjectId.
+        // This solves the TS2769 error by preventing 'undefined' from being passed to the query filter.
+        const posts = await Post.find({ homework: new mongoose.Types.ObjectId(homeworkId as string) })
             .sort({ createdAt: 'asc' })
             .populate('author', 'name email')
             .lean<PopulatedPost[]>();
@@ -202,7 +210,6 @@ export const getAllPosts = async (req: Request, res: Response) => {
             });
         }
 
-        // --- TYPE CORRECTION USING .lean<T>() ---
         const postsFromDb = await Post.find({ '_id': { $in: postIds } })
             .populate('author', 'name email')
             .populate('homework', 'title')
@@ -211,7 +218,6 @@ export const getAllPosts = async (req: Request, res: Response) => {
         const postsMap = new Map(postsFromDb.map(p => [p._id.toString(), p]));
         const posts = postIds.map(id => postsMap.get(id.toString())).filter((p): p is PopulatedPost => !!p);
 
-        // --- REFACTORED: Use the helper for enrichment ---
         const enrichedPosts = await enrichPostsWithVotes(posts, viewerId);
 
         const totalPages = Math.ceil(totalPosts / limit);
@@ -315,7 +321,6 @@ export const updatePost = async (req: Request, res: Response) => {
             await redisClient.del(cacheKey);
         }
 
-        // --- REFACTORED: Re-fetch as lean object to enrich for response ---
         const updatedPost = await Post.findById(post._id)
             .populate('author', 'name email')
             .populate('homework', 'title')
