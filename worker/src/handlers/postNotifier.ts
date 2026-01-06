@@ -12,9 +12,10 @@ export async function fanoutPostNotifications(payload: {
     const { homeworkId, authorId, title } = payload;
     console.log(`[Dispatcher] New post for "${title}". Fanning out notifications.`);
 
-    const homeworkIdAsObjectId = new mongoose.Types.ObjectId(homeworkId);
+    const homeworkIdAsObjectId = new mongoose.Types.ObjectId(homeworkId) as any;
 
     const follows = await Follow.find({ homework: homeworkIdAsObjectId }).select('user').lean();
+
     if (follows.length === 0) {
         console.log(`[Dispatcher]   - No followers. Task complete.`);
         return;
