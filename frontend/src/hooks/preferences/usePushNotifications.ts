@@ -51,8 +51,12 @@ export function usePushNotifications(session: Session | null) {
     }, []);
 
     const subscribe = async () => {
-        if (!session?.accessToken || !process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
-            showError("Configuration error. Cannot subscribe.");
+        if (!session?.accessToken) {
+            showError("Access token not set.");
+            return;
+        }
+        if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
+            showError("Public VAPID key is not set.");
             return;
         }
         setIsSubscribing(true);
