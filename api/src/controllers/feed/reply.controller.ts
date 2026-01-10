@@ -28,7 +28,7 @@ export const createReply = async (req: Request, res: Response) => {
 
     const validation = createReplySchema.safeParse(req.body);
     if (!validation.success) {
-        return res.status(400).json({errors: validation.error.flatten().fieldErrors});
+        return res.status(400).json({errors: z.treeifyError(validation.error)});
     }
 
     try {
@@ -116,12 +116,16 @@ export const getReplies = async (req: Request, res: Response) => {
                 user: new mongoose.Types.ObjectId(userId),
                 post: {$in: replyIds.map(id => new mongoose.Types.ObjectId(id))}
             }).lean()
-            : Promise.resolve([]);
+            : void Promise.resolve([]);
 
         const [redisResults, userVotes] = await Promise.all([
             redisMulti.exec(),
             userVotesPromise
         ]);
+
+        if (!userVotes) {
+            return res.status(500).json({errors: "There are no userVotes."});
+        }
 
         const userVotesMap = new Map(userVotes.map(vote => [vote.post.toString(), vote.voteType]));
 

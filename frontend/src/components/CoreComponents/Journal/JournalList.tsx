@@ -168,10 +168,9 @@ export default function JournalList({ initialData }: JournalListProps): JSX.Elem
                     )}
                 </div>
 
-                {/* --- Filter Bar --- */}
                 <div className="p-4 rounded-xl flex flex-col md:flex-row gap-4 border items-center md:items-center justify-between">
                     <div className="flex flex-col items-center md:flex-row gap-4 w-full">
-                        <div className="flex bg-white dark:bg-neutral-900 rounded-lg p-1 border border-neutral-300 dark:border-neutral-700 h-fit">
+                        <div className="flex flex-col ms:flex-row bg-white dark:bg-neutral-900 rounded-lg p-1 border border-neutral-300 dark:border-neutral-700 h-fit">
                             <button
                                 onClick={() => setActiveFilterMode('range')}
                                 className={`px-3 py-1 text-sm rounded-md transition-colors ${activeFilterMode === 'range' ? 'bg-neutral-500 text-white' : 'text-neutral-500'}`}
@@ -187,7 +186,7 @@ export default function JournalList({ initialData }: JournalListProps): JSX.Elem
                         </div>
 
                         {activeFilterMode === 'range' ? (
-                            <div className="flex gap-2 w-full md:w-auto justify-center">
+                            <div className="flex gap-2 w-full md:w-auto justify-center flex-col sm:flex-row">
                                 <div className="flex flex-col">
                                     <label className="text-xs text-neutral-500 ml-1">After</label>
                                     <input
@@ -223,8 +222,7 @@ export default function JournalList({ initialData }: JournalListProps): JSX.Elem
                         )}
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-col sm:flex-row">
                         <button
                             onClick={clearFilters}
                             className="text-sm text-neutral-500 hover:text-black dark:hover:text-white px-3 py-1.5"

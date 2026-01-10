@@ -37,7 +37,7 @@ export const useGroups = () => {
     }, [session, showError]);
 
     useEffect(() => {
-        fetchGroups();
+        void fetchGroups();
     }, [fetchGroups]);
 
     // 5. Wrap createGroup in useCallback for performance optimization

@@ -180,7 +180,7 @@ services:
       echo '2. Creating bucket: user-uploads...';
       /usr/bin/mc mb myminio/user-uploads --ignore-existing;
       echo '3. Setting public read policy for user-uploads...';
-      /usr/bin/mc anonymous set myminio/user-uploads /config/public-read-policy.json;
+      /usr/bin/mc anonymous set-json /config/public-read-policy.json myminio/user-uploads;
       echo 'MinIO setup complete.';
       "
     networks:

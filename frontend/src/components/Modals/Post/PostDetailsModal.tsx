@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react';
-import { Dialog, Transition, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
-import { XIcon, CopyIcon, CheckIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { DialogPanel, DialogTitle } from '@headlessui/react';
+import { XIcon, CopyIcon, CheckIcon, ExternalLink } from 'lucide-react';
 import { Post } from '@/types';
 import { MarkdownRenderer } from '@/components/Markdown/MarkdownRenderer';
 import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -8,6 +8,7 @@ import { ReplySection } from "@/components/CoreComponents/Feed/Replies/ReplySect
 import { useMarkdownScroller } from "@/hooks/useMarkdownScroller";
 import { useSession } from "next-auth/react";
 import { ModalContainer } from "@/components/Modals/ModalContainer";
+import { useRouter } from "next/navigation";
 
 interface PostDetailsModalProps {
     isOpen: boolean;
@@ -36,6 +37,7 @@ export const PostDetailsModal: React.FC<PostDetailsModalProps> = ({
     const {containerRef, handleLinkClick} = useMarkdownScroller();
     const [isCopied, setIsCopied] = useState(false);
     const {data: session} = useSession();
+    const router = useRouter();
 
     if (!post) return null;
 
@@ -49,6 +51,10 @@ export const PostDetailsModal: React.FC<PostDetailsModalProps> = ({
             });
         }
     };
+
+    const handleExternalLink = () => {
+        router.push(`/feeds/${post._id}`);
+    }
 
     return (
         <ModalContainer isOpen={isOpen} onClose={onClose}>
@@ -85,6 +91,10 @@ export const PostDetailsModal: React.FC<PostDetailsModalProps> = ({
                                     </button>
                                 )}
                             </div>
+
+                            <button className="p-1.5 rounded-full text-neutral-500 hover:bg-neutral-400/15 transition-colors" onClick={handleExternalLink}>
+                                <ExternalLink />
+                            </button>
 
                             <button
                                 onClick={handleCopyBody}

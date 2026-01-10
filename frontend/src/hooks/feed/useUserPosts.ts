@@ -63,7 +63,7 @@ export function useUserPosts() {
     }, [session, status, currentPage, debouncedSearchTerm]); // Add debouncedSearchTerm dependency
 
     useEffect(() => {
-        fetchMyPosts();
+        void fetchMyPosts();
     }, [fetchMyPosts]); // fetchMyPosts is now memoized with all its dependencies
 
     const deletePost = (postId: string) => {

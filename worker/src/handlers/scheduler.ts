@@ -35,7 +35,10 @@ export async function scheduleNotificationsForHomework(homework: IHomework): Pro
         notificationTime.setHours(hours, minutes, 0, 0);
 
         const jobId = generateJobId(homework._id.toString(), pref._id!.toString());
-        const isPastDue = notificationTime.getTime() - Date.now() < 0;
+        const now = new Date();
+        const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const dueDate = new Date(homework.dueDate);
+        const isPastDue = dueDate < startOfToday;
 
         if (!isPastDue) {
             await ScheduledNotification.updateOne(

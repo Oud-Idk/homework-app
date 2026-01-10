@@ -5,7 +5,7 @@ export const startCleanupJob = () => {
     // This schedule runs at the beginning of every hour ('0 * * * *')
     cron.schedule('0 * * * *', () => {
         console.log('Running hourly check for expired notifications...');
-        ScheduledNotification.cleanupExpired();
+        void ScheduledNotification.cleanupExpired();
     });
 
     console.log('Scheduled notification cleanup job has been set up.');

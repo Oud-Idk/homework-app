@@ -1,7 +1,7 @@
 "use client";
 
-import React, { Fragment } from 'react';
-import { Dialog, Transition, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
+import React from 'react';
+import { DialogPanel, DialogTitle } from '@headlessui/react';
 import { Post } from '@/types';
 import { ReplyForm } from '@/components/Forms/ReplyForm';
 import { XIcon } from 'lucide-react';

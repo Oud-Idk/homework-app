@@ -1,7 +1,7 @@
 import { formatBytes } from "@/lib/utils";
 import { Archive, File as FileIconGeneric, FileAudio, FileImage, FileText, FileVideo, Trash2 } from "lucide-react";
 import { ApiFile } from "@/types";
-import Image from "next/image"
+import React from "react";
 
 interface FileCellProps {
     file: ApiFile;

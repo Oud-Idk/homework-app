@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
 
 export const useMarkdownScroller = () => {
     const containerRef = useRef<HTMLDivElement>(null);

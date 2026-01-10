@@ -17,6 +17,3 @@ export const minioClient = new Minio.Client({
     accessKey: process.env.MINIO_ACCESS_KEY,
     secretKey: process.env.MINIO_SECRET_KEY
 });
-
-const storage = multer.memoryStorage();
-export const upload = multer({ storage: storage });

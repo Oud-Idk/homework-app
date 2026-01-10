@@ -73,7 +73,6 @@ export const addNotificationPreference  = async (req: Request, res: Response) =>
 
         const createdPref = user.notificationPreferences[user.notificationPreferences.length - 1];
 
-        // --- PUBLISH EVENT ---
         const eventPayload = { userId: user._id, preference: createdPref };
         publishToQueue('preference_changed_queue', eventPayload);
         console.log("Published 'preference.added' event");

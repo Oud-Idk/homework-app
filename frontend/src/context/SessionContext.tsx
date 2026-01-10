@@ -14,7 +14,7 @@ const SessionInvalidator = () => {
         if (status === "loading") return;
 
         if (session === null) {
-            signOut({ redirect: false });
+            void signOut({ redirect: false });
         }
     }, [session, status]);
 

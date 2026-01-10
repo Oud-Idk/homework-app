@@ -45,7 +45,7 @@ const HomeworkItem: React.FC<HomeworkItemProps> = ({ homework, onToggle, onDelet
             <div className="flex items-center flex-1 min-w-0">
                 <div className={`${textClasses} w-full cursor-pointer pr-3`} onClick={() => setViewingHomeworkDetails(true)}>
                     <div className="flex flex-row-reverse items-center justify-end mb-2">
-                        <h3 className={`font-semibold leading-tight text-base break-words ${titleClasses}`}>{homework.title}</h3>
+                        <h3 className={`font-semibold leading-tight text-base wrap-break-word ${titleClasses}`}>{homework.title}</h3>
                         {session && <input
                             type="checkbox"
                             checked={homework.completed}
@@ -54,7 +54,7 @@ const HomeworkItem: React.FC<HomeworkItemProps> = ({ homework, onToggle, onDelet
                             disabled={isPastDue}
                         />}
                     </div>
-                    <MarkdownRenderer className="text-sm leading-none dark:[&>*]:text-neutral-200 [&>*]:text-neutral-700 [&>*]:m-0 break-words" content={truncateString(homework.description.split('\n')[0], 50)} />
+                    <MarkdownRenderer className="text-sm leading-none dark:*:text-neutral-200 *:text-neutral-700 *:m-0 wrap-break-word" content={truncateString(homework.description.split('\n')[0], 50)} />
                     <p className="text-[.7rem] text-neutral-500 leading-tight">
                         Due: {new Date(homework.dueDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                         {!homework.completed && isPastDue && <span className="ml-2 font-bold text-red-500">(Past Due)</span>}

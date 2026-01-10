@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, Fragment } from 'react';
-import { Dialog, Transition, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react';
+import React, { useState, useEffect } from 'react';
+import { DialogPanel, DialogTitle } from '@headlessui/react';
 import { useSession } from 'next-auth/react';
 import { Post } from '@/types';
 import { MarkdownEditorRenderer } from "@/components/Markdown/MarkdownEditorRenderer";

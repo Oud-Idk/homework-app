@@ -6,7 +6,6 @@ import { encode } from "next-auth/jwt";
 import type { Adapter } from "next-auth/adapters";
 import { ObjectId } from "mongodb";
 
-// --- Environment Variables ---
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const authSecret = process.env.AUTH_SECRET;
@@ -15,7 +14,6 @@ if (!googleClientId || !googleClientSecret || !authSecret) {
     throw new Error("Missing required environment variables for NextAuth");
 }
 
-// --- Customized MongoDB Adapter ---
 const adapter = MongoDBAdapter(clientPromise);
 
 if (adapter.createUser) {
@@ -26,7 +24,6 @@ if (adapter.createUser) {
     };
 }
 
-// --- Define the NextAuth Configuration ---
 export const authOptions: NextAuthOptions = {
     adapter: adapter as Adapter,
     session: { strategy: "jwt" },

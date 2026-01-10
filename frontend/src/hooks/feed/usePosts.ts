@@ -2,10 +2,10 @@
 
 'use client';
 
-import { useState, useEffect, useCallback, useTransition } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Post, PaginationInfo } from '@/types';
+import { PaginationInfo, Post } from '@/types';
 import { reqToApi } from "@/lib/utils";
 
 export const usePosts = () => {
@@ -15,28 +15,22 @@ export const usePosts = () => {
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
 
-    // --- URL State Management ---
-    // Page and query are now derived directly from the URL
     const currentPage = Number(searchParams.get('page')) || 1;
     const urlQuery = searchParams.get('q') || '';
 
-    // Local state for the search input, allowing for debouncing before updating the URL
     const [searchTerm, setSearchTerm] = useState(urlQuery);
 
-    // --- Component State ---
     const [posts, setPosts] = useState<Post[]>([]);
     const [pagination, setPagination] = useState<PaginationInfo | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showRefreshNotification, setShowRefreshNotification] = useState(false);
 
-    // Debounce effect to update the URL when the search term changes
     useEffect(() => {
         const timerId = setTimeout(() => {
-            // Only update the URL if the debounced term is different from the current URL query
             if (searchTerm !== urlQuery) {
                 const params = new URLSearchParams(searchParams);
-                params.set('page', '1'); // Reset to page 1 for a new search
+                params.set('page', '1');
 
                 if (searchTerm) {
                     params.set('q', searchTerm);
@@ -45,17 +39,15 @@ export const usePosts = () => {
                 }
 
                 startTransition(() => {
-                    // Using replace to avoid polluting browser history with every keystroke
                     router.replace(`${pathname}?${params.toString()}`);
                 });
             }
-        }, 500); // 500ms debounce delay
+        }, 500);
 
         return () => clearTimeout(timerId);
     }, [searchTerm, urlQuery, pathname, router, searchParams]);
 
 
-    // Effect to fetch posts when URL parameters (page, query) or session change
     useEffect(() => {
         const fetchPosts = async () => {
             setIsLoading(true);
@@ -83,11 +75,10 @@ export const usePosts = () => {
             }
         };
 
-        // Don't fetch until the session is loaded
         if (session === undefined) return;
 
-        fetchPosts();
-    }, [currentPage, urlQuery, session]); // Dependency on URL-derived state
+        void fetchPosts();
+    }, [currentPage, urlQuery, session]);
 
     // --- SSE and Optimistic Updates (largely unchanged) ---
     useEffect(() => {
@@ -127,7 +118,6 @@ export const usePosts = () => {
         );
     }, []);
 
-    // Return everything the component needs
     return {
         posts,
         pagination,

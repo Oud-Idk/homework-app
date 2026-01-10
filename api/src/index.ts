@@ -7,13 +7,15 @@ import { connectRabbitMQ } from './services/rabbitmq.service.js';
 import { eventsHandler, sendEventToAll } from './controllers/events.controller.js';
 import mainRouter from './routes/index.js';
 import { initializeMeili } from "./services/meilisearch.service.js";
+import { startCleanupJob } from "./cronJobs.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-connectDB();
-connectRabbitMQ();
-initializeMeili();
+void connectDB();
+void connectRabbitMQ();
+void initializeMeili();
+startCleanupJob();
 
 app.use(cors());
 app.use(express.json());
@@ -72,7 +74,7 @@ redisSubscriber.on('message', (channel, message) => {
 const HOST = '0.0.0.0';
 
 const server = app.listen(Number(PORT), HOST, () => {
-    console.log(`Server listening on http://${HOST}:${PORT}`);
+    console.log(`Server listening on ${HOST}:${PORT}`);
 });
 
 server.on('error', (error: NodeJS.ErrnoException) => {

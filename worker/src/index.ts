@@ -65,7 +65,7 @@ async function startWorker(): Promise<void> {
     await setupTopology(channel);
     setupVapid();
 
-    channel.prefetch(1)
+    void channel.prefetch(1);
 
     console.log(`[*] Worker is running. Waiting for messages. To exit press CTRL+C`);
 
@@ -83,7 +83,7 @@ async function startWorker(): Promise<void> {
             console.error("Error in HOMEWORK_CREATED consumer:", error);
         }
         channel.ack(msg);
-    });
+    }).catch(e => {console.error(e)});
 
     channel.consume(QUEUES.PREFERENCE_CHANGED, async (msg: ConsumeMessage | null) => {
         if (!msg) return;
@@ -94,7 +94,7 @@ async function startWorker(): Promise<void> {
             console.error("Error in PREFERENCE_CHANGED consumer:", error);
         }
         channel.ack(msg);
-    });
+    }).catch(e => {console.error(e)});
 
 
     channel.consume(QUEUES.HOMEWORK_DUE_NOTIFICATION, async (msg: ConsumeMessage | null) => {
@@ -119,7 +119,7 @@ async function startWorker(): Promise<void> {
             console.error("[Notifier] Error processing due notification:", error);
         }
         channel.ack(msg);
-    });
+    }).catch(e => {console.error(e)});
 
     channel.consume(QUEUES.HOMEWORK_DELETED, async (msg) => {
         if (!msg) return;
@@ -130,7 +130,7 @@ async function startWorker(): Promise<void> {
             console.error("Error in HOMEWORK_DELETED consumer:", error);
         }
         channel.ack(msg);
-    });
+    }).catch(e => {console.error(e)});
 
     channel.consume(QUEUES.POST_FANOUT, async (msg) => {
         if (!msg) return;
@@ -141,7 +141,7 @@ async function startWorker(): Promise<void> {
             console.error("Error in POST_FANOUT consumer:", error);
         }
         channel.ack(msg);
-    });
+    }).catch(e => {console.error(e)});
 
     channel.consume(QUEUES.POST_NOTIFICATION, async (msg) => {
         if (!msg) return;
@@ -153,7 +153,7 @@ async function startWorker(): Promise<void> {
             console.error("Error in POST_NOTIFICATION consumer:", error);
         }
         channel.ack(msg);
-    });
+    }).catch(e => {console.error(e)});
 
 }
 

@@ -4,7 +4,7 @@ import {
     createPost,
     deletePost,
     getAllPosts,
-    getHomeworkPost,
+    getHomeworkPost, getPost,
     updatePost
 } from '../controllers/feed/post.controller.js';
 import {createReply, getReplies, getReplyTree} from "../controllers/feed/reply.controller.js";
@@ -16,6 +16,7 @@ router.get('/homework/:homeworkId', getHomeworkPost);
 
 router.get('/', optionalAuth, getAllPosts);
 router.post('/', protect, createPost);
+router.get('/:postId', getPost);
 router.put('/:postId', protect, updatePost);
 router.delete('/:postId', protect, deletePost);
 router.post('/:id/vote', protect, handleVote);

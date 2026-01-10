@@ -1,9 +1,8 @@
 "use client";
 
 import { Homework } from "@/types";
-import { Dialog, DialogPanel, DialogTitle, Transition } from "@headlessui/react";
+import { DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState } from "react";
-import BackgroundModal from "@/components/Modals/BackgroundModal";
 import { ScrollableMarkdownViewer } from "@/components/Markdown/ScrollableMarkdownViewer";
 import { XIcon } from "lucide-react";
 import React from "react";

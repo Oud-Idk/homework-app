@@ -1,5 +1,3 @@
-// src/components/Feed/PostFeed.tsx
-
 'use client';
 
 import React, { useState } from 'react';
@@ -63,9 +61,15 @@ export const PostFeed: React.FC = () => {
                     ))}
                 </div>
             ) : (
-                <p className="text-center mt-8 p-8 border rounded-lg">
-                    No posts found for your search.
-                </p>
+                searchTerm ? (
+                    <p className="text-center mt-8 p-8 border rounded-lg">
+                        No posts found for your search.
+                    </p>
+                ) : (
+                    <p className="text-center mt-8 p-8 border rounded-lg">
+                        There are no posts yet. Make one!
+                    </p>
+                )
             )}
 
             {pagination && !isLoading && (

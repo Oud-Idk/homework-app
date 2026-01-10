@@ -149,6 +149,6 @@ export const updateGroup = async (req: Request, res: Response) => {
         console.error('Error updating group:', error);
         res.status(500).json({ message: 'Server Error' });
     } finally {
-        session.endSession();
+        void session.endSession();
     }
 };

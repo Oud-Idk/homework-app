@@ -61,14 +61,12 @@ export const enrichPostsWithVotes = async (
     const postIds = posts.map(p => p._id);
     const enrichedData = new Map<string, Partial<EnrichedPost>>();
 
-    // --- Step 1: Concurrently fetch user's votes (DB) & check cache existence (Redis) ---
-
     const userVotesPromise = viewerId
         ? Vote.find({
             user: new mongoose.Types.ObjectId(viewerId),
             post: { $in: postIds }
         }).lean<LeanVote[]>()
-        : Promise.resolve([]);
+        : void Promise.resolve([]);
 
     const cacheExistencePipeline = redisClient.multi();
     postIds.forEach(id => cacheExistencePipeline.exists(`post:${id}:upvotes`));
@@ -79,17 +77,17 @@ export const enrichPostsWithVotes = async (
         cacheExistencePromise
     ]);
 
-    const userVotesMap = new Map(userVotes.map(vote => [vote.post.toString(), vote.voteType]));
+    if (!userVotes) {
+        return Promise.reject("There are no userVotes!");
+    }
 
-    // --- Step 2: Segregate posts into cached and non-cached lists ---
+    const userVotesMap = new Map(userVotes.map(vote => [vote.post.toString(), vote.voteType]));
 
     const postsWithCache: Types.ObjectId[] = [];
     const postsToRepopulate: Types.ObjectId[] = [];
 
     posts.forEach((post, index) => {
-        // --- FIX: Access the SECOND element of the tuple [1] BEFORE casting ---
         const existenceTuple = cacheExistenceResults?.[index];
-        // Check for command error (first element) and then get result (second element)
         const cacheExists = !existenceTuple?.[0] && (existenceTuple?.[1] as number) === 1;
 
         if (cacheExists) {
@@ -101,8 +99,6 @@ export const enrichPostsWithVotes = async (
             userVote: userVotesMap.get(post._id.toString()) || null,
         });
     });
-
-    // --- Step 3: Process the two groups concurrently ---
 
     const processingPromises: Promise<void>[] = [];
 
@@ -120,8 +116,6 @@ export const enrichPostsWithVotes = async (
                 const upvotesTuple = redisResults?.[index * 2];
                 const downvotesTuple = redisResults?.[index * 2 + 1];
 
-                // --- FIX: Access the SECOND element of the tuple [1] BEFORE casting ---
-                // If the first element (error) is null, get the second element (result).
                 const upvotes = !upvotesTuple?.[0] ? ((upvotesTuple?.[1] as number) || 0) : 0;
                 const downvotes = !downvotesTuple?.[0] ? ((downvotesTuple?.[1] as number) || 0) : 0;
 
@@ -135,7 +129,6 @@ export const enrichPostsWithVotes = async (
         processingPromises.push(fetchCountsPromise());
     }
 
-    // 3b: For non-cached posts, fetch from DB and warm the cache
     if (postsToRepopulate.length > 0) {
         const repopulatePromise = async () => {
             // This part remains correct as it doesn't interact with the problematic tuple
@@ -176,8 +169,6 @@ export const enrichPostsWithVotes = async (
 
     await Promise.all(processingPromises);
 
-    // --- Step 4: Combine original post data with the new enriched data ---
-
     return posts.map(post => {
         const data = enrichedData.get(post._id.toString()) || {};
         const upvotes = data.upvotes ?? 0;
@@ -191,6 +182,15 @@ export const enrichPostsWithVotes = async (
             userVote: data.userVote || null,
         };
     });
+};
+
+export const enrichPostWithVotes = async (
+    post: PopulatedPost | null | undefined, // Handle potential nulls from DB calls
+    viewerId?: string
+): Promise<EnrichedPost | null> => {
+    if (!post) return null;
+    const results = await enrichPostsWithVotes([post], viewerId);
+    return results[0] || null;
 };
 
 

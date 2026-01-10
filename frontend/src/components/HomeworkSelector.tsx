@@ -25,33 +25,35 @@ export const HomeworkSelector: React.FC<HomeworkSelectorProps> = ({ value, onCha
     const [query, setQuery] = useState('');
 
     useEffect(() => {
-        // Fetch only if the list is empty and we have a session
         if (session && availableHomeworks.length === 0) {
             const fetchActiveHomeworks = async () => {
                 setIsFetching(true);
                 try {
                     const res = await reqToApi('homeworks', session);
-                    if (!res.ok) throw new Error('Failed to fetch homeworks');
-
+                    if (!res.ok) {
+                        console.error('Failed to fetch homeworks:', res.status, res.statusText);
+                        return;
+                    }
                     const allHomeworks: Homework[] = await res.json();
+
                     const now = new Date();
                     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-                    // Filter for homework that is not completed and not past its due date
                     const activeHomeworks = allHomeworks.filter(hw => {
                         const dueDate = new Date(hw.dueDate);
                         return !hw.completed && !(dueDate < startOfToday);
                     });
 
                     setAvailableHomeworks(activeHomeworks);
+
                 } catch (err) {
-                    console.error("Failed to load homeworks for dropdown:", err);
+                    console.error("Network crash loading homeworks:", err);
                 } finally {
                     setIsFetching(false);
                 }
             };
 
-            fetchActiveHomeworks();
+            void fetchActiveHomeworks();
         }
     }, [session, availableHomeworks.length]);
 

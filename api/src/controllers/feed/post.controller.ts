@@ -9,7 +9,7 @@ import { publishToExchange } from '../../services/rabbitmq.service.js';
 import { meiliClient } from "../../services/meilisearch.service.js";
 import { SearchParams } from "meilisearch";
 import {
-    enrichPostsWithVotes,
+    enrichPostsWithVotes, enrichPostWithVotes,
     findPostAndAuthorize,
     PopulatedPost
 } from '../../utils/post.helper.js';
@@ -156,8 +156,6 @@ export const getUserPosts = async (req: Request, res: Response) => {
 
 export const getHomeworkPost = async (req: Request, res: Response) => {
     const { homeworkId } = req.params;
-
-    // Ensure we have a valid ID before proceeding, serving as a runtime guard
     if (!homeworkId) {
         return res.status(400).json({ message: "Homework ID is required" });
     }
@@ -173,8 +171,6 @@ export const getHomeworkPost = async (req: Request, res: Response) => {
 
         console.log(`Serving posts for ${homeworkId} from DATABASE`);
 
-        // FIX: Explicitly cast homeworkId to string and create a new ObjectId.
-        // This solves the TS2769 error by preventing 'undefined' from being passed to the query filter.
         const posts = await Post.find({ homework: new mongoose.Types.ObjectId(homeworkId as string) })
             .sort({ createdAt: 'asc' })
             .populate('author', 'name email')
@@ -228,6 +224,39 @@ export const getAllPosts = async (req: Request, res: Response) => {
 
     } catch (error) {
         console.error("CRASH IN getAllPosts:", error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+export const getPost = async (req: Request, res: Response) => {
+    try {
+        console.log(req.query)
+
+        const viewerId = req.user?.sub;
+        const postId = req.params.postId as string ?? "";
+
+        if (!postId) {
+            return res.status(400).json({ message: "postId is required" });
+        }
+
+        const postFromDb = await Post.find({ '_id': postId })
+            .populate('author', 'name email')
+            .populate('homework', 'title')
+            .lean<PopulatedPost[]>();
+
+        if (postFromDb.length <= 0) {
+            return res.status(400).json({ message: "post is not found." });
+        }
+
+        const post = postFromDb[0];
+        const enrichedPost = await enrichPostWithVotes(post, viewerId);
+
+        res.status(200).json({
+            data: enrichedPost,
+        });
+
+    } catch (error) {
+        console.error("CRASH IN getPost:", error);
         res.status(500).json({ message: 'Server error' });
     }
 };

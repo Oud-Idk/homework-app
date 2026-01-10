@@ -32,7 +32,7 @@ export const PostItem: React.FC<PostItemProps> = ({ post, onDelete, onUpdate }) 
 
     const handleDeleteClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        performDelete(post._id, "Are you sure you want to delete this post?");
+        void performDelete(post._id, "Are you sure you want to delete this post?");
     };
 
     const handleVoteClick = async (e: React.MouseEvent, newVote: 'up' | 'down') => {

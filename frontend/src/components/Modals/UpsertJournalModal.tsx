@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, FormEvent } from 'react';
-import { Dialog, DialogPanel, DialogTitle, Transition } from '@headlessui/react';
+import { DialogPanel, DialogTitle } from '@headlessui/react';
 import { Journal } from '@/types';
-import BackgroundModal from "@/components/Modals/BackgroundModal";
 import SubmitButton from "@/components/SubmitButton";
 import { X } from "lucide-react";
 import { useTheme } from "next-themes";

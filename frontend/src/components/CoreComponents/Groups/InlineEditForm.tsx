@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState, useEffect } from 'react';
+import { FormEvent, useState } from 'react';
 import SubmitButton from "@/components/SubmitButton";
 import { X } from 'lucide-react';
 

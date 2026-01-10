@@ -33,34 +33,39 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClos
 
         try {
             if (!content) {
-                throw new Error('`content` is undefined!');
+                setError('Content is required');
+                return;
             }
+
             const body: { title: string, content: string, homeworkId?: string } = {
                 title,
                 content,
             };
-
             if (selectedHomeworkId) {
                 body.homeworkId = selectedHomeworkId;
             }
 
-            const res = await reqToApi('posts', session, 'POST', body)
-            const newPost = await res.json();
+            const res = await reqToApi('posts', session, 'POST', body);
+            const data = await res.json();
 
             if (!res.ok) {
-                throw new Error(newPost.message || 'Failed to create post');
+                setError(data.message || 'Failed to create post');
+                return;
             }
 
-            onPostCreated(newPost);
-
-            // Reset form state
+            onPostCreated(data);
             setTitle('');
             setContent('');
             setSelectedHomeworkId('');
             onClose();
 
         } catch (err) {
-            if (err instanceof Error) setError(err.message);
+            console.error(err);
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unexpected network error occurred");
+            }
         } finally {
             setIsLoading(false);
         }

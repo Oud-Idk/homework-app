@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, Suspense, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, Suspense, useEffect, useState, useCallback } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from "next-auth/react";
 
@@ -29,7 +29,6 @@ function useDebounce<T>(value: T, delay: number): T {
     return debouncedValue;
 }
 
-// --- MAIN FILE MANAGER COMPONENT ---
 function FileManagerComponent() {
     const router = useRouter();
     const pathname = usePathname();
@@ -43,14 +42,18 @@ function FileManagerComponent() {
     const [isUploading, setIsUploading] = useState(false);
     const [totalPages, setTotalPages] = useState(1);
 
-    const currentPage = parseInt(searchParams.get('page') || '1', 10);
-    const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+    // Extract specific string values to use as dependencies
+    const currentPageParam = searchParams.get('page');
+    const searchParam = searchParams.get('search');
+    const currentPage = parseInt(currentPageParam || '1', 10);
+
+    // Initialize search state
+    const [searchTerm, setSearchTerm] = useState(searchParam || '');
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFileForModal, setSelectedFileForModal] = useState<ApiFile | null>(null);
 
-    // --- NEW: Handlers for the modal ---
     const handleOpenFileModal = (file: ApiFile) => {
         setSelectedFileForModal(file);
         setIsModalOpen(true);
@@ -58,51 +61,59 @@ function FileManagerComponent() {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        // It's good practice to clear the selected file after the modal closes
-        setTimeout(() => setSelectedFileForModal(null), 300); // delay to allow for fade-out transition
+        setTimeout(() => setSelectedFileForModal(null), 300);
     };
 
-    // Effect to update URL from search input
+    // FIX 1: Only update URL if the search term actually changed relative to the URL
     useEffect(() => {
         const params = new URLSearchParams(searchParams.toString());
-        if (debouncedSearchTerm) {
-            params.set('search', debouncedSearchTerm);
-            params.set('page', '1'); // Reset to page 1 on new search
-        } else {
-            params.delete('search');
-        }
-        router.replace(`${pathname}?${params.toString()}`);
-    }, [debouncedSearchTerm, pathname, router, searchParams]);
+        const currentUrlSearch = params.get('search') || '';
 
-    // Effect to fetch files when URL params change
-    useEffect(() => {
-        const fetchFiles = async () => {
-            if (status !== 'authenticated') return;
-            setIsDataLoading(true);
-
-            const params = new URLSearchParams(searchParams.toString());
-            params.set('limit', '12'); // Use a limit that fits the grid better
-
-            try {
-                // Using the reqToApi utility function
-                const response = await reqToApi(`file?${params.toString()}`, session);
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to fetch files');
-                }
-
-                const data = await response.json();
-                setFiles(data.files);
-                setTotalPages(data.totalPages);
-            } catch (err) {
-                if (err instanceof Error) showError(err.message);
-            } finally {
-                setIsDataLoading(false);
+        // Prevent router loop: Only replace if value is different
+        if (debouncedSearchTerm !== currentUrlSearch) {
+            if (debouncedSearchTerm) {
+                params.set('search', debouncedSearchTerm);
+                params.set('page', '1');
+            } else {
+                params.delete('search');
             }
-        };
-        fetchFiles();
-    }, [searchParams, status, session, showError]);
+            router.replace(`${pathname}?${params.toString()}`);
+        }
+        // Remove searchParams from dependency, rely on internal conversion
+    }, [debouncedSearchTerm, pathname, router]);
+
+    // FIX 2: Fetch files only when specific params string changes, not the object
+    const fetchFiles = useCallback(async () => {
+        if (status !== 'authenticated') return;
+        setIsDataLoading(true);
+
+        const params = new URLSearchParams();
+        if (currentPageParam) params.set('page', currentPageParam);
+        if (searchParam) params.set('search', searchParam);
+        params.set('limit', '12');
+
+        try {
+            const response = await reqToApi(`file?${params.toString()}`, session);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to fetch files');
+            }
+
+            const data = await response.json();
+            setFiles(data.files);
+            setTotalPages(data.totalPages);
+        } catch (err) {
+            if (err instanceof Error) showError(err.message);
+        } finally {
+            setIsDataLoading(false);
+        }
+    }, [currentPageParam, searchParam, session, status, showError]);
+
+    // Trigger the fetch
+    useEffect(() => {
+        void fetchFiles();
+    }, [fetchFiles]);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -128,6 +139,7 @@ function FileManagerComponent() {
 
             if (!response.ok) {
                 const errorData = await response.json();
+                // noinspection ExceptionCaughtLocallyJS
                 throw new Error(errorData.message || 'File upload failed');
             }
 
@@ -137,12 +149,7 @@ function FileManagerComponent() {
                 (document.getElementById('file-upload-input') as HTMLInputElement).value = '';
             }
 
-            // Refetch the current page using reqToApi
-            const params = new URLSearchParams(searchParams.toString());
-            const refetchResponse = await reqToApi(`file?${params.toString()}`, session);
-            const data = await refetchResponse.json();
-            setFiles(data.files);
-            setTotalPages(data.totalPages);
+            void fetchFiles(); // Re-use the fetch function
 
         } catch (err) {
             if (err instanceof Error) showError(err.message);
@@ -159,18 +166,18 @@ function FileManagerComponent() {
         setFiles(prevFiles => prevFiles.filter(file => file._id !== fileId));
 
         try {
-            // Using the reqToApi utility function for DELETE
             const response = await reqToApi(`file/${fileId}`, session, 'DELETE');
 
             if (!response.ok) {
-                setFiles(originalFiles); // Revert optimistic UI update
+                setFiles(originalFiles);
                 const errorData = await response.json();
+                // noinspection ExceptionCaughtLocallyJS
                 throw new Error(errorData.message || 'Failed to delete the file');
             }
             showSuccess("File deleted successfully.");
         } catch (err) {
             if (err instanceof Error) showError(err.message);
-            setFiles(originalFiles); // Revert on error
+            setFiles(originalFiles);
         }
     };
 
@@ -181,43 +188,43 @@ function FileManagerComponent() {
     return (
         <>
             <div className="container mx-auto p-4 md:p-8">
-            <h1 className="text-3xl font-bold mb-8">File Manager</h1>
+                <h1 className="text-3xl font-bold mb-8">File Manager</h1>
 
-            <div className="border p-6 rounded-lg shadow-md mb-8">
-                <h2 className="text-xl font-semibold mb-4">Upload a New File</h2>
-                <form onSubmit={handleUpload}>
-                    <input id="file-upload-input" type="file" onChange={handleFileChange} className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:text-sm file:font-semibold file:border-1 file:hover:bg-neutral-400/15 file:cursor-pointer" />
-                    <SubmitButton disabled={!selectedFile || isUploading} className="mt-4">{isUploading ? 'Uploading...' : 'Upload'}</SubmitButton>
-                </form>
-            </div>
-
-            <div className="border p-6 rounded-lg shadow-md">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-semibold">My Files</h2>
-                    <div className="relative w-full max-w-xs">
-                        <input type="search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search by filename..." className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" size={20} />
-                    </div>
+                <div className="border p-6 rounded-lg shadow-md mb-8">
+                    <h2 className="text-xl font-semibold mb-4">Upload a New File</h2>
+                    <form onSubmit={handleUpload}>
+                        <input id="file-upload-input" type="file" onChange={handleFileChange} className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:text-sm file:font-semibold file:border-1 file:hover:bg-neutral-400/15 file:cursor-pointer" />
+                        <SubmitButton disabled={!selectedFile || isUploading} className="mt-4">{isUploading ? 'Uploading...' : 'Upload'}</SubmitButton>
+                    </form>
                 </div>
 
-                {isDataLoading ? (
-                    <LoadingSpinner message="Loading files..." />
-                ) : files.length === 0 ? (
-                    <p className="text-neutral-500 text-center py-8">
-                        {searchParams.get('search') ? `No files found for "${searchParams.get('search')}".` : "You haven't uploaded any files yet."}
-                    </p>
-                ) : (
-                    <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 gap-4">
-                        {files.map(file => (
-                            <div key={file._id} className="mb-4">
-                                <FileCell file={file} onDelete={handleDelete} onCellClick={handleOpenFileModal} />
-                            </div>
-                        ))}
+                <div className="border p-6 rounded-lg shadow-md">
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-xl font-semibold">My Files</h2>
+                        <div className="relative w-full max-w-xs">
+                            <input type="search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search by filename..." className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" size={20} />
+                        </div>
                     </div>
-                )}
-                {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={currentPage} />}
+
+                    {isDataLoading ? (
+                        <LoadingSpinner message="Loading files..." />
+                    ) : files.length === 0 ? (
+                        <p className="text-neutral-500 text-center py-8">
+                            {searchParam ? `No files found for "${searchParam}".` : "You haven't uploaded any files yet."}
+                        </p>
+                    ) : (
+                        <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 gap-4">
+                            {files.map(file => (
+                                <div key={file._id} className="mb-4">
+                                    <FileCell file={file} onDelete={handleDelete} onCellClick={handleOpenFileModal} />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={currentPage} />}
+                </div>
             </div>
-        </div>
             <FileDetailsModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}

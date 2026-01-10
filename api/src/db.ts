@@ -7,7 +7,7 @@ export const connectDB = async () => {
         const conn = await mongoose.connect(process.env.MONGO_URI!);
         console.log(`MongoDB Connected: ${conn.connection.host}`);
         console.log('Running startup cleanup for expired notifications...');
-        ScheduledNotification.cleanupExpired();
+        void ScheduledNotification.cleanupExpired();
     } catch (error) {
         console.error(`Error: ${error}`);
         process.exit(1);

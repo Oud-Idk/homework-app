@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { Group, Homework } from "@/types";
 import { EditHomeworkModal } from "@/components/Modals/Homework/EditHomeworkModal";
-// Import the new modal
 import { AllHomeworkModal } from "@/components/Modals/Homework/AllHomeworkModal";
 import GroupNodeRenderer from "@/components/CoreComponents/Homework/GroupNodeRenderer";
 import { getPastDue, reqToApi } from "@/lib/utils";
@@ -115,12 +114,15 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
             const res = await reqToApi(`homeworks/${homeworkId}/follow`, session, method);
 
             if (!res.ok) {
-                throw new Error('Failed to update follow status');
+                console.error("Server failed to toggle follow:", res.status);
+                setHomeworks(originalHomeworks);
+                showError("Couldn't update follow status. Please try again.");
+                return;
             }
             console.log("Follow status updated successfully!");
         } catch (error) {
-            console.error(error);
-            setHomeworks(originalHomeworks); // Revert on failure
+            console.error("Network error toggling follow:", error);
+            setHomeworks(originalHomeworks);
             showError("Couldn't update follow status. Please try again.");
         }
     }, [homeworks, session, showError]);
@@ -135,15 +137,19 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
                 hw._id === editingHomework._id ? { ...hw, ...updatedData } : hw
             )
         );
-        handleCloseEditModal(); // Close modal immediately
+        handleCloseEditModal();
 
         try {
             const res = await reqToApi(`homeworks/${editingHomework._id}`, session, 'PUT', updatedData);
+
             if (!res.ok) {
-                throw new Error('Failed to update homework.');
+                console.error("Server failed to update homework:", res.status);
+                setHomeworks(originalHomeworks);
+                showError("Failed to update homework.");
+                return;
             }
         } catch (error) {
-            console.error("Error updating homework:", error);
+            console.error("Network error updating homework:", error);
             setHomeworks(originalHomeworks);
             showError("Failed to update homework. Please try again.");
         }
@@ -152,7 +158,6 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
 
     const handleToggleComplete = useCallback(async (homeworkId: string) => {
         const originalHomeworks = [...homeworks];
-        // Optimistic UI update
         setHomeworks(current =>
             current.map(hw =>
                 hw._id === homeworkId ? { ...hw, completed: !hw.completed } : hw
@@ -161,15 +166,20 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
 
         try {
             const res = await reqToApi(`homeworks/${homeworkId}/toggle`, session, 'PATCH');
+
             if (!res.ok) {
-                throw new Error('Failed to update homework status.');
+                console.error("Server failed to toggle complete:", res.status);
+                setHomeworks(originalHomeworks);
+                showError("Could not update status.");
+                return;
             }
         } catch (error) {
-            console.error("Error toggling homework completion:", error);
-            setHomeworks(originalHomeworks); // Revert on failure
+            console.error("Network error toggling complete:", error);
+            setHomeworks(originalHomeworks);
             showError("Could not update status. Please try again.");
         }
     }, [homeworks, session, showError]);
+
 
     const handleDelete = useCallback(async (homeworkId: string) => {
         const originalHomeworks = [...homeworks];
@@ -177,12 +187,16 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
 
         try {
             const res = await reqToApi(`homeworks/${homeworkId}`, session, 'DELETE');
+
             if (!res.ok) {
-                throw new Error('Failed to delete homework.');
+                console.error("Server failed to delete homework:", res.status);
+                setHomeworks(originalHomeworks);
+                showError("Failed to delete homework.");
+                return;
             }
         } catch (error) {
-            console.error("Error deleting homework:", error);
-            setHomeworks(originalHomeworks); // Revert on failure
+            console.error("Network error deleting homework:", error);
+            setHomeworks(originalHomeworks);
             showError("Failed to delete homework. Please try again.");
         }
     }, [homeworks, session, showError]);
@@ -235,7 +249,7 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
 
     return (
         <div className="mt-10">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-start md:items-center mb-6 flex-col md:flex-row gap-3">
                 <h2 className="text-3xl font-semibold">Current Homework</h2>
                 <button
                     onClick={handleOpenAllHomeworkModal}

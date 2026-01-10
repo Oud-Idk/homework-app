@@ -68,9 +68,7 @@ export function usePushNotifications(session: Session | null) {
             // 1. Register the service worker
             await navigator.serviceWorker.register('/service-worker.js');
 
-            // 2. THIS IS THE FIX: Wait for the service worker to become active
             const registration = await navigator.serviceWorker.ready;
-
             const applicationServerKey = urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY);
 
             // 3. Now that the worker is active, subscribe

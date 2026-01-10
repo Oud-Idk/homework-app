@@ -20,7 +20,7 @@ export interface IScheduledNotificationModel extends Model<ScheduledNotification
  * @description Finds and removes all scheduled notifications where the sendAt time is in the past.
  * @returns {Promise<object>} The result from the deleteMany operation.
  */
-ScheduledNotificationSchema.statics.cleanupExpired = async function() {
+ScheduledNotificationSchema.statics.cleanupExpired = async function(): Promise<object> {
     try {
         const now = new Date();
         const result = await this.deleteMany({ sendAt: { $lt: now } });

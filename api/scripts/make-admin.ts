@@ -34,4 +34,4 @@ const makeAdmin = async () => {
     }
 };
 
-makeAdmin();
+void makeAdmin();

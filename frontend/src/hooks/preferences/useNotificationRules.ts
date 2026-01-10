@@ -6,22 +6,40 @@ import { useNotification } from "@/context/NotificationsContext";
 export interface NotificationRule {
     _id: string;
     daysBefore: number;
-    timeOfDay: string;
+    timeOfDay: string; // This will store UTC time string
 }
 
 export function useNotificationRules(session: Session | null) {
     const [rules, setRules] = useState<NotificationRule[]>([]);
     const [daysBefore, setDaysBefore] = useState(1);
-    const [timeOfDay, setTimeOfDay] = useState('09:00');
+    const [timeOfDay, setTimeOfDay] = useState('09:00'); // Keeps local time for the input
 
     const { showError } = useNotification();
+
+    const toUTC = (localTime: string) => {
+        if (!localTime) return '00:00';
+        const date = new Date();
+        const [hours, minutes] = localTime.split(':').map(Number);
+        date.setHours(hours, minutes, 0, 0);
+
+        const utcH = date.getUTCHours().toString().padStart(2, '0');
+        const utcM = date.getUTCMinutes().toString().padStart(2, '0');
+        return `${utcH}:${utcM}`;
+    };
 
     const addRule = async (e: FormEvent) => {
         e.preventDefault();
         if (!session?.accessToken) return;
 
         try {
-            const newRuleData = { daysBefore: Number(daysBefore), timeOfDay };
+            // Convert to UTC before sending
+            const utcTime = toUTC(timeOfDay);
+
+            const newRuleData = {
+                daysBefore: Number(daysBefore),
+                timeOfDay: utcTime // Send UTC string to existing field
+            };
+
             const res = await reqToApi('preferences/notifications', session, 'POST', newRuleData);
             if (!res.ok) throw new Error("Failed to add new rule.");
 

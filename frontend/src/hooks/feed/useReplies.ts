@@ -47,7 +47,7 @@ export const useReplies = (postId: string) => {
     }, [postId, session, showError]); // Add session and showError to dependencies
 
     useEffect(() => {
-        fetchInitialTree();
+        void fetchInitialTree();
     }, [fetchInitialTree]);
 
     const addReply = useCallback((newReply: Post) => {
@@ -117,7 +117,7 @@ export const useReplies = (postId: string) => {
             });
         } catch (err) {
             console.error("Failed to load more replies:", err);
-            if (err instanceof Error) showError(err.message || 'Could not load more replies.');;
+            if (err instanceof Error) showError(err.message || 'Could not load more replies.');
         }
     }, [session, showError]); // Add session and showError to dependencies
 

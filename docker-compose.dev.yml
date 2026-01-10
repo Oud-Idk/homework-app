@@ -23,6 +23,7 @@ services:
           print("Replica set initialized.");
         }
       '
+
   redis:
     image: redis:latest
     ports:
@@ -54,6 +55,7 @@ services:
 
   minio:
     image: minio/minio
+    restart: always
     ports:
       - "9000:9000"  # API Port
       - "9001:9001"  # Console/UI Port
@@ -63,6 +65,37 @@ services:
       - MINIO_ROOT_USER=changeAtProdIdiot # TODO Change at prod
       - MINIO_ROOT_PASSWORD=changeAtProdIdiot # TODO Change at prod
     command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio-setup:
+    image: minio/mc
+    restart: 'no'
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      set -ex;
+      echo 'Waiting for MinIO to fully initialize...';
+      
+      echo '1. Setting up alias for myminio...';
+      /usr/bin/mc alias set myminio http://minio:9000 changeAtProdIdiot changeAtProdIdiot;
+      
+      echo '2. Creating bucket: user-uploads...';
+      /usr/bin/mc mb myminio/user-uploads --ignore-existing;
+      
+      echo '3. Creating policy file locally...';
+      echo '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::user-uploads/*\"]}]}' > /tmp/public-read-policy.json;
+
+      echo '4. Setting policy for user-uploads...';
+      /usr/bin/mc anonymous set-json /tmp/public-read-policy.json myminio/user-uploads;
+      
+      echo 'MinIO setup complete.';
+      "
 
 volumes:
   mongo-data:
