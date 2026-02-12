@@ -5,14 +5,13 @@ mod constants;
 
 use anyhow::{Context, Result};
 use dotenvy::dotenv;
-use lapin::{BasicProperties, Channel, Connection, ConnectionProperties};
 use mongodb::{Client, Database};
 use std::env;
 use bson::{doc};
 use futures::stream::TryStreamExt;
-use lapin::options::{BasicPublishOptions, QueueDeclareOptions};
-use lapin::types::FieldTable;
-use crate::constants::Queues;
+use lapin::{options::{ExchangeDeclareOptions, QueueBindOptions, QueueDeclareOptions}, types::FieldTable, ExchangeKind, Channel, BasicProperties, Connection, ConnectionProperties};
+use lapin::options::BasicPublishOptions;
+use crate::constants::{Exchanges, Queues, RoutingKeys};
 use crate::models::ScheduledNotification;
 use crate::queues::consumers;
 use crate::workers::scheduler::DueNotificationPayload;
@@ -96,6 +95,22 @@ async fn main() -> Result<()> {
 
     println!("[Rust Worker] Connected to RabbitMQ and MongoDB.");
 
+    channel.exchange_declare(
+        Exchanges::NOTIFICATION_EXCHANGE.into(),
+        ExchangeKind::Direct,
+        ExchangeDeclareOptions { durable: true, ..Default::default() },
+        FieldTable::default(),
+    ).await?;
+
+    // Events Exchange (Topic)
+    channel.exchange_declare(
+        Exchanges::EVENTS_EXCHANGE.into(),
+        ExchangeKind::Topic,
+        ExchangeDeclareOptions { durable: true, ..Default::default() },
+        FieldTable::default(),
+    ).await?;
+
+    // --- 2. Setup Queues ---
     let queue_list = [
         Queues::POST_FANOUT,
         Queues::POST_NOTIFICATION,
@@ -106,18 +121,31 @@ async fn main() -> Result<()> {
     ];
 
     for queue_name in queue_list {
-        channel
-            .queue_declare(
-                queue_name.into(),
-                QueueDeclareOptions {
-                    durable: true, // Survives RabbitMQ restart
-                    ..Default::default()
-                },
-                FieldTable::default(),
-            )
-            .await?;
-        println!("[RabbitMQ] Asserted queue: {}", Into::<&str>::into(queue_name));
+        channel.queue_declare(
+            queue_name.into(),
+            QueueDeclareOptions { durable: true, ..Default::default() },
+            FieldTable::default(),
+        ).await?;
     }
+
+    channel.queue_bind(
+        Queues::HOMEWORK_DUE_NOTIFICATION.into(),
+        Exchanges::NOTIFICATION_EXCHANGE.into(),
+        RoutingKeys::NOTIFICATION_SEND.into(),
+        QueueBindOptions::default(),
+        FieldTable::default(),
+    ).await?;
+
+    // Bind Post Fanout to Events Exchange
+    channel.queue_bind(
+        Queues::POST_FANOUT.into(),
+        Exchanges::EVENTS_EXCHANGE.into(),
+        RoutingKeys::POST_CREATED.into(),
+        QueueBindOptions::default(),
+        FieldTable::default(),
+    ).await?;
+
+    println!("[RabbitMQ] Topology asserted (Exchanges, Queues, and Bindings).");
 
     let poller_channel = channel.clone();
     let poller_db = db.clone();
