@@ -76,7 +76,7 @@ services:
       - app_net
 
   worker:
-    build: ./worker
+    build: ./worker-rust
     restart: always
     environment:
       - MONGO_URI=mongodb://mongo:27017/homeworkapp?replicaSet=rs0

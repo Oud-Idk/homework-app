@@ -69,91 +69,91 @@ async function startWorker(): Promise<void> {
 
     console.log(`[*] Worker is running. Waiting for messages. To exit press CTRL+C`);
 
-    setInterval(() => {
-        checkDatabaseForDueNotifications(channel);
-    }, 10000);
+    // setInterval(() => {
+    //     checkDatabaseForDueNotifications(channel);
+    // }, 10000);
 
-    channel.consume(QUEUES.HOMEWORK_CREATED, async (msg: ConsumeMessage | null) => {
-        if (!msg) return;
-        try {
-            // Assert the type of the parsed JSON payload
-            const homework: IHomework = JSON.parse(msg.content.toString());
-            await scheduleNotificationsForHomework(homework);
-        } catch (error) {
-            console.error("Error in HOMEWORK_CREATED consumer:", error);
-        }
-        channel.ack(msg);
-    }).catch(e => {console.error(e)});
+    // channel.consume(QUEUES.HOMEWORK_CREATED, async (msg: ConsumeMessage | null) => {
+    //     if (!msg) return;
+    //     try {
+    //         // Assert the type of the parsed JSON payload
+    //         const homework: IHomework = JSON.parse(msg.content.toString());
+    //         await scheduleNotificationsForHomework(homework);
+    //     } catch (error) {
+    //         console.error("Error in HOMEWORK_CREATED consumer:", error);
+    //     }
+    //     channel.ack(msg);
+    // }).catch(e => {console.error(e)});
 
-    channel.consume(QUEUES.PREFERENCE_CHANGED, async (msg: ConsumeMessage | null) => {
-        if (!msg) return;
-        try {
-            const { userId }: { userId: string } = JSON.parse(msg.content.toString());
-            await rescheduleAllNotificationsForUser(userId);
-        } catch (error) {
-            console.error("Error in PREFERENCE_CHANGED consumer:", error);
-        }
-        channel.ack(msg);
-    }).catch(e => {console.error(e)});
+    // channel.consume(QUEUES.PREFERENCE_CHANGED, async (msg: ConsumeMessage | null) => {
+    //     if (!msg) return;
+    //     try {
+    //         const { userId }: { userId: string } = JSON.parse(msg.content.toString());
+    //         await rescheduleAllNotificationsForUser(userId);
+    //     } catch (error) {
+    //         console.error("Error in PREFERENCE_CHANGED consumer:", error);
+    //     }
+    //     channel.ack(msg);
+    // }).catch(e => {console.error(e)});
 
 
-    channel.consume(QUEUES.HOMEWORK_DUE_NOTIFICATION, async (msg: ConsumeMessage | null) => {
-        if (!msg) return;
-        // Define an interface for the payload for clarity
-        interface DueNotificationPayload {
-            jobId: string;
-            userId: string;
-            title: string;
-            body: string;
-        }
-        const notificationPayload: DueNotificationPayload = JSON.parse(msg.content.toString());
+    // channel.consume(QUEUES.HOMEWORK_DUE_NOTIFICATION, async (msg: ConsumeMessage | null) => {
+    //     if (!msg) return;
+    //     // Define an interface for the payload for clarity
+    //     interface DueNotificationPayload {
+    //         jobId: string;
+    //         userId: string;
+    //         title: string;
+    //         body: string;
+    //     }
+    //     const notificationPayload: DueNotificationPayload = JSON.parse(msg.content.toString());
+//
+    //     try {
+    //         console.log(`\n[Notifier] --- NOTIFICATION RECEIVED for job ${notificationPayload.jobId.substring(0, 6)}... ---`);
+    //         await sendSingleNotification({
+    //             userId: notificationPayload.userId,
+    //             title: notificationPayload.title,
+    //             body: notificationPayload.body,
+    //         });
+    //     } catch (error) {
+    //         console.error("[Notifier] Error processing due notification:", error);
+    //     }
+    //     channel.ack(msg);
+    // }).catch(e => {console.error(e)});
 
-        try {
-            console.log(`\n[Notifier] --- NOTIFICATION RECEIVED for job ${notificationPayload.jobId.substring(0, 6)}... ---`);
-            await sendSingleNotification({
-                userId: notificationPayload.userId,
-                title: notificationPayload.title,
-                body: notificationPayload.body,
-            });
-        } catch (error) {
-            console.error("[Notifier] Error processing due notification:", error);
-        }
-        channel.ack(msg);
-    }).catch(e => {console.error(e)});
+    // channel.consume(QUEUES.HOMEWORK_DELETED, async (msg) => {
+    //     if (!msg) return;
+    //     try {
+    //         const { homeworkId } = JSON.parse(msg.content.toString());
+    //         await cancelNotificationsForHomework(homeworkId);
+    //     } catch (error) {
+    //         console.error("Error in HOMEWORK_DELETED consumer:", error);
+    //     }
+    //     channel.ack(msg);
+    // }).catch(e => {console.error(e)});
 
-    channel.consume(QUEUES.HOMEWORK_DELETED, async (msg) => {
-        if (!msg) return;
-        try {
-            const { homeworkId } = JSON.parse(msg.content.toString());
-            await cancelNotificationsForHomework(homeworkId);
-        } catch (error) {
-            console.error("Error in HOMEWORK_DELETED consumer:", error);
-        }
-        channel.ack(msg);
-    }).catch(e => {console.error(e)});
+    // channel.consume(QUEUES.POST_FANOUT, async (msg) => {
+    //     if (!msg) return;
+    //     try {
+    //         const postPayload = JSON.parse(msg.content.toString());
+    //         await fanoutPostNotifications(postPayload, channel);
+    //     } catch (error) {
+    //         console.error("Error in POST_FANOUT consumer:", error);
+    //     }
+    //     channel.ack(msg);
+    // }).catch(e => {console.error(e)});
 
-    channel.consume(QUEUES.POST_FANOUT, async (msg) => {
-        if (!msg) return;
-        try {
-            const postPayload = JSON.parse(msg.content.toString());
-            await fanoutPostNotifications(postPayload, channel);
-        } catch (error) {
-            console.error("Error in POST_FANOUT consumer:", error);
-        }
-        channel.ack(msg);
-    }).catch(e => {console.error(e)});
-
-    channel.consume(QUEUES.POST_NOTIFICATION, async (msg) => {
-        if (!msg) return;
-        try {
-            const task = JSON.parse(msg.content.toString());
-            console.log("Sending post notification")
-            await sendSingleNotification(task);
-        } catch (error) {
-            console.error("Error in POST_NOTIFICATION consumer:", error);
-        }
-        channel.ack(msg);
-    }).catch(e => {console.error(e)});
+    // channel.consume(QUEUES.POST_NOTIFICATION, async (msg) => {
+    //     if (!msg) return;
+    //     try {
+    //         const task = JSON.parse(msg.content.toString());
+    //         console.log("Sending post notification")
+    //         await sendSingleNotification(task);
+    //     } catch (error) {
+    //         console.error("Error in POST_NOTIFICATION consumer:", error);
+    //     }
+    //     channel.ack(msg);
+    // }).catch(e => {console.error(e)});
 
 }
 

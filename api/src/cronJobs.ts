@@ -9,4 +9,4 @@ export const startCleanupJob = () => {
     });
 
     console.log('Scheduled notification cleanup job has been set up.');
-};
+}; //asdf
