@@ -17,7 +17,9 @@ COPY . .
 RUN cargo build --release --bin worker-rust
 
 # Stage 4: Runtime
-FROM debian:bookworm-slim
+FROM ubuntu:24.04
+# Ubuntu 24.04 uses GLIBC 2.39, which is compatible with 2.38
 WORKDIR /app
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/target/release/worker-rust /usr/local/bin/worker
 CMD ["worker"]
