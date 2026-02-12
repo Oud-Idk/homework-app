@@ -19,5 +19,5 @@ RUN cargo build --release --bin worker
 # Stage 4: Runtime
 FROM debian:bookworm-slim
 WORKDIR /app
-COPY --from=builder /app/target/release/worker /usr/local/bin
+COPY --from=builder /app/target/release/worker-rust /usr/local/bin/worker
 CMD ["worker"]
