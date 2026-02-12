@@ -26,6 +26,7 @@ async fn check_db_for_due_notifications(channel: Channel, db: Database) -> Resul
 
     let notifications: Vec<ScheduledNotification> = due_notifications_cursor.try_collect().await?;
     let notifications_length = notifications.len();
+    println!("Polling for Notifications");
 
     if notifications_length > 0 {
         println!("[Poller] Found {} due notification(s).", notifications_length);
