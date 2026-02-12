@@ -10,7 +10,8 @@ use mongodb::{Client, Database};
 use std::env;
 use bson::{doc};
 use futures::stream::TryStreamExt;
-use lapin::options::BasicPublishOptions;
+use lapin::options::{BasicPublishOptions, QueueDeclareOptions};
+use lapin::types::FieldTable;
 use crate::constants::Queues;
 use crate::models::ScheduledNotification;
 use crate::queues::consumers;
@@ -94,6 +95,29 @@ async fn main() -> Result<()> {
     let channel = conn.create_channel().await?;
 
     println!("[Rust Worker] Connected to RabbitMQ and MongoDB.");
+
+    let queue_list = [
+        Queues::POST_FANOUT,
+        Queues::POST_NOTIFICATION,
+        Queues::HOMEWORK_DELETED,
+        Queues::HOMEWORK_CREATED,
+        Queues::PREFERENCE_CHANGED,
+        Queues::HOMEWORK_DUE_NOTIFICATION,
+    ];
+
+    for queue_name in queue_list {
+        channel
+            .queue_declare(
+                queue_name.into(),
+                QueueDeclareOptions {
+                    durable: true, // Survives RabbitMQ restart
+                    ..Default::default()
+                },
+                FieldTable::default(),
+            )
+            .await?;
+        println!("[RabbitMQ] Asserted queue: {}", Into::<&str>::into(queue_name));
+    }
 
     let poller_channel = channel.clone();
     let poller_db = db.clone();
