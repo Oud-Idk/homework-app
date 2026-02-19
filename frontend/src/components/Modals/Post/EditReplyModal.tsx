@@ -5,7 +5,7 @@ import { DialogPanel, DialogTitle } from '@headlessui/react';
 import { useSession } from 'next-auth/react';
 import { Post } from '@/types';
 import { MarkdownEditorRenderer } from "@/components/Markdown/MarkdownEditorRenderer";
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 import SubmitButton from "@/components/SubmitButton";
 import { ModalContainer } from "@/components/Modals/ModalContainer";
 
@@ -37,7 +37,7 @@ export const EditReplyModal: React.FC<EditReplyModalProps> = ({isOpen, onClose, 
         setError(null);
 
         try {
-            const res = await reqToApi(`posts/${replyToEdit._id}`, session, 'PUT', {content: content})
+            const res = await reqToApi(`posts/${replyToEdit._id}`, session, Methods.PATCH, {content: content})
             const data = await res.json();
             if (!res.ok) {
                 throw new Error(data.message || 'Failed to update reply');

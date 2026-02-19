@@ -21,8 +21,6 @@ export const eventsHandler = (req: Request, res: Response) => {
     const newClient: Client = { id: clientId, res };
     clients.push(newClient);
 
-    // 4. Send a confirmation event to the client upon connection.
-    // This is great for debugging on the frontend to confirm the connection is live.
     const connectEventPayload = { message: "SSE connection established successfully." };
     res.write(`event: connected\ndata: ${JSON.stringify(connectEventPayload)}\n\n`);
 
@@ -30,7 +28,6 @@ export const eventsHandler = (req: Request, res: Response) => {
         res.write(': keep-alive\n\n');
     }, 20000); // 20 seconds
 
-    // 5. Add a listener for the 'close' event to clean up when the client disconnects.
     req.on('close', () => {
         clearInterval(keepAliveInterval);
         clients = clients.filter(c => c.id !== clientId);
@@ -50,10 +47,6 @@ export const sendEventToAll = (eventName: string, data: object) => {
 
     console.log(`Sending SSE event '${eventName}' to ${clients.length} clients.`);
 
-    // 6. Format the message according to the SSE spec with a named event.
-    // The format is `event: <name>\ndata: <json_string>\n\n`
     const sseFormattedData = `event: ${eventName}\ndata: ${JSON.stringify(data)}\n\n`;
-
-    // 7. Write the event to each client's response stream.
     clients.forEach(client => client.res.write(sseFormattedData));
 };

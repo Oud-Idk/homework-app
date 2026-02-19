@@ -1,197 +1,118 @@
-import type { Request, Response } from 'express';
+import { Request, Response } from 'express';
+import FileModel, { IFile } from "../models/file.model.js";
 import { minioClient } from "../services/minio.service.js";
 import { meiliClient } from "../services/meilisearch.service.js";
-import FileModel, { IFile } from "../models/file.model.js";
-import mongoose from "mongoose";
+import { handleServerError } from "../utils/errors.helper.js";
+import { paginationSchema } from "../schemas/app.schemas.js";
+import { QueryFilter } from "mongoose";
 
-const constructPublicUrl = (file: IFile ) => {
+const constructPublicUrl = (file: IFile) => {
     return `${process.env.MINIO_PUBLIC_URL}/${file.bucket}/${file.filename}`;
-}
+};
 
 export const uploadFile = async (req: Request, res: Response) => {
     const { file } = req;
-    console.log(file);
     const userId = req.user?.sub;
     const bucketName = process.env.MINIO_BUCKET;
 
-    if (!file) return res.status(400).send('No file uploaded.');
-    if (!bucketName) return res.status(500).send('Bucket name not found.');
-    if (!userId) return res.status(401).send('User id not found. You may not be logged in.');
+    if (!file) return res.status(400).json({ message: 'No file uploaded.' });
+    if (!bucketName) return res.status(500).json({ message: 'Storage bucket not configured.' });
 
     const fileName = `${Date.now()}-${file.originalname}`;
 
     try {
+        // 1. MinIO Upload
         const bucketExists = await minioClient.bucketExists(bucketName);
-        if (!bucketExists) {
-            await minioClient.makeBucket(bucketName);
-        }
-        await minioClient.putObject(bucketName, fileName, file.buffer, file.size, { 'Content-Type': file.mimetype });
-        console.log(`File ${fileName} uploaded to MinIO.`);
+        if (!bucketExists) await minioClient.makeBucket(bucketName);
 
-        const fileMetadata = {
+        await minioClient.putObject(bucketName, fileName, file.buffer, file.size, {
+            'Content-Type': file.mimetype
+        });
+
+        // 2. Save to DB
+        const newFile = await FileModel.create({
             filename: fileName,
             originalName: file.originalname,
             mimetype: file.mimetype,
             size: file.size,
             bucket: bucketName,
-            uploadedBy: userId,
-        };
-        const newFile = new FileModel(fileMetadata);
-        await newFile.save();
-        console.log(`Metadata for ${fileName} saved to MongoDB.`);
+            uploadedBy: userId as string,
+        });
 
-        const documentToIndex = {
+        // 3. Meilisearch Indexing
+        await meiliClient.index('files').addDocuments([{
             id: newFile._id.toString(),
             originalName: newFile.originalName,
             mimetype: newFile.mimetype,
             createdAt: newFile.createdAt,
-        };
-        const meiliIndex = meiliClient.index('files');
-        await meiliIndex.addDocuments([documentToIndex]);
-        console.log(`Document ${newFile._id} indexed in Meilisearch.`);
+        }]);
 
-        const publicUrl = `${process.env.MINIO_PUBLIC_URL}/${bucketName}/${fileName}`;
-
-        res.status(200).json({
+        res.status(201).json({
             message: 'File uploaded and indexed successfully!',
             fileId: newFile._id,
-            filename: newFile.filename,
-            url: publicUrl,
+            url: constructPublicUrl(newFile),
         });
-
     } catch (error) {
-        console.error('An error occurred during the upload process:', error);
-        res.status(500).send('Error processing file.');
+        handleServerError(res, error, "uploadFile");
     }
-}
+};
 
 export const deleteFile = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const userRole = req.user?.role;
     const userId = req.user?.sub;
-
-    if (!mongoose.Types.ObjectId.isValid(id ?? "")) {
-        return res.status(400).send('Invalid file ID format.');
-    }
+    const userRole = req.user?.role;
 
     try {
         const file = await FileModel.findById(id);
+        if (!file) return res.status(404).json({ message: 'File not found.' });
 
-        if (!file) return res.status(404).send('File not found.');
-
-        // Safety check: ensure strictly defined values before comparison
-        if (userId && !file.uploadedBy.equals(userId) && userRole !== 'admin') {
-            return res.status(401).send(`Not allowed to delete other people's file!`);
+        // Authorization: Only owner or admin
+        if (file.uploadedBy.toString() !== userId && userRole !== 'admin') {
+            return res.status(403).json({ message: "Not allowed to delete this file." });
         }
 
-        await minioClient.removeObject(file.bucket, file.filename);
-        console.log(`File ${file.filename} deleted from MinIO bucket ${file.bucket}.`);
-
-        const meiliIndex = meiliClient.index('files');
-        await meiliIndex.deleteDocument(file._id.toString());
-        console.log(`Document ${file._id} deleted from Meilisearch index.`);
-
-        await FileModel.findByIdAndDelete(id);
-        console.log(`Metadata for ${file.filename} deleted from MongoDB.`);
+        // Parallel Cleanup: Delete from Storage, Search, and DB at once
+        await Promise.all([
+            minioClient.removeObject(file.bucket, file.filename),
+            meiliClient.index('files').deleteDocument(file._id.toString()),
+            FileModel.findByIdAndDelete(id)
+        ]);
 
         res.status(200).json({ message: 'File deleted successfully.' });
-
     } catch (error) {
-        console.error('Error during file deletion:', error);
-        res.status(500).send('An error occurred while deleting the file.');
+        handleServerError(res, error, "deleteFile");
     }
-}
+};
 
-export const getFiles = async (req: Request, res: Response) => {
-    const userId = req.user?.sub;
-    if (!userId) {
-        return res.status(401).send('Unauthorized: User ID is missing.');
-    }
-
-    const page = parseInt(req.query.page as string, 10) || 1;
-    const limit = parseInt(req.query.limit as string, 10) || 10;
-    const search = req.query.search as string;
+const fetchFiles = async (req: Request, res: Response, filterByUserId: boolean) => {
+    const { page, limit, q } = paginationSchema.parse(req.query);
     const skip = (page - 1) * limit;
 
     try {
-        // FIX: Use 'any' or 'Record<string, any>' to avoid "FilterQuery not found" error
-        // while still ensuring strict ObjectId types for the data.
-        const query: Record<string, any> = {
-            uploadedBy: new mongoose.Types.ObjectId(userId)
-        };
-
-        if (search) {
-            query.originalName = { $regex: search, $options: 'i' };
-        }
+        const query: QueryFilter<IFile> = {};
+        if (filterByUserId && req.user?.sub) query.uploadedBy = req.user?.sub;
+        if (q) query.originalName = { $regex: q, $options: 'i' };
 
         const [filesFromDb, totalFiles] = await Promise.all([
-            FileModel.find(query)
-                .sort({ createdAt: -1 })
-                .skip(skip)
-                .limit(limit)
-                .lean(),
+            FileModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean<IFile[]>(),
             FileModel.countDocuments(query)
         ]);
 
-        const files = filesFromDb.map(file => ({
+        const filesWithUrls = filesFromDb.map(file => ({
             ...file,
             url: constructPublicUrl(file)
         }));
 
-        const totalPages = Math.ceil(totalFiles / limit);
-
         res.status(200).json({
-            files,
+            files: filesWithUrls,
             totalFiles,
-            totalPages,
+            totalPages: Math.ceil(totalFiles / limit),
             currentPage: page,
         });
-
     } catch (error) {
-        console.error('Error fetching files:', error);
-        res.status(500).send('An error occurred while fetching files.');
+        handleServerError(res, error, filterByUserId ? "getFiles" : "getAllFiles");
     }
-}
+};
 
-export const getAllFiles = async (req: Request, res: Response) => {
-    const page = parseInt(req.query.page as string, 10) || 1;
-    const limit = parseInt(req.query.limit as string, 10) || 10;
-    const search = req.query.search as string;
-    const skip = (page - 1) * limit;
-
-    try {
-        // FIX: Use 'Record<string, any>' to allow dynamic regex property
-        const query: Record<string, any> = {};
-
-        if (search) {
-            query.originalName = { $regex: search, $options: 'i' };
-        }
-
-        const [filesFromDb, totalFiles] = await Promise.all([
-            FileModel.find(query)
-                .sort({ createdAt: -1 })
-                .skip(skip)
-                .limit(limit)
-                .lean(),
-            FileModel.countDocuments(query)
-        ]);
-
-        const files = filesFromDb.map(file => ({
-            ...file,
-            url: constructPublicUrl(file)
-        }));
-
-        const totalPages = Math.ceil(totalFiles / limit);
-
-        res.status(200).json({
-            files,
-            totalFiles,
-            totalPages,
-            currentPage: page,
-        });
-
-    } catch (error) {
-        console.error('Error fetching files:', error);
-        res.status(500).send('An error occurred while fetching files.');
-    }
-}
+export const getFiles = (req: Request, res: Response) => fetchFiles(req, res, true);
+export const getAllFiles = (req: Request, res: Response) => fetchFiles(req, res, false);

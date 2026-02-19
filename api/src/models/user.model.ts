@@ -32,8 +32,8 @@ const ViewPreferencesSchema = new Schema({
 const UserSchema = new Schema({
     name: String,
     email: { type: String, unique: true },
+    classroomId: { type: Schema.Types.ObjectId },
     image: String,
-    emailVerified: Date,
     role: {
         type: String,
         enum: ['member', 'admin'],

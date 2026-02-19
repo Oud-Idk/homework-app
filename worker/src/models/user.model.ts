@@ -34,7 +34,6 @@ const UserSchema = new Schema({
     name: String,
     email: { type: String, unique: true },
     image: String,
-    emailVerified: Date,
     role: {
         type: String,
         enum: ['member', 'admin'],

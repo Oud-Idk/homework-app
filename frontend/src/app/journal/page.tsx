@@ -39,7 +39,7 @@ export default async function JournalPage({ searchParams }: {
     const { data: initialData, totalPages } = await getInitialData(currentPage);
 
     return (
-        <div className="p-8">
+        <div>
             <JournalList initialData={initialData} />
 
             <Pagination

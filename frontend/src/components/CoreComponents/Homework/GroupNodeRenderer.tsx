@@ -20,13 +20,13 @@ interface GroupNodeProps {
 }
 
 const GroupNodeRenderer: React.FC<GroupNodeProps> = ({
-                                                         node,
-                                                         isAdmin,
-                                                         handleDelete,
-                                                         handleToggleComplete,
-                                                         handleOpenEditModal,
-                                                         handleFollowToggle,
-                                                     }) => {
+    node,
+    isAdmin,
+    handleDelete,
+    handleToggleComplete,
+    handleOpenEditModal,
+    handleFollowToggle,
+}) => {
     const hasContent = node.homeworks.length > 0 || node.children.some(child => child.homeworks.length > 0 || child.children.length > 0);
 
     if (!hasContent) {

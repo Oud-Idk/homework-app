@@ -1,89 +1,106 @@
-import type {Request, Response} from 'express';
+import { Request, Response } from 'express';
+import mongoose from "mongoose";
 import Group from '../../models/group.model.js';
 import Homework from '../../models/homework.model.js';
-import mongoose from "mongoose";
+import { handleServerError } from '../../utils/errors.helper.js';
+
+interface HttpError {
+    statusCode: number;
+    message: string;
+}
+
+function isHttpError(error: unknown): error is HttpError {
+    return (
+        typeof error === 'object' &&
+        error !== null &&
+        'statusCode' in error &&
+        'message' in error
+    );
+}
 
 export const getGroups = async (req: Request, res: Response) => {
     try {
-        const groups = await Group.find({});
+        // .lean() makes query faster by returning POJOs instead of Mongoose Docs
+        const groups = await Group.find({}).sort({ path: 1 }).lean();
         res.status(200).json(groups);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({message: 'Server Error'});
+        handleServerError(res, error, "getGroups");
     }
 };
 
 export const createGroup = async (req: Request, res: Response) => {
-    const {name, parentId} = req.body;
-    if (!name) {
-        return res.status(400).json({message: 'Group name is required'});
-    }
+    // Validated by Middleware
+    const { name, parentId } = req.body;
 
     try {
         let path = name;
+
+        // 1. Calculate Path
         if (parentId) {
-            const parentGroup = await Group.findById(parentId);
+            const parentGroup = await Group.findById(parentId).select('path');
             if (!parentGroup) {
-                return res.status(404).json({message: 'Parent group not found'});
+                return res.status(404).json({ message: 'Parent group not found' });
             }
             path = `${parentGroup.path}/${name}`;
         }
 
-        const existingGroup = await Group.findOne({path});
-        if (existingGroup) {
-            return res.status(400).json({message: 'A group with this name/path already exists.'});
+        // 2. Check Uniqueness
+        // Using .exists() is faster than finding the whole doc
+        const groupExists = await Group.exists({ path });
+        if (groupExists) {
+            return res.status(409).json({ message: 'A group with this name/path already exists.' });
         }
 
-        const newGroup = new Group({name, parent: parentId || null, path});
-        await newGroup.save();
+        // 3. Create
+        const newGroup = await Group.create({
+            name,
+            parent: parentId || null,
+            path
+        });
+
         res.status(201).json(newGroup);
+
     } catch (error) {
-        if (error && typeof error === 'object' && 'statusCode' in error) {
-            const customError = error as { statusCode: number; message: string };
-            return res.status(customError.statusCode).json({ message: customError.message });
-        }
-
-        if (error instanceof Error) {
-            console.error("CRASH IN createGroup:", error.message);
-            return res.status(500).json({ message: "Server error" });
-        }
-
-        // Fallback for non-Error throws
-        res.status(500).json({ message: "An unknown server error occurred" });
+        handleServerError(res, error, "createGroup");
     }
 };
 
 export const deleteGroup = async (req: Request, res: Response) => {
     const { groupId } = req.params;
 
-    if (!groupId) {
-        return res.status(400).json({ message: 'Group ID is required' });
-    }
+    const session = await mongoose.startSession();
 
     try {
-        // 1. Find the group that the user wants to delete
-        const groupToDelete = await Group.findById(groupId);
+        await session.withTransaction(async () => {
+            const groupToDelete = await Group.findById(groupId).session(session);
+            if (!groupToDelete) {
+                throw { statusCode: 404, message: 'Group not found' };
+            }
 
-        if (!groupToDelete) {
-            return res.status(404).json({ message: 'Group not found' });
-        }
+            const pathRegex = new RegExp(`^${groupToDelete.path}`);
 
-        const pathRegex = new RegExp(`^${groupToDelete.path}`);
-        const allGroupsToDelete = await Group.find({ path: pathRegex });
-        const allGroupIdsToDelete = allGroupsToDelete.map(g => g._id);
+            // Find all affected Group IDs first
+            const groupsToDelete = await Group.find({ path: pathRegex }).select('_id').session(session);
+            const groupIds = groupsToDelete.map(g => g._id);
 
-        if (allGroupIdsToDelete.length > 0) {
-            await Homework.deleteMany({ group: { $in: allGroupIdsToDelete } });
+            if (groupIds.length > 0) {
+                // Delete all homeworks associated with these groups
+                await Homework.deleteMany({ group: { $in: groupIds } }).session(session);
 
-            // 4. Delete the group and all its children
-            await Group.deleteMany({ _id: { $in: allGroupIdsToDelete } });
-        }
+                // Delete the groups themselves
+                await Group.deleteMany({ _id: { $in: groupIds } }).session(session);
+            }
+        });
 
-        res.status(200).json({ message: 'Group and all its children and associated homework were deleted successfully.' });
+        res.status(200).json({ message: 'Group and descendants deleted successfully.' });
 
     } catch (error) {
-        console.error('Error deleting group:', error);
-        res.status(500).json({ message: 'Server Error' });
+        if (isHttpError(error) && error.statusCode === 404) {
+           return res.status(404).json({ message: error.message });
+        }
+        handleServerError(res, error, "deleteGroup");
+    } finally {
+        await session.endSession();
     }
 };
 
@@ -91,64 +108,59 @@ export const updateGroup = async (req: Request, res: Response) => {
     const { groupId } = req.params;
     const { name: newName } = req.body;
 
-    if (!newName) {
-        return res.status(400).json({ message: 'New group name is required' });
-    }
-
-    // Use a transaction to ensure all path updates succeed or fail together
     const session = await mongoose.startSession();
-    session.startTransaction();
 
     try {
-        const groupToUpdate = await Group.findById(groupId).session(session);
-        if (!groupToUpdate) {
-            await session.abortTransaction();
-            return res.status(404).json({ message: 'Group not found' });
-        }
+        await session.withTransaction(async () => {
+            // 1. Fetch Target Group
+            const groupToUpdate = await Group.findById(groupId).session(session);
+            if (!groupToUpdate) throw { statusCode: 404, message: 'Group not found' };
 
-        const oldPath = groupToUpdate.path;
-        let newPath;
+            const oldPath = groupToUpdate.path;
 
-        if (groupToUpdate.parent) {
-            const parent = await Group.findById(groupToUpdate.parent).session(session);
-            if (!parent) {
-                await session.abortTransaction();
-                return res.status(404).json({ message: 'Parent group not found during update' });
+            // 2. Calculate New Path
+            let newPath = newName as string;
+            if (groupToUpdate.parent) {
+                const parent = await Group.findById(groupToUpdate.parent).session(session);
+                if (!parent) throw { statusCode: 404, message: 'Parent group missing' };
+                newPath = `${parent.path}/${newName}`;
             }
-            newPath = `${parent.path}/${newName}`;
-        } else {
-            newPath = newName;
-        }
 
-        // Check if a sibling with the same name already exists
-        const existingGroup = await Group.findOne({ path: newPath }).session(session);
-        if (existingGroup && existingGroup._id.toString() !== groupId) {
-            await session.abortTransaction();
-            return res.status(400).json({ message: 'A group with this name already exists at this level.' });
-        }
+            const conflict = await Group.exists({ path: newPath, _id: { $ne: groupId as string } }).session(session);
+            if (conflict) throw { statusCode: 409, message: 'Group name conflict.' };
 
-        // Find all children and grandchildren to update their paths
-        const descendants = await Group.find({ path: { $regex: `^${oldPath}/` } }).session(session);
+            // 4. Update Target Group
+            groupToUpdate.name = newName;
+            groupToUpdate.path = newPath;
+            await groupToUpdate.save({ session });
 
-        // Update the original group
-        groupToUpdate.name = newName;
-        groupToUpdate.path = newPath;
-        await groupToUpdate.save({ session });
+            const descendants = await Group.find({ path: { $regex: `^${oldPath}/` } }).session(session);
 
-        // Update all descendants' paths
-        for (const descendant of descendants) {
-            descendant.path = descendant.path.replace(oldPath, newPath);
-            await descendant.save({ session });
-        }
+            if (descendants.length > 0) {
+                const bulkOps = descendants.map(descendant => {
+                    const updatedDescendantPath = descendant.path.replace(oldPath, newPath);
+                    return {
+                        updateOne: {
+                            filter: { _id: descendant._id },
+                            update: { $set: { path: updatedDescendantPath } }
+                        }
+                    };
+                });
 
-        await session.commitTransaction();
-        res.status(200).json(groupToUpdate);
+                await Group.bulkWrite(bulkOps, { session });
+            }
+        });
+
+        // Fetch fresh copy to return
+        const updated = await Group.findById(groupId).lean();
+        res.status(200).json(updated);
 
     } catch (error) {
-        await session.abortTransaction();
-        console.error('Error updating group:', error);
-        res.status(500).json({ message: 'Server Error' });
+        if (isHttpError(error) && error.statusCode === 404) {
+            return res.status(404).json({ message: error.message });
+        }
+        handleServerError(res, error, "updateGroup");
     } finally {
-        void session.endSession();
+        await session.endSession();
     }
 };

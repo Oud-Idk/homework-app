@@ -1,250 +1,134 @@
 import { Request, Response } from 'express';
-import { z } from 'zod';
-import Journal from '../models/journal.model.js';
-import mongoose from 'mongoose';
+import Journal, { IJournal, IJournalDocument } from '../models/journal.model.js';
 import { redisClient } from "../services/redis.service.js";
+import { handleServerError } from "../utils/errors.helper.js";
+import mongoose, { QueryFilter } from "mongoose";
+import { journalSchema } from "../schemas/app.schemas.js";
 
-/**
- * Zod schema for validating the body of a journal upsert request.
- */
-const journalUpsertSchema = z.object({
-    date: z.coerce.date({
-        error: 'A valid date string (e.g., YYYY-MM-DD) is required.',
-    }),
-    activities: z.array(z.object({
-        name: z.string().min(1, { message: "Activity name cannot be empty." }),
-        description: z.string().optional(),
-
-    })).min(1, { message: "You must provide at least one activity." }),
-});
-
-type JournalActivities = z.infer<typeof journalUpsertSchema>['activities'];
-
-const normalizeDateToUTCStart = (date: Date): Date => {
+const normalizeToUTC = (date: Date) => {
     const d = new Date(date);
     d.setUTCHours(0, 0, 0, 0);
     return d;
 };
 
 export const upsertJournalEntry = async (req: Request, res: Response) => {
-    const authorId = req.user?.sub;
-    if (!authorId) {
-        return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const validation = journalUpsertSchema.safeParse(req.body);
-    if (!validation.success) {
-        return res.status(400).json({ errors: z.treeifyError(validation.error) });
-    }
-
-    const { date, activities } = validation.data;
-    const normalizedDate = normalizeDateToUTCStart(date);
+    const userId = req.user?.sub;
+    const { date, activities } = req.body;
+    const entryDate = normalizeToUTC(date);
 
     try {
         const journalEntry = await Journal.findOneAndUpdate(
-            { author: new mongoose.Types.ObjectId(authorId), entryDate: normalizedDate },
-            { $set: { activities, author: authorId, entryDate: normalizedDate } },
+            { author: userId as string, entryDate },
+            { $set: { activities, author: userId, entryDate } },
             {
                 upsert: true,
-                new: true,
+                returnDocument: 'after',
                 runValidators: true,
                 populate: { path: 'author', select: 'name email' },
             }
         );
 
-        // A simple way to check if it was created or updated
-        const wasJustCreated = journalEntry.createdAt?.getTime() === journalEntry.updatedAt?.getTime();
-        const statusCode = wasJustCreated ? 201 : 200;
+        // Check if created or updated
+        const wasCreated = journalEntry.createdAt.getTime() === journalEntry.updatedAt.getTime();
 
-        if (wasJustCreated) {
-            try {
-                const message = JSON.stringify({
-                    action: 'create',
-                    payload: journalEntry
-                });
-                await redisClient.publish('journal-events', message);
-                console.log("Published journal_create event to Redis.");
-            } catch (redisError) {
-                console.error("Failed to publish journal event to Redis:", redisError);
-            }
+        if (wasCreated) {
+            await redisClient.publish('journal-events', JSON.stringify({
+                action: 'create',
+                payload: journalEntry
+            })).catch(err => console.error("Redis Pub Error:", err));
         }
 
-        res.status(statusCode).json(journalEntry);
-
+        res.status(wasCreated ? 201 : 200).json(journalEntry);
     } catch (error) {
-        console.error("CRASH IN upsertJournalEntry:", error);
-        if (error instanceof mongoose.Error.ValidationError) {
-            return res.status(400).json({ message: error.message });
-        }
-        res.status(500).json({ message: "Server error" });
+        handleServerError(res, error, "upsertJournalEntry");
     }
 };
 
 export const updateJournalEntry = async (req: Request, res: Response) => {
-    const authorId = req.user?.sub;
-    if (!authorId) {
-        return res.status(401).json({ message: "Unauthorized" });
-    }
-
+    const userId = req.user?.sub;
     const { id } = req.params;
-    if (!id) return res.status(400).json({ message: "?id is requited." });
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: "Invalid journal ID format." });
-    }
-
-    // Use the same Zod schema, but make the fields partial as not all are sent
-    const validation = journalUpsertSchema.partial().safeParse(req.body);
-    if (!validation.success) {
-        return res.status(400).json({ errors: z.treeifyError(validation.error) });
-    }
-
-    const { date, activities } = validation.data;
-
-    // Normalize date if it was provided
-    const updateData: { activities?: JournalActivities; entryDate?: Date } = {};
-    if (activities) updateData.activities = activities;
-    if (date) updateData.entryDate = normalizeDateToUTCStart(date);
+    const { date, activities } = req.body;
 
     try {
+        const updateData: QueryFilter<IJournal> = {};
+        if (activities) updateData.activities = activities;
+        if (date) updateData.entryDate = normalizeToUTC(date);
+
         const updatedJournal = await Journal.findOneAndUpdate(
-            // Find by _id AND ensure the author matches, for security
-            { _id: new mongoose.Types.ObjectId(id), author: new mongoose.Types.ObjectId(authorId) },
+            { _id: new mongoose.Types.ObjectId(id), author: userId as string }, // Security: Must be owner
             { $set: updateData },
-            {
-                new: true, // Return the updated document
-                runValidators: true,
-                populate: { path: 'author', select: 'name email' },
-            }
+            { returnDocument: 'after', runValidators: true, populate: { path: 'author', select: 'name email' } }
         );
 
         if (!updatedJournal) {
-            return res.status(404).json({ message: "Journal entry not found or you do not have permission to edit it." });
+            return res.status(404).json({ message: "Journal entry not found or unauthorized." });
         }
 
         res.status(200).json(updatedJournal);
-
     } catch (error) {
-        console.error("CRASH IN updateJournalEntry:", error);
-        if (error instanceof mongoose.Error.ValidationError) {
-            return res.status(400).json({ message: error.message });
-        }
-        res.status(500).json({ message: "Server error" });
+        handleServerError(res, error, "updateJournalEntry");
     }
 };
 
 export const getAllJournals = async (req: Request, res: Response) => {
+    // Validated by paginationSchema
+    const { page, limit, date, before, after } = journalSchema.parse(req.query);
+    const skip = (page - 1) * limit;
+
     try {
-        const page = parseInt(req.query.page as string, 10) || 1;
-        const limit = parseInt(req.query.limit as string, 10) || 10;
-        const skip = (page - 1) * limit;
+        const query: QueryFilter<IJournalDocument> = {};
 
-        // Extract filter params
-        const { date, before, after } = req.query;
-
-        // Build the Mongoose Query Object
-        const query: any = {};
-
-        // 1. Exact Date Match (takes precedence or acts alone)
-        // We need to find entries from 00:00:00 to 23:59:59 of that specific UTC date
+        // Date logic
         if (date) {
-            const targetDate = new Date(date as string);
-            if (!isNaN(targetDate.getTime())) {
-                const startOfDay = new Date(targetDate);
-                startOfDay.setUTCHours(0, 0, 0, 0);
-
-                const endOfDay = new Date(targetDate);
-                endOfDay.setUTCHours(23, 59, 59, 999);
-
-                query.entryDate = {
-                    $gte: startOfDay,
-                    $lte: endOfDay
-                };
-            }
-        }
-        // 2. Range Filtering (After/Before) - Only runs if exact 'date' isn't provided
-        else {
-            const dateQuery: any = {};
-
-            if (after) {
-                const afterDate = new Date(after as string);
-                if (!isNaN(afterDate.getTime())) {
-                    // Reset to start of day to be inclusive
-                    afterDate.setUTCHours(0, 0, 0, 0);
-                    dateQuery.$gte = afterDate;
-                }
-            }
-
+            const start = normalizeToUTC(new Date(date));
+            const end = new Date(start);
+            end.setUTCHours(23, 59, 59, 999);
+            query.entryDate = { $gte: start, $lte: end };
+        } else if (before || after) {
+            query.entryDate = {};
+            if (after) query.entryDate.$gte = normalizeToUTC(new Date(after));
             if (before) {
-                const beforeDate = new Date(before as string);
-                if (!isNaN(beforeDate.getTime())) {
-                    // Set to end of day to be inclusive
-                    beforeDate.setUTCHours(23, 59, 59, 999);
-                    dateQuery.$lte = beforeDate;
-                }
-            }
-
-            if (Object.keys(dateQuery).length > 0) {
-                query.entryDate = dateQuery;
+                const endBefore = new Date(before);
+                endBefore.setUTCHours(23, 59, 59, 999);
+                query.entryDate.$lte = endBefore;
             }
         }
 
-        const [totalJournals, journals] = await Promise.all([
+        const [total, journals] = await Promise.all([
             Journal.countDocuments(query),
             Journal.find(query)
                 .sort({ entryDate: -1 })
                 .skip(skip)
                 .limit(limit)
                 .populate('author', 'name email')
+                .lean()
         ]);
-
-        const totalPages = Math.ceil(totalJournals / limit);
 
         res.status(200).json({
             data: journals,
+            total,
+            totalPages: Math.ceil(total / limit),
             currentPage: page,
-            totalPages,
-            totalJournals,
         });
-
     } catch (error) {
-        console.error("CRASH IN getAllJournals:", error);
-        res.status(500).json({ message: "Server error" });
+        handleServerError(res, error, "getAllJournals");
     }
 };
 
-
-
 export const deleteJournalEntry = async (req: Request, res: Response) => {
-    const authorId = req.user?.sub;
-    if (!authorId) {
-        return res.status(401).json({ message: "Unauthorized" });
-    }
-
+    const userId = req.user?.sub;
     const { id } = req.params;
-    if (!id) return res.status(400).json({ message: "?id is requited." });
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: "Invalid journal ID format." });
-    }
 
     try {
-        const deletedEntry = await Journal.findOneAndDelete({
-            _id: new mongoose.Types.ObjectId(id)
-        });
+        // Security: Ensure the user deleting is the owner
+        const deletedEntry = await Journal.findOneAndDelete({ _id: id as string, author: userId as string });
 
-        // If findOneAndDelete returns null, it means no document was found
         if (!deletedEntry) {
-            return res.status(404).json({ message: "Journal entry not found." });
+            return res.status(404).json({ message: "Journal entry not found or unauthorized." });
         }
 
-        // Successfully found and deleted the entry
-        res.status(200).json({
-            message: "Journal entry deleted successfully.",
-        });
-
+        res.status(200).json({ message: "Journal entry deleted successfully." });
     } catch (error) {
-        console.error("CRASH IN deleteJournalEntry:", error);
-        res.status(500).json({ message: "Server error" });
+        handleServerError(res, error, "deleteJournalEntry");
     }
 };

@@ -7,6 +7,8 @@ import preferencesRoutes from "./preferences.router.js";
 import postRouter from "./post.router.js";
 import journalRouter from "./journal.router.js";
 import fileRouter from "./file.router.js";
+import classRouter from "./class.router.js";
+import relationshipRouter from './relationship.router.js'
 
 const router = Router();
 
@@ -18,5 +20,7 @@ router.use('/preferences', preferencesRoutes)
 router.use('/posts', postRouter)
 router.use('/journal', journalRouter)
 router.use('/file', fileRouter)
+router.use('/class', classRouter)
+router.use('/relationship', relationshipRouter)
 
 export default router;

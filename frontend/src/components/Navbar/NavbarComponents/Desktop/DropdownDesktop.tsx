@@ -57,6 +57,7 @@ export const DropdownDesktop = (
                                             <product.icon
                                                 aria-hidden="true"
                                                 className="size-6 text-black group-hover:text-neutral-800 dark:text-neutral-100 dark:group-hover:text-white"
+                                                strokeWidth={1.2}
                                             />
                                         </div>
                                         <div className="flex-auto">

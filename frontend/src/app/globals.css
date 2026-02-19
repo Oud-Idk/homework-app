@@ -63,7 +63,7 @@ html, body {
 }
 
 .prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-    margin: 0.2rem 0;
+    margin: 1rem 0;
 }
 
 .prose pre {
@@ -96,4 +96,13 @@ blockquote {
 
 input[type="checkbox" i]:disabled {
     background-color: #ffffff;
+}
+
+*:focus, *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+* {
+    outline: none !important;
 }

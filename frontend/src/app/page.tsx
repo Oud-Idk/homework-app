@@ -4,13 +4,13 @@ import HomePageCTA from "@/components/HomePageCTA";
 export default async function HomePage() {
     return (
         // The only change is on this line: added min-height calculation and padding
-        <main className="flex min-h-[calc(100vh-theme(spacing.18))] items-center justify-center p-4">
+        <main className="flex min-h-[calc(100vh-(--spacing(32)))] items-center justify-center p-4">
             <div className="w-full max-w-6xl p-8 space-y-8 backdrop-blur-sm border rounded-2xl shadow-2xl text-center">
 
                 {/* Header with Icon */}
                 <div className="flex flex-col items-center gap-4">
                     <BookCheck className="h-16 w-16 text-blue-400" />
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-clip-text p-2 bg-gradient-to-r from-blue-700 to-purple-800 dark:from-blue-400 dark:to-purple-500">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-clip-text p-2 bg-linear-to-r from-blue-700 to-purple-800 dark:from-blue-400 dark:to-purple-500">
                         Welcome to TaskTrackr!
                     </h1>
                 </div>

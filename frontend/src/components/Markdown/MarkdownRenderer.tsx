@@ -33,38 +33,10 @@ export interface DirectiveNode extends Element {
     children: ElementContent[];
 }
 
-interface AdmonitionProps {
-    node: DirectiveNode;
-    children: ReactNode;
-}
-
-// Define the styles for different admonition types
-const admonitionStyles: Record<string, string> = {
-    note: 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200',
-    warning: 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200',
-    danger: 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200',
-};
-
-export const Admonition: FC<AdmonitionProps> = ({ node, children }) => {
-    const { name: type, attributes } = node;
-    const title = attributes?.title || type.charAt(0).toUpperCase() + type.slice(1);
-    const styleClass = admonitionStyles[type] || admonitionStyles.note;
-
-    return (
-        <div className={`my-4 border-l-4 p-4 rounded-r-md ${styleClass}`}>
-            <p className="font-bold">{title}</p>
-            <div>{children}</div>
-        </div>
-    );
-};
-
 const CodeBlock: FC<PreProps> = ({ children, ...props }) => {
     const [isCopied, setIsCopied] = useState(false);
     const { resolvedTheme } = useTheme();
     const child = React.Children.toArray(children)[0];
-
-    // The rest of your logic from the 'pre' function goes here...
-    // I'm just copying and pasting your masterpiece.
 
     if (
         React.isValidElement(child) &&
@@ -131,19 +103,6 @@ const markdownComponents: Components & { [key: string]: React.ElementType } = {
             return <>{children}</>;
         }
         return <p>{children}</p>;
-    },
-    containerDirective: (props) => {
-        if (!props.node) {
-            return null;
-        }
-
-        const node = props.node;
-
-        if (['note', 'warning', 'danger'].includes(node.name)) {
-            return <Admonition node={node}>{props.children}</Admonition>;
-        }
-
-        return <div>{props.children}</div>;
     },
     code({ className, children, ...props }) {
         return (

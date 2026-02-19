@@ -1,5 +1,3 @@
-// src/hooks/feed/usePosts.ts
-
 'use client';
 
 import { useCallback, useEffect, useState, useTransition } from 'react';

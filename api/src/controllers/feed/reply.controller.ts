@@ -1,174 +1,85 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
-import Post, { IPost, IPostDocument } from "../../models/post.model.js";
-import { redisClient } from "../../services/redis.service.js";
+import Post, { IPostDocument } from "../../models/post.model.js";
+import User from "../../models/user.model.js"; // You'll need to import User to query it directly
 import Vote from "../../models/vote.model.js";
-import { z } from "zod";
-
-interface AuthenticatedRequest extends Request {
-    user?: { sub?: string };
-    params: { id: string };
-    query: { depth?: string };
-}
-
-type AggregatedReply = IPostDocument & {
-    level: number;
-    author: { _id: string; name: string /* ...other user fields */ };
-    userVote: 'up' | 'down' | null;
-    score?: number; // It's added later, so make it optional
-};
-
-const createReplySchema = z.object({
-    content: z.string().min(1, {message: "Reply content cannot be empty"}),
-});
+import { redisClient } from "../../services/redis.service.js";
+import { handleServerError } from "../../utils/errors.helper.js";
 
 export const createReply = async (req: Request, res: Response) => {
-    const {id: parentId} = req.params;
+    const { id: parentId } = req.params;
+    const { content } = req.body;
     const authorId = req.user?.sub;
 
-    const validation = createReplySchema.safeParse(req.body);
-    if (!validation.success) {
-        return res.status(400).json({errors: z.treeifyError(validation.error)});
-    }
+    if (!authorId) return res.status(401).json({ message: "Unauthorized" });
 
     try {
         const parentPost = await Post.findById(parentId);
-        if (!parentPost) {
-            return res.status(404).json({message: "Parent post not found."});
-        }
-
-        const parentDepth = parentPost.depth ?? 0;
-        const parentReplyCount = parentPost.replyCount ?? 0;
+        if (!parentPost) return res.status(404).json({ message: "Parent post not found." });
 
         const newReply = new Post({
-            content: validation.data.content,
+            content,
             author: authorId,
             parent: parentId,
-            depth: parentDepth + 1, // Increment the nesting level
-            homework: parentPost.homework, // Inherit the homework context
+            depth: (parentPost.depth || 0) + 1,
+            homework: parentPost.homework,
         });
 
-        // 3. Use a transaction to save the reply AND update the parent's replyCount atomically
+        // Use a session for atomicity
         const session = await mongoose.startSession();
         await session.withTransaction(async () => {
-            await newReply.save({session});
-            parentPost.replyCount = parentReplyCount + 1;
-            await parentPost.save({session});
+            await newReply.save({ session });
+            await Post.updateOne({ _id: parentId }, { $inc: { replyCount: 1 } }, { session });
         });
         await session.endSession();
 
-        // 4. Populate author details before sending back to the UI
         await newReply.populate('author', 'name email');
 
-        const responseObj: IPost & Required<{
-            _id: unknown
-        }> & {
-            __v: number
-        } & {
-            upvotes?: number;
-            downvotes?: number;
-            score?: number;
-            userVote?: null;
-        } = newReply.toObject(); // sketchy
+        // Quick DTO creation
+        const response = {
+            ...newReply.toObject(),
+            upvotes: 0,
+            downvotes: 0,
+            score: 0,
+            userVote: null
+        };
 
-        // Manually add the properties the frontend expects for a new post
-        responseObj.upvotes = 0;
-        responseObj.downvotes = 0;
-        responseObj.score = 0;
-        responseObj.userVote = null; // The creator hasn't voted on their own reply yet
-
-        res.status(201).json(responseObj);
-
+        res.status(201).json(response);
     } catch (error) {
-        console.error("CRASH IN createReply:", error);
-        res.status(500).json({message: 'Server error'});
+        handleServerError(res, error, "createReply");
     }
 };
+
 export const getReplies = async (req: Request, res: Response) => {
-    const {id: parentId} = req.params;
+    const { id: parentId } = req.params;
     const userId = req.user?.sub;
 
-    if (!parentId) {
-        return res.status(400).json({ message: "No id found." });
-    }
-
     try {
-        const replies = await Post.find({parent: parentId})
-            .sort({createdAt: 'asc'})
+        const replies = await Post.find({ parent: parentId as string })
+            .sort({ createdAt: 'asc' })
             .populate('author', 'name email')
-            .lean();
+            .lean<IPostDocument[]>();
 
+        if (!replies.length) return res.status(200).json([]);
 
-        if (replies.length === 0) {
-            return res.status(200).json([]);
-        }
+        // Attach external data (Redis + Votes)
+        const enriched = await enrichPostsWithStats(replies, userId);
 
-        const replyIds = replies.map(r => r._id.toString());
-
-        const redisMulti = redisClient.multi();
-        replyIds.forEach(replyId => {
-            redisMulti.scard(`post:${replyId}:upvotes`);
-            redisMulti.scard(`post:${replyId}:downvotes`);
-        });
-
-        const userVotesPromise = userId
-            ? Vote.find({
-                user: new mongoose.Types.ObjectId(userId),
-                post: {$in: replyIds.map(id => new mongoose.Types.ObjectId(id))}
-            }).lean()
-            : void Promise.resolve([]);
-
-        const [redisResults, userVotes] = await Promise.all([
-            redisMulti.exec(),
-            userVotesPromise
-        ]);
-
-        if (!userVotes) {
-            return res.status(500).json({errors: "There are no userVotes."});
-        }
-
-        const userVotesMap = new Map(userVotes.map(vote => [vote.post.toString(), vote.voteType]));
-
-        const enrichedReplies = replies.map((reply, index) => {
-            const upvotesTuple = redisResults?.[index * 2];
-            const downvotesTuple = redisResults?.[index * 2 + 1];
-
-            const upvotes = upvotesTuple?.[1] as number || 0;
-            const downvotes = downvotesTuple?.[1] as number || 0;
-            const userVote = userVotesMap.get(reply._id.toString()) || null;
-
-            return {
-                ...reply,
-                upvotes,
-                downvotes,
-                score: upvotes - downvotes,
-                userVote: userVote as 'up' | 'down' | null,
-            };
-        });
-        // --- END ENRICHMENT ---
-
-        res.status(200).json(enrichedReplies);
-
+        res.status(200).json(enriched);
     } catch (error) {
-        console.error("CRASH IN getReplies:", error);
-        res.status(500).json({message: 'Server error'});
+        handleServerError(res, error, "getReplies");
     }
 };
-export const getReplyTree = async (req: AuthenticatedRequest, res: Response) => {
+
+export const getReplyTree = async (req: Request, res: Response) => {
+    const { id: startPostId } = req.params;
+    const { depth } = req.query;
+    const userId = req.user?.sub;
+    const maxDepth = depth ? Number(depth) : 10;
+
     try {
-        const {id: startPostId} = req.params;
-        if (!mongoose.Types.ObjectId.isValid(startPostId)) {
-            return res.status(400).json({message: "Invalid Post ID."});
-        }
-
-        const userId = req.user?.sub;
-        const maxDepth = Math.min(parseInt(req.query.depth as string) || 3, 10);
-
         const pipeline: mongoose.PipelineStage[] = [
-            // 1. Start with the root post
-            {$match: {_id: new mongoose.Types.ObjectId(startPostId)}},
-
-            // 2. Get all descendants
+            { $match: { _id: new mongoose.Types.ObjectId(startPostId) } },
             {
                 $graphLookup: {
                     from: 'posts',
@@ -177,135 +88,104 @@ export const getReplyTree = async (req: AuthenticatedRequest, res: Response) => 
                     connectToField: 'parent',
                     as: 'replies',
                     maxDepth: maxDepth - 1,
-                    depthField: 'level'
-                }
-            },
-
-            // 3. Lookup authors for all replies
-            {
-                $lookup: {
-                    from: 'users',
-                    localField: 'replies.author',
-                    foreignField: '_id',
-                    as: 'replyAuthors',
-                    pipeline: [{$project: {password: 0, emailVerified: 0}}]
-                }
-            },
-        ];
-
-        if (userId && mongoose.Types.ObjectId.isValid(userId)) {
-            pipeline.push(
-                {
-                    $lookup: {
-                        from: 'votes',
-                        localField: 'replies._id',
-                        foreignField: 'post',
-                        as: 'userVotes',
-                        pipeline: [
-                            {$match: {user: new mongoose.Types.ObjectId(userId)}},
-                            {$project: {_id: 0, voteType: 1, post: 1}}
-                        ]
-                    }
-                }
-            );
-        }
-
-        pipeline.push(
-            {
-                $addFields: {
-                    replies: {
-                        $map: {
-                            input: '$replies',
-                            as: 'reply',
-                            in: {
-                                $mergeObjects: [
-                                    '$$reply',
-                                    {
-                                        author: {
-                                            $first: {
-                                                $filter: {
-                                                    input: '$replyAuthors',
-                                                    cond: {$eq: ['$$this._id', '$$reply.author']}
-                                                }
-                                            }
-                                        },
-                                        userVote: {
-                                            $let: {
-                                                vars: {
-                                                    voteDoc: {
-                                                        $first: {
-                                                            $filter: {
-                                                                input: {$ifNull: ['$userVotes', []]},
-                                                                as: 'vote',
-                                                                cond: {$eq: ['$$vote.post', '$$reply._id']}
-                                                            }
-                                                        }
-                                                    }
-                                                },
-                                                in: '$$voteDoc.voteType'
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                }
-            },
-
-            // 6. Sort the now fully-populated replies
-            {
-                $addFields: {
-                    replies: {
-                        $sortArray: {input: "$replies", sortBy: {createdAt: -1}}
-                    }
-                }
-            },
-
-            // 7. Final cleanup of root author and all our temporary fields
-            {
-                $project: {
-                    "author.password": 0,
-                    "author.emailVerified": 0,
-                    replyAuthors: 0, // Clean up our temp arrays
-                    userVotes: 0
+                    depthField: 'level',
                 }
             }
-        );
-
+        ];
 
         const results = await Post.aggregate(pipeline);
+        if (!results.length) return res.status(404).json({ message: "Post not found." });
 
-        if (!results || results.length === 0) {
-            return res.status(404).json({message: "Post not found."});
+        const rootPost = results[0];
+        const flatReplies = rootPost.replies as (IPostDocument & { level: number })[];
+
+        if (!flatReplies.length) {
+            return res.status(200).json(rootPost);
         }
 
-        const postWithReplies = results[0] as IPost & { replies: AggregatedReply[] };
+        // 2. BATCH FETCH METADATA (The "Dataloader" pattern)
+        // Extract all Author IDs from the fetched replies
+        const authorIds = [...new Set(flatReplies.map(r => r.author?.toString()))];
 
-        if (postWithReplies.replies && postWithReplies.replies.length > 0 && postWithReplies.replies && postWithReplies.replies.length > 0) {
-            const redisMulti = redisClient.multi();
-            postWithReplies.replies.forEach((reply) => {
-                const replyId = reply._id.toString();
-                redisMulti.scard(`post:${replyId}:upvotes`);
-                redisMulti.scard(`post:${replyId}:downvotes`);
-            });
+        // Parallel Fetching: Get Users and Enrich Stats (Redis/Votes) at the same time
+        const [authors, enrichedReplies] = await Promise.all([
+            User.find({ _id: { $in: authorIds } }).select('name email').lean(),
+            enrichPostsWithStats(flatReplies, userId)
+        ]);
 
-            const redisResults = await redisMulti.exec();
+        // 3. EFFICIENT MAPPING (O(1) Lookup)
+        const authorMap = new Map(authors.map(a => [a._id.toString(), a]));
 
-            postWithReplies.replies.forEach((reply, index) => {
-                const upvotesTuple = redisResults?.[index * 2];
-                const downvotesTuple = redisResults?.[index * 2 + 1];
-                const upvotes = upvotesTuple?.[1] as number || 0;
-                const downvotes = downvotesTuple?.[1] as number || 0;
-                reply.score = upvotes - downvotes;
-            });
-        }
+        const finalReplies = enrichedReplies.map(reply => {
+            const authorId = reply.author?.toString();
+            return {
+                ...reply,
+                author: authorMap.get(authorId ?? "") || { _id: authorId, name: 'Unknown' }
+            };
+        });
 
+        finalReplies.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        rootPost.replies = finalReplies;
 
-        res.status(200).json(postWithReplies);
+        await Post.populate(rootPost, { path: 'author', select: 'name email' });
+
+        res.status(200).json(rootPost);
 
     } catch (error) {
-        console.error("Error in getReplyTree:", error);
-        res.status(500).json({message: 'Server error while fetching reply tree.'});
+        handleServerError(res, error, "getReplyTree");
     }
 };
+
+/**
+ * Shared Helper: Takes an array of posts, fetches Redis scores and User votes,
+ * and merges them.
+ */
+async function enrichPostsWithStats(posts: IPostDocument[], userId?: string) {
+    if (!posts.length) return [];
+
+    const postIds = posts.map(p => p._id.toString());
+    const redisMulti = redisClient.multi();
+
+    // Batch Redis Commands
+    postIds.forEach(id => {
+        redisMulti.scard(`post:${id}:upvotes`);
+        redisMulti.scard(`post:${id}:downvotes`);
+    });
+
+    // Fetch User Votes if logged in
+    const userVotesPromise = userId
+        ? Vote.find({
+            user: userId,
+            post: { $in: postIds }
+        }).select('post voteType').lean()
+        : Promise.resolve([]);
+
+    const [redisResults, userVotes] = await Promise.all([
+        redisMulti.exec(),
+        userVotesPromise
+    ]);
+
+    // Create a Map for O(1) vote lookup
+    const userVoteMap = new Map();
+    if (Array.isArray(userVotes)) {
+        userVotes.forEach(v => userVoteMap.set(v.post.toString(), v.voteType));
+    }
+
+    // Merge Data
+    return posts.map((post, index) => {
+        // Redis returns [error, result] tuples
+        const upTuple = redisResults?.[index * 2] as [Error | null, number];
+        const downTuple = redisResults?.[index * 2 + 1] as [Error | null, number];
+
+        const upvotes = upTuple?.[1] || 0;
+        const downvotes = downTuple?.[1] || 0;
+
+        return {
+            ...post,
+            upvotes,
+            downvotes,
+            score: upvotes - downvotes,
+            userVote: userVoteMap.get(post._id.toString()) || null
+        };
+    });
+}

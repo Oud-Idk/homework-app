@@ -4,7 +4,8 @@ import React from 'react';
 import { useSession } from 'next-auth/react';
 import { PostItem } from '@/components/CoreComponents/Feed/PostItem'; // Adjust path if needed
 import { useUserPosts } from '@/hooks/feed/useUserPosts';
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"; // Import our new hook
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Title } from "@/components/EaseOfUse/Title"; // Import our new hook
 
 export default function MyPostsPage() {
     const { status } = useSession();
@@ -30,12 +31,12 @@ export default function MyPostsPage() {
     }
 
     return (
-        <main className="container mx-auto p-2">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-4xl font-bold">My Posts</h1>
+        <main>
+            <div className="flex justify-between items-center mb-6">
+                <Title>My Posts</Title>
             </div>
 
-            <div className="mb-6 p-4 py-2 border rounded-xl flex flex-row gap-2 bg-white dark:bg-neutral-900">
+            <div className="mb-6 p-4 py-2 border rounded-xl flex items-center gap-2">
                 <MagnifyingGlassIcon className="h-8 w-8 text-neutral-500" />
                 <input
                     type="search"

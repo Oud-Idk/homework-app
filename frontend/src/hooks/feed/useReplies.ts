@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Post } from '@/types';
-import { buildTree, reqToApi } from '@/lib/utils';
+import {buildTree, Methods, reqToApi} from '@/lib/utils';
 import { useNotification } from '@/context/NotificationsContext';
 
 export const useReplies = (postId: string) => {
@@ -67,7 +67,7 @@ export const useReplies = (postId: string) => {
         }
 
         try {
-            const res = await reqToApi(`posts/${parentPostId}/replies`, session, 'POST', { content });
+            const res = await reqToApi(`posts/${parentPostId}/replies`, session, Methods.POST, { content });
 
             if (!res.ok) {
                 const errorData = await res.json();

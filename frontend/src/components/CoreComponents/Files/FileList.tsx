@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, Suspense, useEffect, useState, useCallback } fr
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from "next-auth/react";
 
-import { reqToApi } from '@/lib/utils';
+import {Methods, reqToApi} from '@/lib/utils';
 import { useNotification } from '@/context/NotificationsContext';
 import { Pagination } from '../../Pagination';
 import SubmitButton from "@/components/SubmitButton";
@@ -13,6 +13,7 @@ import { Search } from 'lucide-react';
 import { FileCell } from "@/components/CoreComponents/Files/FileCell";
 import { ApiFile } from "@/types";
 import { FileDetailsModal } from "@/components/Modals/FileDetailsModal";
+import { Title } from "@/components/EaseOfUse/Title";
 
 const LoadingSpinner = ({ message = "Loading..." }: { message?: string }) => (
     <div className="flex justify-center items-center p-8">
@@ -132,7 +133,7 @@ function FileManagerComponent() {
 
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/file`, {
-                method: 'POST',
+                method: Methods.POST,
                 headers: { 'Authorization': `Bearer ${session.accessToken}` },
                 body: formData,
             });
@@ -166,7 +167,7 @@ function FileManagerComponent() {
         setFiles(prevFiles => prevFiles.filter(file => file._id !== fileId));
 
         try {
-            const response = await reqToApi(`file/${fileId}`, session, 'DELETE');
+            const response = await reqToApi(`file/${fileId}`, session, Methods.DELETE);
 
             if (!response.ok) {
                 setFiles(originalFiles);
@@ -187,8 +188,10 @@ function FileManagerComponent() {
 
     return (
         <>
-            <div className="container mx-auto p-4 md:p-8">
-                <h1 className="text-3xl font-bold mb-8">File Manager</h1>
+            <div>
+                <div className="mb-6">
+                    <Title>File Manager</Title>
+                </div>
 
                 <div className="border p-6 rounded-lg shadow-md mb-8">
                     <h2 className="text-xl font-semibold mb-4">Upload a New File</h2>

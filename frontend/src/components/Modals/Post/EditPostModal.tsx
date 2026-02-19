@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { Post } from '@/types';
 import { MarkdownEditorRenderer } from "@/components/Markdown/MarkdownEditorRenderer";
 import SubmitButton from "@/components/SubmitButton";
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 import { useNotification } from "@/context/NotificationsContext";
 import { ModalContainer } from "@/components/Modals/ModalContainer";
 
@@ -40,7 +40,7 @@ export const EditPostModal: React.FC<EditPostModalProps> = ({isOpen, onClose, po
 
         try {
             const body = {title, content};
-            const res = await reqToApi(`posts/${postToEdit._id}`, session, 'PUT', body);
+            const res = await reqToApi(`posts/${postToEdit._id}`, session, Methods.PATCH, body);
             const data = await res.json();
 
             if (!res.ok) {

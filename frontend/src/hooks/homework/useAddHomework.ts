@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 
 interface UseAddHomeworkProps {
     onSuccess?: () => void; // Callback for when submission is successful
@@ -35,7 +35,7 @@ export const useAddHomework = ({ onSuccess }: UseAddHomeworkProps) => {
 
         setIsSubmitting(true);
         try {
-            const res = await reqToApi('homeworks', session, 'POST', {
+            const res = await reqToApi('homeworks', session, Methods.POST, {
                 ...data,
                 dueDate: new Date(data.dueDate).toISOString(),
             })

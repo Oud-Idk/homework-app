@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { Group } from "@/types";
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 import { useNotification } from "@/context/NotificationsContext";
 
 export const useGroups = () => {
@@ -49,7 +49,7 @@ export const useGroups = () => {
         }
         try {
             const body = { name, parentId: parentId || undefined };
-            const res = await reqToApi('groups', session, 'POST', body);
+            const res = await reqToApi('groups', session, Methods.POST, body);
             const data = await res.json();
             if (!res.ok) {
                 throw new Error(data.message || "Failed to create group");

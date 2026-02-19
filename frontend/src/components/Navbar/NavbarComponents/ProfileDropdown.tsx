@@ -57,7 +57,7 @@ export function ProfileDropdown({ session }: ProfileDropdownProps) {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-neutral-900 py-1 shadow-lg focus:outline-none border dark:border-neutral-800">
+                <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-black py-1 shadow-lg focus:outline-none border dark:border-neutral-800">
                     <div className="px-4 py-3">
                         <p className="text-sm text-neutral-900 dark:text-white">
                             {name}
@@ -73,7 +73,7 @@ export function ProfileDropdown({ session }: ProfileDropdownProps) {
                             <Link
                                 href="/user/my-posts"
                                 className={classNames(
-                                    focus ? 'bg-neutral-100 dark:bg-neutral-800' : '',
+                                    focus ? 'bg-white dark:bg-black' : '',
                                     'w-full text-left flex items-center gap-x-2 px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300'
                                 )}
                             >

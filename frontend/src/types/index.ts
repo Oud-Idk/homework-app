@@ -16,6 +16,18 @@ export interface Group {
     parent?: string | null;
 }
 
+export interface Student {
+    name: string;
+    dateOfBirth: Date;
+    gender: "male" | "female";
+}
+
+export interface Classroom {
+    _id: string;
+    name: string;
+    students: Student[];
+}
+
 export interface Author {
     _id: string;
     name: string;
@@ -76,4 +88,19 @@ export interface ApiFile {
     filename: string;
     bucket: string;
     url: string;
+}
+
+export interface User {
+    _id: string;
+    classroomId?: string;
+    name: string;
+    email: string;
+}
+
+export interface Relationship {
+    _id: string;
+    fromStudent: User;
+    toStudent: User;
+    classroom: Classroom;
+    weight: number;
 }

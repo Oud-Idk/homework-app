@@ -4,9 +4,10 @@ import { Journal } from "@/types";
 import React, { JSX, useState, useCallback, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useNotification } from "@/context/NotificationsContext";
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 import { UpsertJournalModal } from "@/components/Modals/UpsertJournalModal";
 import SubmitButton from "@/components/SubmitButton";
+import {Title} from "@/components/EaseOfUse/Title";
 
 interface JournalListProps {
     initialData: Journal[];
@@ -66,7 +67,7 @@ export default function JournalList({ initialData }: JournalListProps): JSX.Elem
         }
 
         try {
-            const res = await reqToApi(`journal?${params.toString()}`, session, 'GET');
+            const res = await reqToApi(`journal?${params.toString()}`, session);
 
             if (!res.ok) throw new Error("Failed to fetch filtered journals");
 
@@ -112,9 +113,9 @@ export default function JournalList({ initialData }: JournalListProps): JSX.Elem
         try {
             let res;
             if (editingJournal) {
-                res = await reqToApi(`journal/${editingJournal._id}`, session, 'PUT', data);
+                res = await reqToApi(`journal/${editingJournal._id}`, session, Methods.PATCH, data);
             } else {
-                res = await reqToApi(`journal`, session, 'POST', data);
+                res = await reqToApi(`journal`, session, Methods.POST, data);
             }
 
             const savedJournal = await res.json();
@@ -143,7 +144,7 @@ export default function JournalList({ initialData }: JournalListProps): JSX.Elem
         setJournals(current => current.filter(j => j._id !== journalId));
 
         try {
-            const res = await reqToApi(`journal/${journalId}`, session, 'DELETE');
+            const res = await reqToApi(`journal/${journalId}`, session, Methods.DELETE);
 
             if (!res.ok) {
                 const errorData = await res.json();
@@ -160,9 +161,9 @@ export default function JournalList({ initialData }: JournalListProps): JSX.Elem
 
     return (
         <>
-            <div className="w-full max-w-6xl mx-auto space-y-6">
+            <div className="w-full mx-auto space-y-6">
                 <div className="flex justify-between items-center">
-                    <h1 className="text-3xl font-bold">Journal Entries</h1>
+                    <Title>Journal Entries</Title>
                     {isAdmin && (
                         <SubmitButton onClick={handleOpenAddModal} className="ml-2">Add New Entry</SubmitButton>
                     )}
@@ -239,10 +240,9 @@ export default function JournalList({ initialData }: JournalListProps): JSX.Elem
                     </div>
                 </div>
 
-                {/* Journal List Display */}
                 {journals.length > 0 ? (
                     journals.map((journal: Journal) => (
-                        <div key={journal._id} className="border p-4 md:p-6 rounded-xl w-full bg-white dark:bg-neutral-900/50 shadow-sm">
+                        <div key={journal._id} className="border p-4 md:p-6 rounded-xl w-full shadow-sm">
                             <div className="flex justify-between items-start mb-3">
                                 <div>
                                     <h2 className="font-bold text-base md:text-xl lg:text-2xl">

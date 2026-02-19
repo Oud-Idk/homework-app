@@ -60,7 +60,7 @@ export const optionalAuth = async (req: Request, res: Response, next: NextFuncti
         }
     } catch (error) {
         // If getToken throws an unexpected error, log it but don't block the request.
-        console.error('Error in optionalAuth middleware:', error);
+        console.error('Error in optionalAuth middlewares:', error);
     }
 
     return next();

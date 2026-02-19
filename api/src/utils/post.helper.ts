@@ -2,7 +2,7 @@ import mongoose, { Types } from 'mongoose';
 import Post, { IPostDocument } from '../models/post.model.js';
 import Vote from '../models/vote.model.js';
 import { redisClient } from '../services/redis.service.js';
-import { UserPayload } from "../middleware/auth.middleware.js";
+import { UserPayload } from "../middlewares/auth.middleware.js";
 
 // A reasonable time-to-live for vote caches in seconds (e.g., 1 hour)
 const POST_VOTE_CACHE_TTL = 3600;
@@ -66,7 +66,7 @@ export const enrichPostsWithVotes = async (
             user: new mongoose.Types.ObjectId(viewerId),
             post: { $in: postIds }
         }).lean<LeanVote[]>()
-        : void Promise.resolve([]);
+        : Promise.resolve([]);
 
     const cacheExistencePipeline = redisClient.multi();
     postIds.forEach(id => cacheExistencePipeline.exists(`post:${id}:upvotes`));

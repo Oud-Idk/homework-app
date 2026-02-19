@@ -16,7 +16,7 @@ interface FileDetailsModalProps {
 
 const LargeFilePreview = ({ file }: { file: ApiFile }) => {
     return (
-        <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-neutral-900 rounded-md overflow-hidden border border-neutral-200 dark:border-neutral-800">
+        <div className="w-full h-full flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 rounded-md overflow-hidden border border-neutral-200 dark:border-neutral-800">
             {file.mimetype.startsWith('image/') ? (
                 <img
                     src={file.url}

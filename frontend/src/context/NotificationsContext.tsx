@@ -1,17 +1,17 @@
 "use client";
 
-import React, { createContext, useState, useContext, useCallback, useRef, useEffect } from 'react';
+import React, { createContext, useState, useContext, useCallback, useRef, useEffect, ReactNode } from 'react'; // Import ReactNode
 import SmallPopup from '../components/SmallPopup';
 
 interface NotificationContextType {
-    showError: (message: string) => void;
-    showSuccess: (message: string) => void; // Let's add a success one too!
+    showError: (message: ReactNode) => void;   // CHANGED: string -> ReactNode
+    showSuccess: (message: ReactNode) => void; // CHANGED: string -> ReactNode
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState<ReactNode>(''); // CHANGED: string -> ReactNode
     const [show, setShow] = useState(false);
     const [type, setType] = useState<'error' | 'success'>('error');
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -24,7 +24,8 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
         };
     }, []);
 
-    const showNotification = useCallback((msg: string, notificationType: 'error' | 'success', duration: number = 4000) => {
+    // The internal implementation doesn't need to change much, just the parameter type
+    const showNotification = useCallback((msg: ReactNode, notificationType: 'error' | 'success', duration: number = 4000) => {
         if (timerRef.current) {
             clearTimeout(timerRef.current);
         }
@@ -38,20 +39,20 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
         }, duration);
     }, []);
 
-    const showError = useCallback((msg: string) => {
+    const showError = useCallback((msg: ReactNode) => {
         showNotification(msg, 'error');
     }, [showNotification]);
 
-    const showSuccess = useCallback((msg: string) => {
-        showNotification(msg, 'success', 3000); // Success messages can be shorter
+    const showSuccess = useCallback((msg: ReactNode) => {
+        showNotification(msg, 'success', 3000);
     }, [showNotification]);
 
 
     const contextValue = { showError, showSuccess };
 
     const popupClassName = type === 'error'
-        ? 'bg-red-400/60 dark:bg-red-900/60 border-red-500'
-        : 'bg-green-400/60 dark:bg-green-900/60 border-green-500';
+        ? 'bg-red-400/60 dark:bg-red-900/60 border-red-500 z-999'
+        : 'bg-green-400/60 dark:bg-green-900/60 border-green-500 z-999';
 
     return (
         <NotificationContext.Provider value={contextValue}>

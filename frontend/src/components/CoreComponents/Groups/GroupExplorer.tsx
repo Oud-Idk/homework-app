@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Group } from '@/types';
-import { GroupNode, TreeNode } from './GroupNode';
-import { InlineAddForm } from './InlineAddForm'; // Import the form
-import { useSession } from "next-auth/react";
-import { PlusCircle } from 'lucide-react';
-import { reqToApi } from "@/lib/utils"; // Import an icon for the button
+import {useMemo, useState} from 'react';
+import {Group} from '@/types';
+import {GroupNode, TreeNode} from './GroupNode';
+import {InlineAddForm} from './InlineAddForm'; // Import the form
+import {useSession} from "next-auth/react";
+import {PlusCircle} from 'lucide-react';
+import {Methods, reqToApi} from "@/lib/utils"; // Import an icon for the button
 
 interface GroupExplorerProps {
     initialGroups: Group[];
@@ -62,7 +62,7 @@ export function GroupExplorer({ initialGroups }: GroupExplorerProps) {
         }
 
         try {
-            const res = await reqToApi(`groups/${groupId}`, session, "DELETE")
+            const res = await reqToApi(`groups/${groupId}`, session, Methods.DELETE)
             if (!res.ok) {
                 const errorData = await res.json();
                 throw new Error(errorData.message || 'Failed to delete group');
@@ -87,7 +87,7 @@ export function GroupExplorer({ initialGroups }: GroupExplorerProps) {
         }
 
         try {
-            const res = await reqToApi(`groups/${groupId}`, session, "PUT", { name: newName });
+            const res = await reqToApi(`groups/${groupId}`, session, Methods.PATCH, { name: newName });
             if (!res.ok) {
                 const errorData = await res.json();
                 throw new Error(errorData.message || 'Failed to update group');

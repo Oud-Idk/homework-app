@@ -1,6 +1,7 @@
 import clientPromise from '@/lib/mongodb';
 import { Group } from "@/types";
-import { GroupExplorer } from '@/components/CoreComponents/Groups/GroupExplorer'; // We will create this component
+import { GroupExplorer } from '@/components/CoreComponents/Groups/GroupExplorer';
+import {Title} from "@/components/EaseOfUse/Title"; // We will create this component
 
 export const dynamic = 'force-dynamic';
 
@@ -17,8 +18,8 @@ export default async function ManageGroupsPage() {
     }));
 
     return (
-        <main className="container mx-auto p-4 md:p-8">
-            <h1 className="text-4xl font-bold mb-4">Manage Groups</h1>
+        <main className="mx-auto">
+            <Title>Manage Groups</Title>
             <p className="mb-8">As an admin, you can view, create, and manage groups here.</p>
 
             {/* The new explorer component will handle the layout */}

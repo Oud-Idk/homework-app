@@ -1,18 +1,25 @@
 import { Router } from 'express';
-import { protect } from '../middleware/auth.middleware.js';
+import { protect } from '../middlewares/auth.middleware.js';
 import {
     getAllPreferences,
     addNotificationPreference,
     deleteNotificationPreference,
-    updateViewPreferences
+    updateViewPreferences, updateClassroom
 } from '../controllers/preferences/preferences.controller.js';
+import {validate} from "../middlewares/validate.middleware.js";
+import {
+    addNotificationPrefSchema, classIdParamsSchema,
+    preferenceIdParamSchema,
+    updateViewPreferencesSchema
+} from "../schemas/app.schemas.js";
 
 const router = Router();
 router.use(protect);
 
 router.get('/', getAllPreferences);
-router.put('/view', updateViewPreferences);
-router.post('/notifications', addNotificationPreference);
-router.delete('/notifications/:preferenceId', deleteNotificationPreference);
+router.patch('/view', validate({ body: updateViewPreferencesSchema }), updateViewPreferences);
+router.post('/notifications', validate({ body: addNotificationPrefSchema }), addNotificationPreference);
+router.delete('/notifications/:preferenceId', validate({ params: preferenceIdParamSchema }), deleteNotificationPreference);
+router.patch('/classroom/:classroomId', validate({ params: classIdParamsSchema }), updateClassroom);
 
 export default router;

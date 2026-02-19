@@ -1,114 +1,102 @@
 import { Request, Response } from 'express';
 import User from '../../models/user.model.js';
-import {publishToQueue} from "../../services/rabbitmq.service.js";
+import { publishToQueue } from "../../services/rabbitmq.service.js";
+import { handleServerError } from "../../utils/errors.helper.js";
 
 export const getAllPreferences = async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+
     try {
-        const userId = req.user?.sub;
-
-        if (!userId) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-
         const user = await User.findById(userId)
-            .select('notificationPreferences viewPreferences pushSubscriptions')
-            .lean(); // Use .lean() for better performance on read-only queries
+            .select('notificationPreferences viewPreferences pushSubscriptions classroomId')
+            .lean();
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
         res.status(200).json({
             notificationPreferences: user.notificationPreferences || [],
             viewPreferences: user.viewPreferences,
-            pushSubscriptions: user.pushSubscriptions || [] // Default to empty array if missing
+            pushSubscriptions: user.pushSubscriptions || [],
+            classroomId: user.classroomId,
         });
-
     } catch (error) {
-        console.error("Error in getAllPreferences:", error); // Good to log server errors
-        res.status(500).json({ message: "Server Error" });
+        handleServerError(res, error, "getAllPreferences");
     }
 };
-
 
 export const updateViewPreferences = async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
     const { hidePastDueDays } = req.body;
 
-    if (typeof hidePastDueDays !== 'number') {
-        return res.status(400).json({ message: 'Invalid view preference data' });
-    }
-
     try {
-        const user = await User.findById(req.user!.sub);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        user.viewPreferences.hidePastDueDays = hidePastDueDays;
-        await user.save();
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { $set: { "viewPreferences.hidePastDueDays": hidePastDueDays } },
+            { returnDocument: 'after', runValidators: true }
+        ).select('viewPreferences');
+
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
         res.status(200).json(user.viewPreferences);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        handleServerError(res, error, "updateViewPreferences");
     }
 };
 
-
-export const addNotificationPreference  = async (req: Request, res: Response) => {
-    const { daysBefore, timeOfDay } = req.body;
-
-    // Basic validation
-    if (typeof daysBefore !== 'number' || !timeOfDay) {
-        return res.status(400).json({ message: 'Invalid preference data' });
-    }
+export const updateClassroom = async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+    const { classroomId } = req.params;
 
     try {
-        const user = await User.findById(req.user!.sub);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { $set: { "classroomId": classroomId as string } },
+            { returnDocument: 'after', runValidators: true }
+        );
 
-        const newPreference = { daysBefore: req.body.daysBefore, timeOfDay: req.body.timeOfDay };
-        user.notificationPreferences.push(newPreference);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        res.status(200).json(user.classroomId);
+    } catch (error) {
+        handleServerError(res, error, "updateClassroom");
+    }
+}
+
+export const addNotificationPreference = async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        // Push new subdocument
+        user.notificationPreferences.push(req.body);
         await user.save();
 
         const createdPref = user.notificationPreferences[user.notificationPreferences.length - 1];
 
-        const eventPayload = { userId: user._id, preference: createdPref };
-        publishToQueue('preference_changed_queue', eventPayload);
-        console.log("Published 'preference.added' event");
+        // RabbitMQ Sync
+        publishToQueue('preference_changed_queue', {
+            userId: user._id,
+            action: 'ADDED',
+            preference: createdPref
+        });
 
         res.status(201).json(createdPref);
     } catch (error) {
-        if (error && typeof error === 'object' && 'statusCode' in error) {
-            const customError = error as { statusCode: number; message: string };
-            return res.status(customError.statusCode).json({ message: customError.message });
-        }
-
-        if (error instanceof Error) {
-            console.error("CRASH IN addNotificationPreferences:", error.message);
-            return res.status(500).json({ message: "Server error" });
-        }
-
-        // Fallback for non-Error throws
-        res.status(500).json({ message: "An unknown server error occurred" });
+        handleServerError(res, error, "addNotificationPreference");
     }
 };
 
-// Delete a preference for the current user by its ID
-export const deleteNotificationPreference  = async (req: Request, res: Response) => {
+export const deleteNotificationPreference = async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
     const { preferenceId } = req.params;
 
     try {
-        const user = await User.findById(req.user!.sub);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-        if (!preferenceId) {
-            return res.status(400).json({ message: 'Invalid preference data' });
-        }
-
-        const preferenceToDelete = user.notificationPreferences.id(preferenceId);
+        const preferenceToDelete = user.notificationPreferences.id(preferenceId as string);
         if (!preferenceToDelete) {
             return res.status(404).json({ message: "Preference not found" });
         }
@@ -116,24 +104,14 @@ export const deleteNotificationPreference  = async (req: Request, res: Response)
         user.notificationPreferences.pull({ _id: preferenceId });
         await user.save();
 
-        // --- PUBLISH EVENT ---
-        const eventPayload = { userId: user._id, preference: preferenceToDelete };
-        publishToQueue('preference_changed_queue', eventPayload);
-        console.log("Published 'preference.deleted' event");
+        publishToQueue('preference_changed_queue', {
+            userId: user._id,
+            action: 'DELETED',
+            preference: preferenceToDelete
+        });
 
         res.status(200).json({ message: 'Preference deleted' });
     } catch (error) {
-        if (error && typeof error === 'object' && 'statusCode' in error) {
-            const customError = error as { statusCode: number; message: string };
-            return res.status(customError.statusCode).json({ message: customError.message });
-        }
-
-        if (error instanceof Error) {
-            console.error("CRASH IN deleteNotificationPreferences:", error.message);
-            return res.status(500).json({ message: "Server error" });
-        }
-
-        // Fallback for non-Error throws
-        res.status(500).json({ message: "An unknown server error occurred" });
+        handleServerError(res, error, "deleteNotificationPreference");
     }
 };

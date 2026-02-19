@@ -29,7 +29,7 @@ export default function RootLayout({
             <ThemeProvider>
                 <NotificationProvider>
                     <Navbar />
-                    <div className="flex-1 overflow-y-auto px:2 md:p-4 relative">
+                    <div className="flex-1 overflow-y-auto px-[3%] md:px-[12%] lg:px-[16%] py-[3vh] relative">
                         {children}
                     </div>
                 </NotificationProvider>

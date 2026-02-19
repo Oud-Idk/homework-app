@@ -1,5 +1,17 @@
-import { Homework, Post } from "@/types";
+import {Homework, Post} from "@/types";
 import { Session } from "next-auth";
+
+export enum Methods {
+    GET = "GET",
+    POST = "POST",
+    PUT = "PUT",
+    DELETE = "DELETE",
+    PATCH = "PATCH",
+    HEAD = "HEAD",
+    OPTIONS = "OPTIONS",
+    CONNECT = "CONNECT",
+    TRACE = "TRACE",
+}
 
 export function truncateString(str: string, maxLength: number): string {
     if (str.length > maxLength) {
@@ -51,7 +63,7 @@ export function urlBase64ToUint8Array(base64String: string): ArrayBuffer { // <-
     return outputArray.buffer; // <--- 2. Return the underlying buffer
 }
 
-export async function reqToApi(endpoint: string, session?: Session | null, method: string = "GET", body?: string | object): Promise<Response> {
+export async function reqToApi(endpoint: string, session?: Session | null, method: Methods = Methods.GET, body?: string | object): Promise<Response> {
     let bodyReq: string | undefined;
     if (typeof body === "object") {
         bodyReq = JSON.stringify(body);

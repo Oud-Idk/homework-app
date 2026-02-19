@@ -6,7 +6,7 @@ import { Group, Homework } from "@/types";
 import { EditHomeworkModal } from "@/components/Modals/Homework/EditHomeworkModal";
 import { AllHomeworkModal } from "@/components/Modals/Homework/AllHomeworkModal";
 import GroupNodeRenderer from "@/components/CoreComponents/Homework/GroupNodeRenderer";
-import { getPastDue, reqToApi } from "@/lib/utils";
+import {getPastDue, Methods, reqToApi} from "@/lib/utils";
 import { useNotification } from "@/context/NotificationsContext";
 
 interface HomeworkListProps {
@@ -110,7 +110,7 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
         );
 
         try {
-            const method = isCurrentlyFollowing ? 'DELETE' : 'POST';
+            const method = isCurrentlyFollowing ? Methods.DELETE : Methods.POST;
             const res = await reqToApi(`homeworks/${homeworkId}/follow`, session, method);
 
             if (!res.ok) {
@@ -140,7 +140,7 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
         handleCloseEditModal();
 
         try {
-            const res = await reqToApi(`homeworks/${editingHomework._id}`, session, 'PUT', updatedData);
+            const res = await reqToApi(`homeworks/${editingHomework._id}`, session, Methods.PATCH, updatedData);
 
             if (!res.ok) {
                 console.error("Server failed to update homework:", res.status);
@@ -165,7 +165,7 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
         );
 
         try {
-            const res = await reqToApi(`homeworks/${homeworkId}/toggle`, session, 'PATCH');
+            const res = await reqToApi(`homeworks/${homeworkId}/toggle`, session, Methods.PATCH);
 
             if (!res.ok) {
                 console.error("Server failed to toggle complete:", res.status);
@@ -186,7 +186,7 @@ export function HomeworkList({ initialHomeworks, initialGroups }: HomeworkListPr
         setHomeworks(current => current.filter(hw => hw._id !== homeworkId));
 
         try {
-            const res = await reqToApi(`homeworks/${homeworkId}`, session, 'DELETE');
+            const res = await reqToApi(`homeworks/${homeworkId}`, session, Methods.DELETE);
 
             if (!res.ok) {
                 console.error("Server failed to delete homework:", res.status);

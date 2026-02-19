@@ -12,7 +12,6 @@ export const DropdownMobile = ({
     allItems: CallToActionLink[];
 }) => {
     const pathname = usePathname();
-
     return (
         <Disclosure key={item.name} as="div" className="mx-3">
             {/* Use a render prop to access the 'open' state */}

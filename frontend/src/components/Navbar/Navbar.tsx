@@ -67,7 +67,6 @@ export default function Navbar() {
                         .map(renderDesktopNavItem)}
                 </PopoverGroup>
 
-                {/* --- 2. THIS IS THE SECTION TO CHANGE --- */}
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-x-4">
                     <ThemeSwitcher />
 
@@ -77,7 +76,6 @@ export default function Navbar() {
                         <AuthButtonDesktop />
                     )}
                 </div>
-                {/* --- END OF CHANGED SECTION --- */}
             </nav>
 
             <Transition show={mobileMenuOpen} as={Fragment}>

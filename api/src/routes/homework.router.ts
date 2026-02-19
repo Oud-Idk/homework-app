@@ -1,22 +1,20 @@
 import { Router } from 'express';
-import { isAdmin, optionalAuth, protect } from '../middleware/auth.middleware.js';
+import { protect, isAdmin, optionalAuth } from '../middlewares/auth.middleware.js';
+import { validate } from '../middlewares/validate.middleware.js';
+import { createHomeworkSchema, updateHomeworkSchema, idParamSchema } from '../schemas/app.schemas.js';
 import {
-    getHomeworks,
-    createHomework,
-    deleteHomework,
-    toggleHomeworkCompletion,
-    updateHomework,
+    createHomework, deleteHomework, updateHomework, getHomeworks, toggleHomeworkCompletion
 } from '../controllers/homework/homework.controller.js';
-
-import followRouter from './follow.router.js';
+import followRouter from "./follow.router.js";
 
 const router = Router();
 
 router.get('/', optionalAuth, getHomeworks);
-router.post('/', protect, createHomework);
-router.delete('/:id', protect, isAdmin, deleteHomework);
-router.patch('/:id/toggle', protect, toggleHomeworkCompletion);
-router.put('/:id', protect, isAdmin, updateHomework);
+router.post('/', protect, validate({ body: createHomeworkSchema }), createHomework);
+router.delete('/:id', protect, isAdmin, validate({ params: idParamSchema }), deleteHomework);
+router.patch('/:id', protect, isAdmin, validate({ params: idParamSchema, body: updateHomeworkSchema }), updateHomework);
+router.patch('/:id/toggle', protect, validate({ params: idParamSchema }), toggleHomeworkCompletion);
+
 router.use('/:id/follow', followRouter);
 
 export default router;

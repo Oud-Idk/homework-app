@@ -1,5 +1,6 @@
 import { ComponentType, SVGProps } from "react";
 import {FolderIcon, UserIcon} from "@heroicons/react/24/outline";
+import {GroupIcon, RockingChairIcon, SchoolIcon} from "lucide-react";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -56,6 +57,27 @@ export const navigationConfigItems: NavItem[] = [
                 description: "Manage User's Roles",
                 href: "/admin/users",
                 icon: UserIcon,
+            },
+            {
+                name: 'Classroom',
+                description: 'Manage Classrooms',
+                href: '/admin/classrooms',
+                icon: SchoolIcon,
+            },
+            {
+                name: 'Seating Arrangement',
+                description: 'Make Seating Arrangement',
+                href: '/admin/seater',
+                icon: RockingChairIcon,
+            }
+        ],
+    },
+    { type: 'dropdown', name: 'Utilities', products: [
+            {
+                name: 'Grouper',
+                description: 'Make Groups',
+                href: '/utilities/grouper',
+                icon: GroupIcon,
             },
         ],
     },

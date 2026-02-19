@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 
 export const useUserRoleUpdater = () => {
     const { data: session } = useSession();
@@ -21,7 +21,7 @@ export const useUserRoleUpdater = () => {
 
         setUpdatingId(userId);
         try {
-            const res = await reqToApi(`users/${userId}/role`, session, 'PUT', { role: newRole });
+            const res = await reqToApi(`users/${userId}/role`, session, Methods.PATCH, { role: newRole });
 
             if (!res.ok) {
                 const errorData = await res.json();

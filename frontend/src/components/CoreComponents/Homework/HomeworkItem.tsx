@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import { Homework } from "@/types";
 import { HomeworkDetailsModal } from "@/components/Modals/Homework/HomeworkDetailsModal";
-import { MarkdownRenderer } from "@/components/Markdown/MarkdownRenderer";
 import { getPastDue, truncateString } from "@/lib/utils";
 import { HomeworkButtons } from "@/components/CoreComponents/Homework/HomeworkButtons";
 import { useSession } from "next-auth/react";
+import { useNotification } from "@/context/NotificationsContext";
+import Link from "next/link";
 
 interface HomeworkItemProps {
     homework: Homework;
@@ -20,7 +21,26 @@ interface HomeworkItemProps {
 const HomeworkItem: React.FC<HomeworkItemProps> = ({ homework, onToggle, onDelete, isAdmin, onEdit, onFollowToggle }) => {
     const [viewingHomeworkDetails, setViewingHomeworkDetails] = React.useState(false);
     const [isFollowLoading, setIsFollowLoading] = useState(false);
+    const { showError } = useNotification();
     const { data: session } = useSession();
+
+    const [dueDateHoverTimer, setDueDateHoverTimer] = useState<NodeJS.Timeout | null>(null);
+
+    const handleIntenseStare = () => {
+        console.log(`CRISIS DETECTED: User is staring at the due date for "${homework.title}". Deploying emotional support manifesto.`);
+        showError(<span>It seems like you're having a crisis. You're hovering at the due date for way too long. Perhaps you can go <Link href="/love" className="text-blue-500 hover:underline">to this page and read the contents.</Link></span>)
+    };
+
+    const startDueDateTimer = () => {
+        const timerId = setTimeout(handleIntenseStare, 2000);
+        setDueDateHoverTimer(timerId);
+    };
+
+    const stopDueDateTimer = () => {
+        if (dueDateHoverTimer) {
+            clearTimeout(dueDateHoverTimer);
+        }
+    };
 
     const isPastDue = getPastDue(homework);
     const isFollowing = !!homework.isFollowing;
@@ -44,7 +64,7 @@ const HomeworkItem: React.FC<HomeworkItemProps> = ({ homework, onToggle, onDelet
         <li className={`p-2 px-4 border dark:border-neutral-500 border-neutral-500 dark:hover:border-white hover:border-black transition-colors rounded-md flex justify-between items-center gap-4 ${containerClasses} cursor-pointer`}>
             <div className="flex items-center flex-1 min-w-0">
                 <div className={`${textClasses} w-full cursor-pointer pr-3`} onClick={() => setViewingHomeworkDetails(true)}>
-                    <div className="flex flex-row-reverse items-center justify-end mb-2">
+                    <div className="flex flex-row-reverse items-center justify-end mb-1">
                         <h3 className={`font-semibold leading-tight text-base wrap-break-word ${titleClasses}`}>{homework.title}</h3>
                         {session && <input
                             type="checkbox"
@@ -54,8 +74,12 @@ const HomeworkItem: React.FC<HomeworkItemProps> = ({ homework, onToggle, onDelet
                             disabled={isPastDue}
                         />}
                     </div>
-                    <MarkdownRenderer className="text-sm leading-none dark:*:text-neutral-200 *:text-neutral-700 *:m-0 wrap-break-word" content={truncateString(homework.description.split('\n')[0], 50)} />
-                    <p className="text-[.7rem] text-neutral-500 leading-tight">
+                    <p className="text-sm leading-none dark:*:text-neutral-200 *:text-neutral-700 *:m-0 wrap-break-word mb-1">{truncateString(homework.description.split('\n')[0], 50)}</p>
+                    <p
+                        className="text-[.7rem] text-neutral-500 leading-tight"
+                        onMouseEnter={startDueDateTimer}
+                        onMouseLeave={stopDueDateTimer}
+                    >
                         Due: {new Date(homework.dueDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                         {!homework.completed && isPastDue && <span className="ml-2 font-bold text-red-500">(Past Due)</span>}
                     </p>

@@ -5,6 +5,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { HomeworkList } from "@/components/CoreComponents/Homework/HomeworkList";
 import { reqToApi } from "@/lib/utils";
 import { Session } from "next-auth";
+import { Title } from "@/components/EaseOfUse/Title";
 
 async function getInitialData(session: Session | null): Promise<{ homeworks: Homework[]; groups: Group[] }> {
     try {
@@ -28,9 +29,9 @@ export default async function HomeworkPage() {
 
     const { homeworks: initialHomeworks, groups: initialGroups } = await getInitialData(session);
     return (
-        <main className="container mx-auto p-2">
-            <header className="mb-8">
-                <h1 className="text-4xl font-bold">Homework Tracker</h1>
+        <main className="mx-auto">
+            <header className="mb-6">
+                <Title>Homework Tracker</Title>
             </header>
             {session && (
                 <AddHomeworkForm />

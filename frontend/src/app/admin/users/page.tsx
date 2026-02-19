@@ -1,6 +1,7 @@
 import { UserManagementTable } from '@/components/UserManagement/UserManagementTable';
 import clientPromise from '@/lib/mongodb';
 import { Filter } from 'mongodb';
+import {Title} from "@/components/EaseOfUse/Title";
 
 export const dynamic = 'force-dynamic';
 
@@ -78,8 +79,8 @@ export default async function ManageUsersPage({
     const totalPages = Math.ceil(totalCount / USERS_PER_PAGE);
 
     return (
-        <main className="container mx-auto p-2">
-            <h1 className="text-4xl font-bold mb-4">Manage Users</h1>
+        <main>
+            <Title>Manage Users</Title>
             <p className="mb-8">Promote or demote users to and from the admin role.</p>
 
             <UserManagementTable

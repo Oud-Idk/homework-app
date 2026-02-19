@@ -11,7 +11,7 @@ interface FileCellProps {
 
 // This component can be exported if used by the modal as well
 export const FileIcon = ({ mimetype }: { mimetype: string }) => {
-    const iconProps = { size: 48, className: "text-gray-500" };
+    const iconProps = { size: 48, className: "text-neutral-500" };
     if (mimetype.startsWith('image/')) return <FileImage {...iconProps} />;
     if (mimetype.startsWith('video/')) return <FileVideo {...iconProps} />;
     if (mimetype.startsWith('audio/')) return <FileAudio {...iconProps} />;
@@ -32,7 +32,7 @@ const FilePreview = ({ file }: { file: ApiFile }) => {
         );
     }
     return (
-        <div className="aspect-square w-full h-full flex justify-center items-center bg-gray-100 dark:bg-neutral-800">
+        <div className="aspect-square w-full h-full flex justify-center items-center bg-neutral-100 dark:bg-neutral-800">
             <FileIcon mimetype={file.mimetype} />
         </div>
     );
@@ -54,7 +54,7 @@ export const FileCell = ({ file, onDelete, onCellClick }: FileCellProps) => {
             onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onCellClick(file)}
         >
             {/* Preview Area */}
-            <div className="w-full bg-gray-50 dark:bg-neutral-800">
+            <div className="w-full bg-neutral-50 dark:bg-neutral-800">
                 <FilePreview file={file} />
             </div>
 
@@ -63,7 +63,7 @@ export const FileCell = ({ file, onDelete, onCellClick }: FileCellProps) => {
                 <p className="font-semibold text-sm truncate" title={file.originalName}>
                     {file.originalName}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-neutral-500 mt-1">
                     {formatBytes(file.size)} &middot; {new Date(file.createdAt).toLocaleDateString()}
                 </p>
             </div>

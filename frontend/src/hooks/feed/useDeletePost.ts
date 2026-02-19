@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Post } from '@/types';
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 
 interface UseDeletePostOptions {
     onSuccessDelete?: (deletedPostId: string) => void;
@@ -25,7 +25,7 @@ export const useDeletePost = (options: UseDeletePostOptions = {}) => {
 
         setIsDeleting(true);
         try {
-            const res = await reqToApi(`posts/${postId}`, session, "DELETE")
+            const res = await reqToApi(`posts/${postId}`, session, Methods.DELETE);
 
             if (res.status === 204) {
                 onSuccessDelete?.(postId);

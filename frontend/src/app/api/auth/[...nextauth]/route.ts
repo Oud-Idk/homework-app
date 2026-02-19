@@ -43,6 +43,7 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 token.id = user.id;
                 token.role = user.role;
+                token.classroomId = user.classroomId;
                 return token;
             }
 
@@ -61,7 +62,8 @@ export const authOptions: NextAuthOptions = {
                     return { ...token, exp: 0 }; // Invalidate the token
                 }
 
-                token.role = dbUser.role; // Refresh the role in case it changed
+                token.role = dbUser.role;
+                token.classroomId = dbUser.classroomId;
 
             } catch (error) {
                 console.error("JWT Error during re-validation:", error);
@@ -75,7 +77,8 @@ export const authOptions: NextAuthOptions = {
                 session.user.id = token.id as string;
                 session.user.role = token.role as string;
                 session.accessToken = await encode({ token, secret: authSecret });
-                return session; // Return the valid, populated session
+                session.user.classroomId = token.classroomId;
+                return session;
             }
 
             return session;

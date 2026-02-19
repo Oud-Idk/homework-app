@@ -8,9 +8,9 @@ import { useSession } from 'next-auth/react';
 import { MarkdownEditorRenderer } from "@/components/Markdown/MarkdownEditorRenderer";
 import { Post } from '@/types';
 import SubmitButton from "@/components/SubmitButton";
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 import { ModalContainer } from "@/components/Modals/ModalContainer";
-import { HomeworkSelector } from "@/components/HomeworkSelector"; // <-- Import the new component
+import { HomeworkSelect } from "@/components/Selector/HomeworkSelect"; // <-- Import the new component
 
 interface CreatePostModalProps {
     isOpen: boolean;
@@ -45,7 +45,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClos
                 body.homeworkId = selectedHomeworkId;
             }
 
-            const res = await reqToApi('posts', session, 'POST', body);
+            const res = await reqToApi('posts', session, Methods.POST, body);
             const data = await res.json();
 
             if (!res.ok) {
@@ -99,7 +99,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClos
                     </div>
 
                     {/* Use the new component here */}
-                    <HomeworkSelector
+                    <HomeworkSelect
                         value={selectedHomeworkId}
                         onChange={setSelectedHomeworkId}
                     />

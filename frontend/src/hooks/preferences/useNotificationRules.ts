@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { Session } from 'next-auth';
-import { reqToApi } from '@/lib/utils';
+import {Methods, reqToApi} from '@/lib/utils';
 import { useNotification } from "@/context/NotificationsContext";
 
 export interface NotificationRule {
@@ -40,7 +40,7 @@ export function useNotificationRules(session: Session | null) {
                 timeOfDay: utcTime // Send UTC string to existing field
             };
 
-            const res = await reqToApi('preferences/notifications', session, 'POST', newRuleData);
+            const res = await reqToApi('preferences/notifications', session, Methods.POST, newRuleData);
             if (!res.ok) throw new Error("Failed to add new rule.");
 
             const newRule = await res.json();
@@ -54,7 +54,7 @@ export function useNotificationRules(session: Session | null) {
     const deleteRule = async (ruleId: string) => {
         if (!session?.accessToken) return;
         try {
-            await reqToApi(`preferences/notifications/${ruleId}`, session, "DELETE");
+            await reqToApi(`preferences/notifications/${ruleId}`, session, Methods.DELETE);
             setRules(current => current.filter(p => p._id !== ruleId));
         } catch (error) {
             console.error("Error deleting notification rule:", error);

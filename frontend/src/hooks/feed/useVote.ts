@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { Post } from '@/types';
-import { reqToApi } from "@/lib/utils";
+import {Methods, reqToApi} from "@/lib/utils";
 
 export const useVote = (post: Post) => {
     const { data: session } = useSession();
@@ -39,7 +39,7 @@ export const useVote = (post: Post) => {
         setVoteState(optimisticVoteState); // Optimistic UI update
 
         try {
-            const res = await reqToApi(`posts/${post._id}/vote`, session, "POST", {
+            const res = await reqToApi(`posts/${post._id}/vote`, session, Methods.POST, {
                 voteType: optimisticVoteState.userVote || "none",
             })
 

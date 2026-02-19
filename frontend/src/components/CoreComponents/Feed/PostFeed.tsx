@@ -9,6 +9,7 @@ import SmallPopup from "@/components/SmallPopup";
 import SubmitButton from "@/components/SubmitButton";
 import { useSession } from "next-auth/react";
 import { Pagination } from '@/components/Pagination';
+import {Title} from "@/components/EaseOfUse/Title";
 
 export const PostFeed: React.FC = () => {
     const {
@@ -23,9 +24,9 @@ export const PostFeed: React.FC = () => {
     const { data: session } = useSession();
 
     return (
-        <div className="max-w-400 mx-auto p-4">
+        <div className="mx-auto">
             <div className="flex justify-between items-center mb-6 gap-4">
-                <h2 className="text-3xl font-semibold">Community Feed</h2>
+                <Title>Community Feed</Title>
                 {session && (
                     <SubmitButton onClick={() => setIsCreateModalOpen(true)}>
                         Create Post

@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { Session } from 'next-auth';
-import { reqToApi } from '@/lib/utils';
+import {Methods, reqToApi} from '@/lib/utils';
 import { useNotification } from "@/context/NotificationsContext";
 
 export interface ViewPreferences {
@@ -25,7 +25,7 @@ export function useViewPreferences(session: Session | null) {
         setIsSaving(true);
         setSaveStatus(null);
         try {
-            const res = await reqToApi('preferences/view', session, "PUT", viewPreferences);
+            const res = await reqToApi('preferences/view', session, Methods.PATCH, viewPreferences);
             if (!res.ok) throw new Error('Failed to save settings.');
 
             showSuccess('Display settings saved successfully!');

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Session } from 'next-auth';
-import { reqToApi, urlBase64ToUint8Array } from '@/lib/utils';
+import {Methods, reqToApi, urlBase64ToUint8Array} from '@/lib/utils';
 import { useNotification } from "@/context/NotificationsContext";
 
 interface ServerPushSubscription {
@@ -77,7 +77,7 @@ export function usePushNotifications(session: Session | null) {
                 applicationServerKey,
             });
 
-            const res = await reqToApi('subscriptions', session, 'POST', subscription);
+            const res = await reqToApi('subscriptions', session, Methods.POST, subscription);
             if (!res.ok) throw new Error("Failed to save subscription on the server.");
 
             setIsSubscribed(true);

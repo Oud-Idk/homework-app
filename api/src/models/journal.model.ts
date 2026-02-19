@@ -1,4 +1,4 @@
-import { Schema, model, Document, InferSchemaType } from 'mongoose';
+import {Schema, model, InferSchemaType, Types, Document} from 'mongoose';
 
 const ActivitySchema = new Schema({
     name: {
@@ -28,10 +28,6 @@ const JournalSchema = new Schema({
     activities: {
         type: [ActivitySchema],
         required: true,
-        validate: [
-            (val: Activity[]) => val.length > 0,
-            'Journal must have at least one activity.'
-        ]
     }
 }, {
     timestamps: true
@@ -39,8 +35,12 @@ const JournalSchema = new Schema({
 
 JournalSchema.index({ author: 1, entryDate: 1 }, { unique: true });
 
-export type Activity = InferSchemaType<typeof ActivitySchema>;
-export type Journal = InferSchemaType<typeof JournalSchema>;
-export interface JournalDocument extends Journal, Document {}
+export type IJournal = InferSchemaType<typeof JournalSchema> & {
+    _id: Types.ObjectId;
+};
 
-export default model<JournalDocument>('Journal', JournalSchema);
+export interface IJournalDocument extends IJournal, Document {
+    _id: Types.ObjectId;
+}
+
+export default model<IJournalDocument>('Journal', JournalSchema);
