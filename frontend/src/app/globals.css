@@ -66,6 +66,12 @@ html, body {
     margin: 1rem 0;
 }
 
+.prose :where(ul > li)::marker,
+.prose :where(ol > li)::marker {
+    color: theme('colors.neutral.500');
+}
+
+
 .prose pre {
     background-color: theme('colors.neutral.900');
     padding: .3rem;

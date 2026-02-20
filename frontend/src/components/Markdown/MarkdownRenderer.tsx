@@ -7,7 +7,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { ClipboardDocumentIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { vscDarkPlus, oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useTheme } from "next-themes";
-import { Element, ElementContent } from 'hast';
+import { Element } from 'hast';
 
 import ReactMarkdown, {Components} from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -25,12 +25,6 @@ interface PreProps {
     node?: Element;
     className?: string;
     children?: ReactNode;
-}
-
-export interface DirectiveNode extends Element {
-    name: 'note' | 'warning' | 'danger' | string;
-    attributes?: Record<string, string>;
-    children: ElementContent[];
 }
 
 const CodeBlock: FC<PreProps> = ({ children, ...props }) => {
@@ -121,11 +115,19 @@ const markdownComponents: Components & { [key: string]: React.ElementType } = {
             <input type={type} checked={checked} readOnly className="mr-2" />
         )
     },
+    // 👇 ADDED: Custom 'a' tag to ensure links break nicely instead of overflowing
+    a(props) {
+        const { node, className, ...rest } = props;
+        return (
+            <a className={`${className ?? ""} wrap-break-word break-all`} {...rest} />
+        )
+    }
 };
 
 export const MarkdownRenderer = React.memo(({content, className}: { content?: string, className?: string }) => {
     return (
-        <div className={`${className ? className : ''} prose dark:prose-invert w-full text-black dark:text-white`}>
+        // 👇 ADDED: 'break-words' and 'max-w-none' to prevent general parent overflows
+        <div className={`${className ?? ''} prose dark:prose-invert max-w-none wrap-break-word w-full text-black dark:text-white`}>
             <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath, remarkBreaks, remarkDirective]}
                 rehypePlugins={[
