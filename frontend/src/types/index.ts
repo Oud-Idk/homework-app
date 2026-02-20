@@ -19,7 +19,7 @@ export interface Group {
 export interface Student {
     name: string;
     dateOfBirth: Date;
-    gender: "male" | "female";
+    gender: "male" | "female" | "";
 }
 
 export interface Classroom {
@@ -94,6 +94,7 @@ export interface User {
     classroomId?: string;
     name: string;
     email: string;
+    gender: 'male' | 'female' | '';
 }
 
 export interface Relationship {

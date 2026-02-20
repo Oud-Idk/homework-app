@@ -9,16 +9,20 @@ import { useNotificationRules } from '@/hooks/preferences/useNotificationRules';
 import { useRelationshipSetter } from "@/hooks/people/useRelationshipSetter";
 
 import SubmitButton from "@/components/SubmitButton";
-import { reqToApi } from "@/lib/utils"; // Only keeping basic utils
+import { Methods, reqToApi } from "@/lib/utils";
 import { SearchableSelect } from "@/components/Selector/SearchableSelect";
 import { Classroom, User } from "@/types";
 import { SearchableMultiSelect } from "@/components/Selector/SearchableMultiSelect";
 import { Title } from "@/components/EaseOfUse/Title";
 
 export default function PreferencesPage() {
-    const { data: session, status } = useSession();
+    const { data: session, status, update } = useSession();
     const [isInitializing, setIsInitializing] = useState(true);
     const hasFetchedGlobalData = useRef(false);
+
+    // Gender State
+    const [gender, setGender] = useState<string>('');
+    const [isUpdatingGender, setIsUpdatingGender] = useState(false);
 
     const {
         viewPreferences, setViewPreferences, saveViewPreferences,
@@ -37,25 +41,18 @@ export default function PreferencesPage() {
     const {
         classes,
         currentClassId,
-
-        // State buckets
         selectedInseparable, setSelectedInseparable,
         selectedGreatVibes, setSelectedGreatVibes,
         selectedGoodCompany, setSelectedGoodCompany,
         selectedPreferSpace, setSelectedPreferSpace,
         selectedNuclear, setSelectedNuclear,
-
-        // Functions
         onChangeClassroom,
         saveRelationships,
         getAvailableStudents,
-
-        // Status
         isLoadingRelationships,
         isSavingRelationships,
     } = useRelationshipSetter();
 
-    // --- Global Initialization (Only for items not covered by specific hooks) ---
     useEffect(() => {
         if (status === 'loading') return;
         if (status === 'unauthenticated') {
@@ -72,6 +69,9 @@ export default function PreferencesPage() {
 
                 const serverData = await res.json();
                 if (serverData.viewPreferences) setViewPreferences(serverData.viewPreferences);
+
+                setGender(serverData.gender || '');
+
                 setNotificationPreferences(serverData.notificationPreferences || []);
                 await checkSubscriptionStatus(serverData.pushSubscriptions || []);
 
@@ -86,7 +86,33 @@ export default function PreferencesPage() {
         void initialize();
     }, [status, setViewPreferences, setNotificationPreferences, checkSubscriptionStatus, session]);
 
-    // UI Helper
+    const updateGender = async (newGender: string) => {
+        const valueToSend = newGender === gender ? '' : newGender;
+        const previousGender = gender; // For rollback if API fails
+        setGender(valueToSend);
+        setIsUpdatingGender(true);
+
+        try {
+            const res = await reqToApi(`preferences/gender/${valueToSend}`, session, Methods.PATCH);
+
+            if (res.ok) {
+                if (update) {
+                    await update({
+                        ...session,
+                        user: { ...session?.user, gender: valueToSend }
+                    });
+                }
+            } else {
+                setGender(previousGender);
+            }
+        } catch (error) {
+            setGender(previousGender);
+            console.error("Failed to update gender", error);
+        } finally {
+            setIsUpdatingGender(false);
+        }
+    };
+
     const formatUtcToLocal = (utcTimeStr: string) => {
         if (!utcTimeStr) return '--:--';
         const date = new Date();
@@ -97,9 +123,9 @@ export default function PreferencesPage() {
         }).format(date);
     };
 
-    const isSessionLoading = status === 'loading' && !session;
+    const isFirstLoad = status === 'loading' && !session;
 
-    if (isSessionLoading || isInitializing) {
+    if (isFirstLoad || isInitializing) {
         return <div className="text-center p-10">Loading...</div>;
     }
 
@@ -109,6 +135,50 @@ export default function PreferencesPage() {
         <main className="mx-auto space-y-4">
             <Title>Preferences</Title>
 
+            {/* Gender Selection Section */}
+            <div className="p-6 border rounded-lg shadow-sm">
+                <h2 className="text-2xl font-semibold mb-4">Gender</h2>
+                <div className="flex gap-3">
+                    <button
+                        type="button"
+                        disabled={isUpdatingGender}
+                        onClick={() => updateGender('male')}
+                        className={`px-6 py-2 rounded-md border transition-all cursor-pointer ${
+                            gender === 'male'
+                                ? 'border-blue-500 text-blue-500'
+                                : 'hover:bg-neutral-500/10'
+                        }`}
+                    >
+                        Male
+                    </button>
+                    <button
+                        type="button"
+                        disabled={isUpdatingGender}
+                        onClick={() => updateGender('female')}
+                        className={`px-6 py-2 rounded-md border transition-all cursor-pointer ${
+                            gender === 'female'
+                                ? 'border-pink-500 text-pink-500'
+                                : 'hover:bg-neutral-500/10'
+                        }`}
+                    >
+                        Female
+                    </button>
+                    <button
+                        type="button"
+                        disabled={isUpdatingGender}
+                        onClick={() => updateGender('')}
+                        className={`px-6 py-2 rounded-md border transition-all cursor-pointer ${
+                            gender === ''
+                                ? 'border-neutral-500 text-neutral-500'
+                                : 'hover:bg-neutral-500/10'
+                        }`}
+                    >
+                        Prefer not to say
+                    </button>
+                </div>
+                {isUpdatingGender && <p className="mt-2 text-sm text-gray-500">Updating...</p>}
+            </div>
+
             {/* Display Options Section */}
             <div className="p-6 border rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4">Homework Display Options</h2>
@@ -117,7 +187,6 @@ export default function PreferencesPage() {
                         <label htmlFor="hidePastDueDays" className="mr-1">
                             Hide past-due homework older than
                         </label>
-
                         <div className="flex items-center gap-2">
                             <input
                                 id="hidePastDueDays"
@@ -137,7 +206,7 @@ export default function PreferencesPage() {
                 </form>
             </div>
 
-            {/* Push Notifications Section */}
+            {/* Rest of the components (Push Notifications, Alert Rules, Relationships) stay the same... */}
             <div className="p-6 border rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4">Push Notifications</h2>
                 {isSubscribed ? (
@@ -158,7 +227,6 @@ export default function PreferencesPage() {
                 )}
             </div>
 
-            {/* Alert Rules Section */}
             <div className="p-6 border rounded-lg shadow-sm">
                 <h2 className="text-2xl font-semibold mb-4">Alert Rules</h2>
                 <form onSubmit={addRule} className="mb-6 p-4 rounded-md border">
@@ -189,7 +257,6 @@ export default function PreferencesPage() {
                 </ul>
             </div>
 
-            {/* Relationships Section */}
             <div className="p-6 border rounded-lg shadow-sm space-y-3">
                 <h2 className="text-2xl font-semibold mb-4">My Relationships</h2>
                 <form onSubmit={saveRelationships}>

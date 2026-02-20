@@ -72,7 +72,7 @@ const listStudentInClass = async (req: Request, res: Response) => {
 
         // Find all users who have this classroomId
         const students = await User.find({ classroomId: classroomId as string })
-            .select("name email image role")
+            .select("name email image role gender")
             .sort({ name: 1 })
             .lean();
 

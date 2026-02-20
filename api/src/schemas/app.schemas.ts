@@ -76,6 +76,11 @@ export const updateHomeworkSchema = z.object({
     groupId: objectIdSchema.optional(),
 });
 
+export const genderSchema = z.object({
+    gender: z.enum(['male', 'female'], {
+        error: "Gender must be male, female, or empty.",
+    }).optional(),
+})
 
 // Group updates specifically require a new name (based on your controller logic)
 export const updateGroupSchema = z.object({

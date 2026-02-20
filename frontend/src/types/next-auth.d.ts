@@ -14,6 +14,7 @@ declare module "next-auth" {
             id: string;
             role: string;
             classroomId?: string | null;
+            gender?: string | null;
         } & DefaultSession["user"];
         accessToken: string;
     }
@@ -24,6 +25,7 @@ declare module "next-auth" {
     interface User extends DefaultUser {
         role: string;
         classroomId?: string | null;
+        gender?: string | null;
     }
 }
 
@@ -34,6 +36,7 @@ declare module "next-auth/jwt" {
     interface JWT extends DefaultJWT {
         id: string;
         role: string;
+        gender?: string | null;
         classroomId?: string | null;
     }
 }

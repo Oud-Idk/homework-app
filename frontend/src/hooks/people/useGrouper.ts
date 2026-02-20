@@ -1,8 +1,8 @@
-import {Student} from "@/types";
-import {useState} from "react";
+import { User } from "@/types";
+import { useState } from "react";
 
-export function useGrouper(students: Student[], numGroups: number, strategy: 'random' | 'balanced') {
-    const [finalGroups, setFinalGroups] = useState<Student[][]>([]);
+export function useGrouper(users: User[], numGroups: number, strategy: 'random' | 'balanced') {
+    const [finalGroups, setFinalGroups] = useState<User[][]>([]);
 
     const shuffle = <T,>(array: T[]): T[] => {
         const shuffled = [...array];
@@ -16,17 +16,21 @@ export function useGrouper(students: Student[], numGroups: number, strategy: 'ra
     };
 
     const generate = () => {
-        const result: Student[][] = Array.from({ length: numGroups }, () => []);
+        const result: User[][] = Array.from({ length: numGroups }, () => []);
 
         if (strategy === 'random') {
-            const shuffled = shuffle(students);
-            shuffled.forEach((student, i) => result[i % numGroups].push(student));
+            const shuffled = shuffle(users);
+            shuffled.forEach((user, i) => result[i % numGroups].push(user));
         } else {
-            const males = shuffle(students.filter(s => s.gender === 'male'));
-            const females = shuffle(students.filter(s => s.gender === 'female'));
+            const males = shuffle(users.filter(u => u.gender === 'male'));
+            const females = shuffle(users.filter(u => u.gender === 'female'));
+
+            // Note: Students with gender 'other' or empty are currently excluded from
+            // the 'balanced' strategy by this logic.
+
             let currentGroup = 0;
-            [...males, ...females].forEach(s => {
-                result[currentGroup % numGroups].push(s);
+            [...males, ...females].forEach(u => {
+                result[currentGroup % numGroups].push(u);
                 currentGroup++;
             });
         }

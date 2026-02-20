@@ -64,6 +64,7 @@ export const authOptions: NextAuthOptions = {
 
                 token.role = dbUser.role;
                 token.classroomId = dbUser.classroomId;
+                token.gender = dbUser.gender;
 
             } catch (error) {
                 console.error("JWT Error during re-validation:", error);
@@ -76,6 +77,7 @@ export const authOptions: NextAuthOptions = {
             if (token && token.id && token.exp !== 0) {
                 session.user.id = token.id as string;
                 session.user.role = token.role as string;
+                session.user.gender = token.gender;
                 session.accessToken = await encode({ token, secret: authSecret });
                 session.user.classroomId = token.classroomId;
                 return session;

@@ -10,10 +10,8 @@ interface SubmitButtonProps {
 
 export default function SubmitButton({ disabled, children, className, onClick }: SubmitButtonProps) {
     const baseClasses = `px-3 py-1.5 border 
-        dark:border-indigo-400 dark:text-indigo-400
-        text-indigo-600 border-indigo-600
-        dark:hover:border-indigo-300 dark:hover:text-indigo-300
-        hover:border-indigo-700 hover:text-indigo-700
+        border-indigo-500 text-indigo-500
+        hover:bg-neutral-500/10
         rounded-md cursor-pointer
         disabled:opacity-40 disabled:cursor-not-allowed`;
 

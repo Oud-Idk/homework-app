@@ -8,7 +8,7 @@ export const getAllPreferences = async (req: Request, res: Response) => {
 
     try {
         const user = await User.findById(userId)
-            .select('notificationPreferences viewPreferences pushSubscriptions classroomId')
+            .select('notificationPreferences viewPreferences pushSubscriptions classroomId gender')
             .lean();
 
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -18,6 +18,7 @@ export const getAllPreferences = async (req: Request, res: Response) => {
             viewPreferences: user.viewPreferences,
             pushSubscriptions: user.pushSubscriptions || [],
             classroomId: user.classroomId,
+            gender: user.gender,
         });
     } catch (error) {
         handleServerError(res, error, "getAllPreferences");
@@ -59,6 +60,25 @@ export const updateClassroom = async (req: Request, res: Response) => {
         res.status(200).json(user.classroomId);
     } catch (error) {
         handleServerError(res, error, "updateClassroom");
+    }
+}
+
+export const updateGenderPreferences = async (req: Request, res: Response) => {
+    const userId = req.user?.sub;
+    const { gender } = req.params;
+
+    try {
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { $set: { "gender": gender ?? '' } },
+            { returnDocument: 'after' },
+        );
+
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        res.status(200).json(user.gender);
+    } catch (error) {
+        handleServerError(res, error, "updateGeneralPreferences");
     }
 }
 

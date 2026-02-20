@@ -34,6 +34,11 @@ const UserSchema = new Schema({
     email: { type: String, unique: true },
     classroomId: { type: Schema.Types.ObjectId },
     image: String,
+    gender: {
+        type: String,
+        enum: ['male', 'female', ''],
+        required: false,
+    },
     role: {
         type: String,
         enum: ['member', 'admin'],

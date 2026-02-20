@@ -1,5 +1,5 @@
-import {Student} from "@/types";
-import {useEffect, useState} from "react";
+import { User } from "@/types";
+import { useEffect, useState, useRef } from "react";
 
 const TAUNTS = [
     "Is this a group or a double date?",
@@ -46,44 +46,67 @@ const TAUNTS = [
     "Calculating the exact moment this group chat gets muted."
 ];
 
-export function useGroupReveal(finalGroups: Student[][], onFinish: () => void) {
-    const [visibleGroups, setVisibleGroups] = useState<Student[][]>([]);
+export function useGroupReveal(finalGroups: User[][], onFinish: () => void) {
+    const [visibleGroups, setVisibleGroups] = useState<User[][]>([]);
     const [activeGroupIdx, setActiveGroupIdx] = useState<number | null>(null);
     const [currentTaunt, setCurrentTaunt] = useState<string>('');
 
+    // Ref to track if we are currently running a sequence to prevent overlaps
+    const runningRef = useRef(false);
+
     useEffect(() => {
+        // Stop any previous run
+        runningRef.current = false;
+
         if (finalGroups.length === 0) {
             setVisibleGroups([]);
             return;
         }
 
-        const revealOrder: { student: Student, groupIdx: number }[] = [];
+        // Start new run
+        runningRef.current = true;
+
+        // Flatten groups into a reveal order (Column-major order usually feels better for "dealing cards")
+        const revealOrder: { user: User, groupIdx: number }[] = [];
         const maxLen = Math.max(...finalGroups.map(g => g.length));
+
         for (let i = 0; i < maxLen; i++) {
             for (let j = 0; j < finalGroups.length; j++) {
-                if (finalGroups[j][i]) revealOrder.push({ student: finalGroups[j][i], groupIdx: j });
+                if (finalGroups[j][i]) {
+                    revealOrder.push({ user: finalGroups[j][i], groupIdx: j });
+                }
             }
         }
 
+        // Initialize empty groups
         setVisibleGroups(Array.from({ length: finalGroups.length }, () => []));
+
         let currentIdx = 0;
 
         const processNext = () => {
+            // Safety check: if effect re-ran, stop this loop
+            if (!runningRef.current) return;
+
             if (currentIdx >= revealOrder.length) {
                 setActiveGroupIdx(null);
                 onFinish();
+                runningRef.current = false;
                 return;
             }
 
-            const { student, groupIdx } = revealOrder[currentIdx];
+            const { user, groupIdx } = revealOrder[currentIdx];
             setActiveGroupIdx(groupIdx);
             setCurrentTaunt(TAUNTS[Math.floor(Math.random() * TAUNTS.length)]);
 
             // The "Very Human" delay
             setTimeout(() => {
+                if (!runningRef.current) return;
+
                 setVisibleGroups(prev => {
                     const next = [...prev];
-                    next[groupIdx] = [...next[groupIdx], student];
+                    // Ensure the group array exists before pushing
+                    if (!next[groupIdx]) next[groupIdx] = [];
+                    next[groupIdx] = [...next[groupIdx], user];
                     return next;
                 });
                 currentIdx++;
@@ -92,6 +115,10 @@ export function useGroupReveal(finalGroups: Student[][], onFinish: () => void) {
         };
 
         processNext();
+
+        return () => {
+            runningRef.current = false;
+        };
     }, [finalGroups]);
 
     return { visibleGroups, activeGroupIdx, currentTaunt };
