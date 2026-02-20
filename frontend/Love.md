@@ -4,6 +4,64 @@ If you found this link, then congratulations, I suppose. Either you were looking
 
 Either way, you are curious or have a crush but don't know what to do. In which case, this is the perfect text for you. After I'm done ruining the mystery of *romance* into explaining the science behind why your brain is a toaster.
 
+# Table of Contents
+1. [Introduction](#everything-about-love-i-guess)
+2. [What?](#what)
+   *   [Difference from Real Love](#difference-from-real-love)
+   *   [A Scientific Name?](#a-scientific-name)
+3. [How do you know you're having a case of being smitten?](#how-do-you-know-youre-having-a-case-of-being-smitten)
+4. [Why in the living hell does Limerence happen](#why-in-the-living-hell-does-limerence-happen)
+   *   [What does gambling have to do with crushes?](#what-does-gambling-have-to-do-with-crushes)
+   *   [How it all connects](#how-it-all-connects)
+5. [How a crush works](#how-a-crush-works)
+6. [Stages of a Crush](#stages-of-a-crush)
+   *   [1. The Glint](#1-the-glint)
+   *   [2. The Halo Effect](#2-the-halo-effect)
+   *   [3. The Increase in Intensity](#3-the-increase-in-intensity)
+   *   [4. The Point of No Return](#4-the-point-of-no-return)
+   *   [5. The Body Speaks!](#5-the-body-speaks)
+   *   [6. The Finale](#6-the-finale)
+7. [Dopamine](#dopamine)
+   *   [The Anticipation](#the-anticipation)
+   *   [The Prediction Error](#the-prediction-error)
+   *   [The Love of Learning](#the-love-of-learning)
+8. [Why We Hate Rejection](#why-we-hate-rejection)
+   *   [A. The Evolutionary View](#a-the-evolutionary-view)
+   *   [B. The Biological View](#b-the-biological-view)
+9. [Jealousy](#jealousy)
+   *   [How it differs from Envy](#how-it-differs-from-envy)
+   *   [Mimetic Desire](#why-do-we-want-things-other-people-want)
+10. [Love Triangles](#love-triangles)
+      *   [The Types](#the-types)
+      *   [The Triangulation Phenomenon](#the-triangulation-phenomenon)
+11. [Attachment Theory](#attachment-theory)
+      *   [The Building Stage](#the-building-stage)
+      *   [The Panic Slider](#the-panic-slider)
+      *   [Types of Attachment](#types-of-attachment)
+12. [What Do I Do if I Have the Feelings?](#what-do-i-do-if-i-have-the-feelings)
+      *   [I want to date. How to proceed?](#i-want-to-date-how-to-proceed)
+      *   [I have feelings, but I don't want to date.](#i-have-feelings-but-i-dont-want-to-date-how-to-break-it)
+13. [Why "Maybe" is Worse Than "No"](#why-maybe-is-worse-than-no)
+      *   [The Zeigarnik Effect](#whats-the-zeigarnik-effect)
+      *   [Affective Rumination vs Problem-Solving Pondering](#affective-rumination-vs-problem-solving-pondering)
+14. [Flirting](#flirting)
+      *   [Ambiguity](#ambiguity)
+      *   [What Makes a Good Flirt](#what-makes-a-good-flirt)
+      *   [Real Flirting?](#real-flirting)
+15. [The Triangular Theory of Love](#the-triangular-theory-of-love) (Not to be confused with Love Triangles)
+16. [The Situationship](#the-situationship)
+17. [How to Know if That Person has a Crush On Me?](#how-to-know-if-that-person-has-a-crush-on-me)
+18. [What If They're Toxic?](#what-if-theyre-toxic-and-how-to-deal-with-them)
+19. [The Friendzone](#the-friendzone)
+      * [How to Deal With It](#how-to-deal-with-it)
+20. [Blushing](#blushing)
+      * [What Is Blushing?](#what-is-blushing)
+      * [Why?](#why)
+      * [Why Must It Be The Face?](#why-must-it-be-the-face)
+      * [How Is it Related to Crushing?](#how-is-it-related-to-crushing)
+21. [Some Fun Facts & Tips](#some-fun-facts--tips)
+22. [References](#references)
+
 ## What?
 
 Let's define what's happening in your brain. Or more precisely, what's happening in everyone's brain at some point, especially in high school. You might feel it as the weird feeling in your stomach when you want to get close to your crush.
@@ -25,40 +83,24 @@ Don't feel bad, as most relationships start with a crush. How do you think your 
 So, we have a name. Limerence. There are multiple indications of this phenomenon. Some of the general stuff includes:
 
 1. Suddenly thinking about your crush no matter the situation.
-
 2. Thinking about your past interactions in the form of analyzing your body language and your speech patterns, so you can decode what they thought to see any chance of reciprocation and how to improve yourself in an imaginative future scenario, where you script your response and their response, especially when you're daydreaming.
-
 3. Being happy when they interact with you or being devastated when they don't.
 
 In the modern age, there are specific scenarios to look out for. If you check for more than three of them, you have a crush.
-
 1. You constantly check if they are online on a certain social media.
-
 2. Relating to the previous point, you are sad, or you think, "They're talking to someone else," and are jealous (more on this later) when they leave you on read or don't read you at all when they are online.
-
 3. You are euphoric when they reply to you, as your brain releases dopamine when they do (Fisher, 2004).
-
    - It activates the Ventral Tegmental Area (VTA), which is the same area that activates when you consume cocaine.
-
 4. You see who liked your post every 10 minutes, hoping that there's an off chance that your crush liked it.
-
 5. You scroll on their Instagram page longer than needed.
-
    - This is called *creeping* (Fox et al., 2013). It also applies to point number one. According to the paper, creeping is defined as viewing another's page without their knowledge and usually not leaving any markers that would show how in-depth the profile was viewed.
-
    - Participants in the paper agreed that, as Tamara stated, "Everybody does it, whether they admit it or not."
-
 6. You feel as if your heart sinks a bit when there's a notification on your phone, no matter who notified you. Maybe it's your crush?
-
 7. You even stop doomscrolling and start thinking about a future date scenario.
-
    - Fun fact, we spend about 30% to 50% of our waking life daydreaming (Killingsworth & Gilbert, 2010), and about 71% of those thoughts involve other people (Song & Wang, 2012).
-
    - If you are anxious about whether your crush likes you back or not, your daydreams are actually helping you manage it in a way. That is not constantly being sad all the time Poerio et al. (2015) found that we only get a happiness boost from these fantasies when we feel socially disconnected.
-
-   - Your brain can't tell the difference between a real date and the ones you've been imagining for three hours. Imagining these events makes you feel the same feelings as the real event (Kosslyn et al., 2001).
-
-8. I think, "What will my crush think if they see this video?"
+   - Your brain can't tell the difference between a real date and the ones you've been imagining for three hours. Well, your big brain can, but your lizard brain can't. Imagining these events makes you feel the same feelings as the real event (Kosslyn et al., 2001).
+8. I think, "What will my crush think if they see this text?"
 
 Ignore my last example. That's just... uhh.
 
@@ -74,7 +116,7 @@ To understand this, you have to understand gambling.
 
 That's a great question, and they have a connection. People gamble and lose their life savings. Why? Because of **intermittent reinforcement** (Skinner, 1948). It's basically sometimes getting a reward when a condition is met, like getting only a bit of money when you play a machine.
 
-There's a study done by B.F. Skinner. She placed a pigeon in a cage with a button that dispenses treat. When it always dispenses treat, they only press it enough. When the button dooes noting, they obviously don't press it because they know that it won't do anything and end up starving. If the button occasionally dispenses a treat, the pigeon keeps pressing it, hoping for the next treat until their beak deteriorates (Skinner, 1948). They think, "What do I do to get the treat coming? Keep pressing? Press it differently? I WANT THE TREAAAAAATTTT!!!"
+There's a study done by B.F. Skinner. She placed a pigeon in a cage with a button that dispenses treat. When it always dispenses treat, they only press it enough. When the button does nothing, they obviously don't press it because they know that it won't do anything and end up starving. If the button occasionally dispenses a treat, the pigeon keeps pressing it, hoping for the next treat until their beak deteriorates (Skinner, 1948). They think, "What do I do to get the treat coming? Keep pressing? Press it differently? I WANT THE TREAAAAAATTTT!!!"
 
 In this case, you are the pigeon.
 
@@ -126,11 +168,11 @@ Tennov uses the "salt mine branch" analogy. You take a plain twig (the person), 
 
 ### 3. The Increase in Intensity
 
-This is the caw-caw stage. Oh, God! Someone give me a formal English medicine. A crush needs a specific amount of difficulty to grow. Tennov notes that if they are too easy, i.e., if they say "I love you" on the first date, it doesn't grow; it usually fades into secure love once they and you have committed. If they are playing too hard to get, you give up. If they are hard to get but not *too* difficult to give up on, like that (not so) small space when you think "I think they like me" and "I'm not sure," that's the sweet spot where feelings grow.
+This is the caw-caw stage. Oh, God. I need therapy for saying that sentence. A crush needs a specific amount of difficulty to grow. Tennov notes that if they are too easy, i.e., if they say "I love you" on the first date, it doesn't grow; it usually fades into secure love once they and you have committed. If they are playing too hard to get, you give up. If they are hard to get but not *too* difficult to give up on, like that (not so) small space when you think "I think they like me" and "I'm not sure," that's the sweet spot where feelings grow.
 
 Tennov quoted, "Your degree of involvement increases if obstacles are externally imposed or if you doubt LO's feelings for you... With some degree of doubt its intensity rises further" (Tennov, 1979).
 
-Maybe initially, your occupation starts at 5%. Then, it goes up to 50%. When you see a gift-worthy item, you might think, "I should get this. Totally not for my crush, hehe!" This is the most likely point when people think that someone is having a crush. Then 80%.
+Maybe initially, your preoccupation starts at 5%. Then, it goes up to 50%. When you see a gift-worthy item, you might think, "I should get this. Totally not for my crush, hehe!" This is the most likely point when people think that someone is having a crush. Then 80%.
 
 ### 4. The Point of No Return
 
@@ -225,7 +267,7 @@ When you have a crush, they are like a puzzle.
 
 Every time you solve a problem, your brain gives you a bit of a treat, aka dopamine. This is why you can spend four hours looking at their Instagram page from 5 years ago. Your brain thinks it's doing something important.
 
-Your brain seeks out new information because new usually means probably useful for survival in the Stone Age, and even now. When you finally solve how crushes work, or a new detail about your crus, your brain treats it as a W. (Bromberg-Martin, Matsumoto, & Hikosaka, 2010)
+Your brain seeks out new information because new usually means probably useful for survival in the Stone Age, and even now. When you finally solve how crushes work, or a new detail about your crush, your brain treats it as a W. (Bromberg-Martin, Matsumoto, & Hikosaka, 2010)
 
 ## Why We Hate Rejection
 
@@ -261,7 +303,7 @@ Recent meta-analyses shows that rejection instead consistently activates the Def
 
 ## Jealousy
 
-So, you think that jealousy is a social construct. The truth is it comes deepy from biology.
+So, you think that jealousy is a social construct. The truth is it comes deeply from biology.
 
 You see, jealousy is usually defined as a *state* caused by a perceived threat to a relationship and motivates behavior aimed at preventing and/or fighting the threat (Daly et al., 1982).
 
@@ -299,7 +341,7 @@ While males have a biological reason to have paternity uncertainty, modern datin
 
 Research has shown that we want things that other people want. This is called mimetic desire (Garrels, 2005).
 
-First, you have to know that imitation is basically like an instict. We can see this as babies can imitate facial expressions mere minutes after born.
+First, you have to know that imitation is basically like an instinct. We can see this as babies can imitate facial expressions mere minutes after born.
 
 Plus, we have mirror neurons, which are neurons that fire when we do something and see someone else do that thing. Our brains are programmed from the start to react to other people's action that matches our own. This is essential to empathy and language, but it also makes people want to imitate others too.
 
@@ -314,21 +356,15 @@ There exists no freaking research paper explores this lmao, but I'll try my best
 There are multiple types.
 
 1. The V-shape.  
-**Person A -\> Person B \<- Person C.**
-
-This is the most common setup. Two people are crushing over the same person. Usually, what happens is, let's say, person A tries to impress person B and person C competes by competing with person A to impress person B even more.
-
+   **Person A -> Person B <- Person C.**
+   This is the most common setup. Two people are crushing over the same person. Usually, what happens is, let's say, person A tries to impress person B and person C competes by competing with person A to impress person B even more.
 2. The chain
-
    - Unlinked  
-**Person A -\> Person B -\> Person C**
-
-   - Effort only flows one way. In th is setup, person B gets the ego from person A and tries to chase person C, who isn't really interested in anyone. Eventually, feelings usually fade.
-
-   - Linked  
-**Person A -\> Person B -\> Person C -\> Person A**
-
-   - This is the most tragic one. No one gets reciprocation, but no one gets rejected because they are too busy casing the next person. It's like a snake eating itself.
+      **Person A -> Person B -> Person C**
+      - Effort only flows one way. In this setup, person B gets the ego from person A and tries to chase person C, who isn't really interested in anyone. Eventually, feelings usually fade.
+   - Linked
+      **Person A -> Person B -> Person C -> Person A**
+     - This is the most tragic one. No one gets reciprocation, but no one gets rejected because they are too busy chasing the next person. It's like a snake eating itself.
 
 The pivot isn't *always *evil. Perhaps, they're just as confused as the rest of us.
 
@@ -342,7 +378,7 @@ It works because of limerent jealousy. Person B looks are the Pivot interacting/
 
 #### The Pivot
 
-The pivot usually doesn't care because it gives them a free ego boost as they think that they are very likeable, which they usually are, but that's beside the point as in the long run, they don't make a good partner.
+The pivot usually doesn't care because it gives them a free ego boost as they think that they are very likable, which they usually are, but that's beside the point as in the long run, they don't make a good partner.
 
 They also think, "I don't want to hurt anyone." The reality is it's the exact opposite. By choosing no one and/or trying to make everyone happy by giving *special* attention to them, you are hurting everyone as they *will* get [intermittent reinforcements](#what-does-gambling-have-to-do-with-crushes).
 
@@ -408,24 +444,24 @@ Cassidy (implicitly) summarized them like this.
 
 1. Secure: Basically the unicorn. This is the "I'm chill" kind of one. We hate them because we want to be them. They trust their caregiver is a secure base and a safe haven.
 
-**How they crush:**  
-It's just as boring as you will expect. If they have a crush, they... just tell them. They don't play mind games. If they get rejected, they don't cry; they just go "bummer" and move on. They don't need the dopamine as much.
+   **How they crush:**  
+   It's just as boring as you will expect. If they have a crush, they... just tell them. They don't play mind games. If they get rejected, they don't cry; they just go "bummer" and move on. They don't need the dopamine as much.
 
 2. Avoidant: They have learned that being stressed doesn't give a helpful, so they try to minimize their feelings and solo everything. Even distancing themselves.
 
-**How they crush:**  
-You prefer to observe people from a safe distance where they can't hurt you. The moment your crush actually shows interest, you back away. You likely develop crushes on fictional characters because they can't hurt or demand vulnerability from you. Relationships feel like a trap, so you dump them before they can dump you.
+   **How they crush:**  
+   You prefer to observe people from a safe distance where they can't hurt you. The moment your crush actually shows interest, you back away. You likely develop crushes on fictional characters because they can't hurt or demand vulnerability from you. Relationships feel like a trap, so you dump them before they can dump you.
 
-This probably also explains why there is a classmate that is... always bossy.
+   This probably also explains why there is a classmate that is... always bossy.
 
 3. Ambivalent: They are often clingy and hard to calm down. They don't know if their caregiver is there to genuinely help them or to fool around because their caregiver has been inconsistent.
 
-**How they crush:** You are a pigeon. You are the definition of limerence. You overanalyze everything, including the punctuation in their messages. "She said Hey.. Is she mad at me? Oh, no!" You always need reassurance. If they don't reply in five minutes, you automatically assume they dislike you.
+   **How they crush:** You are a pigeon. You are the definition of limerence. You overanalyze everything, including the punctuation in their messages. "She said Hey.. Is she mad at me? Oh, no!" You always need reassurance. If they don't reply in five minutes, you automatically assume they dislike you.
 
 4. Disorganized: What in the world is happening? This is the most concerning one. They don't trust anyone, and they don't have a clear strategy for dealing with stress. Their caregiver is often a source of fear rather than comfort.
 
-**How they crush:**  
-Chaos. "Come here... no, GO AWAY!" You desperately want to be loved, but you also think that love is danger. It's a contradictory mess. One day, you're planning for a date and the next day, you block them for no reason. It is tiring for you, and it is exhausting for them.
+   **How they crush:**  
+   Chaos. "Come here... no, GO AWAY!" You desperately want to be loved, but you also think that love is danger. It's a contradictory mess. One day, you're planning for a date and the next day, you block them for no reason. It is tiring for you, and it is exhausting for them.
 
 The spiciest crushes are usually the ones involving **Avoidant** types and **Ambivalent** types.
 
@@ -459,7 +495,7 @@ But beware! Your dopamine levels will drop. You will feel less thrilled (dopamin
 
 ### I don't have feelings, and I don't want to date
 
-Don't be afraid to talk to them and say that while you want to be friends, you are not interested in being parters towards them directly and kindly.
+Don't be afraid to talk to them and say that while you want to be friends, you are not interested in being partners towards them directly and kindly.
 
 > Hey, I'm flattered, but I don't feel the same way. Let's be friends!
 
@@ -495,7 +531,7 @@ Well, congratulations, you have just been handed an unfinished task. It's not ju
 
 Back in the 1920s (yes, that long ago), a psychologist named Bluma Zeigarnik noticed that waiters could memorize any unpaid orders perfectly *up until* the bill was paid. Like everything was forgotten. Zeigarnik found this fascinating, so she designed experiments to know more about it. Then, she wrote a paper and published it as *Über das Behalten von erledigten und unerledigten Handlungen*, or what common folks call it, *On Finished and Unfinished Tasks*.
 
-It is a tendency where people remember unfinished tasks a lot better than finished tasks. She tested this hypothesis by doing some experiments that shows that uncompleted mental tasks (such as puzzles or constructing cardboard boxes) induce a tendency to experience intrusive thoughts and are 90% more likely to be recollected than finished tasks.
+It is a habit where people remember unfinished tasks a lot better than finished tasks. She tested this hypothesis by doing some experiments that shows that uncompleted mental tasks (such as puzzles or constructing cardboard boxes) induce a tendency to experience intrusive thoughts and are 90% more likely to be recollected than finished tasks.
 
 ### Affective Rumination vs. Problem-Solving Pondering
 
@@ -527,46 +563,33 @@ This causes real problem, as men *will* escalate. And when men escalate, this wi
 
 And the person who incorrectly interpreted the signal will feel [rejected](#why-we-hate-rejection).
 
-> She was flipping her hair and smiling at me and even laughed at my jokes. She was totally into me! Why did she get mad??
+> She was flipping her hair and smiling at me and even laughed at my jokes. She totally likes me! Why did she get mad??
 
 It will get weird. Why does this happen? Henningsten noted that men are basically wired to look for sexual interest everywhere so they don't miss an opportunity, while women under-perceives their own signals. They often don't realize that "being friendly" actually kind of looks like "I have a crush."
 
-||And this can have real life consequences too! Sexual harrasment can happen in this situation, where men make a move and suddenly, it's an studen counselor's nightmare. And even then, men might use sexual coercion to force women to unwanted physical intimacy.||
+||And this can have real life consequences too! Sexual harassment can happen in this situation, where men make a move and suddenly, it's a student counselor's nightmare. And even then, men might use sexual coercion to force women to unwanted physical intimacy.||
 
 ### What Makes a Good Flirt
 
 There are some characteristics that make a good flirt (Apostolou, M., & Christoforou, C., 2020).
 
 1. The most universal one is **non-verbal behaviors**. It is statistically the most significant behavior for people to fold into, no matter the gender. Those behaviors include:
-
    - How one looks at another
-
    - Intense gaze
-
    - Nice smile
 
 2. **Intelligence** also plays a big role in effectiveness of flirting. Women value this more than men by quite a lot. These behaviors include:
-
    - How smart you are, duh
-
    - Education
-
    - Interesting personality
-
    - Good with words (or wit)
-
    - Humor
 
 3. To make it even more effective, a **gentle approach** is required. Generally, older people liked this trait more than younger people, but it still applies to young people. Women also liked this trait more than men. These behaviors include:
-
    - They are not moving fast
-
    - Seriousness
-
    - Respect
-
    - Discreteness
-
    - Maturity
 
 So, there you go. If you want to be a good flirt, you generally need these traits.
@@ -575,9 +598,9 @@ So, there you go. If you want to be a good flirt, you generally need these trait
 
 First and foremost, do not be what you are not. If you flirt while being what you are not, when the other finally give in, and you remove your mask, the other person may feel like not getting what you promised and be a bit sad. On top of that, read the room too. If you flirt while the other is being sad, it's a recipe for extreme awkwardness and disasters. It's called Social Intelligence (Peterson & Seligman, 2004). Look it up.
 
-Also, I won't give you specific action for flirting, and you have to make them yourself. But I can tell you one thing for certain and that using touch (where socially appropriate) bonds people well. But before you go touching, make sure you have consent! The bravest thing someone can do is to say, "May I?" If you memorize a specific script, that would feel very robotic and forced. Besides, it feels a bit manipulative if you memorize actions, no?
+Also, I won't give you specific action for flirting, and you have to make them yourself. But I can tell you one thing for certain and that using touch (where socially appropriate) bonds people well. But before you go touching, make sure you have consent! The bravest thing someone can do is to say, "May I?" In most cases, asking for consent makes the other person flattered and happy anyway. On top of that, it shows consideration and maturity. If you memorize a specific script, that would feel very robotic and forced. Besides, it feels a bit manipulative if you memorize actions, no?
 
-There's a big difference between confidence and bravery/courage. Confidence is where someone thinks for certain that the other person will give in, and that can sound arrogant and/or fake, while bravery is where someone does it anyways even when they are not sure if it will work out or not, and it's genuine and attractive. Examples of bravery include complimenting them while blushing and shaking hard and telling them the truth about your feelings.
+There's a big difference between confidence and bravery/courage. Confidence is where someone thinks for certain that the other person will give in, and that can sound arrogant and/or fake, while bravery is where someone does it anyway even when they are not sure if it will work out or not, and it's genuine and attractive. Examples of bravery include complimenting them while blushing and shaking hard and telling them the truth about your feelings.
 
 ### Real Flirting?
 
@@ -587,7 +610,7 @@ Real flirting is like a game of tennis. Try to initiate or hit them, and wait. I
 
 You may think that things should be fine if you flirt for fun while having an established partner, but research says that it can make your partner *very* jealous (Yarab, 1999).
 
-Even in casual dating, people seem to like exclusivity very much. Basically, you haven't had *The Talk™* yet, your parter likely expects you to be faithful. Plus, fantasies about dating another person makes your partner jealous, so it's probably for the best if your partner is none the wiser.
+Even in casual dating, people seem to like exclusivity very much. Basically, you haven't had *The Talk™* yet, your partner likely expects you to be faithful. Plus, fantasies about dating another person makes your partner jealous, so it's probably for the best if your partner is none the wiser.
 
 Flirting other than your partner makes your partner really jealous. In fact, that jealousy peaks during dating without *The Talk™*, with a score of 9/10. Almost up there with sexual behaviors with others. And here's the surprising thing, women tend to be more jealous in this situation than men.
 
@@ -657,40 +680,25 @@ You want to look for body language. Specifically, subconscious signs of proximit
 
 This doesn't have to apply to *only* your crushes; it can apply to your bad friends too. First, we have to tell if people are toxic. Most, if not all, bad people have at least one of the \**Dark Triads*, which are narcissism, machiavellianism, and psychopathy (Paulhus & Williams, 2002). If these words are way too big, let me break it down.
 
-1. Narcissism. "I'm the center of the galaxy. I am the protagoinst. I am THE BEST!" They don't just think really high of themselves. They *need* you to love them. They usually are very energetic and sociable to get attention from you, but they have low agreeableness to make themselves stay at the top. They are also quite open, as in getting unique ideas to feel superior, not to genuinely contribute. Plus, they think they are smarter than they are. Examples include Ke–umm... nothing.
-
+1. Narcissism. "I'm the center of the galaxy. I am the protagonist. I am THE BEST!" They don't just think really high of themselves. They *need* you to love them. They are usually very energetic and sociable to get attention from you, but they have low agreeableness to make themselves stay at the top. They are also quite open, as in getting unique ideas to feel superior, not to genuinely contribute. Plus, they think they are smarter than they are. Examples include Ke–umm... nothing.
    - They don't listen to what you say. They just want to talk. If you have a bad day, the interrupt, making it about themselves.
-
    - If you criticize them, they throw a tantrum. They rage and sulk intensely.
-
    - They can also make you feel like the most important person in the room.
-
    - They take over any group projects to become "leaders."
-
    - They boast any time, even if you look visibly annoyed by them.
-
 2. Machiavellianism. "I'm silent. I am at the back of the class. And I am planning your demise. I will manipulate you for my advantage. I know what I'm doing." They are cold and cynical, and they *use* people. I think these guys are scary. Like real scary. Because they are hard to spot. They are NOT nice whatsoever and have even lower agreeableness. They do not help anyone, like at all. Plus, what they say doesn't match what they do.
-
    - They ask you a lot but they don't say much about themselves. They are gathering information and looking for weaknesses to exploit.
-
    - If they do something nice to you, there's *always* a catch.
-
    - They will lie about things that happened 2 minutes ago just to make you doubt your own sanity.
-
    - They'll promise you big things to get what they want now, but they don't actually deliver it. 
    
-   For machs, you must keep track of everything they say so you can use it against them. Keep emails or texts, and be confident in your memory so they can't gaslight you later. More importantly, don't tell too much. Say, "I don't feel comfortable sharing that."
+    For machs, you must keep track of everything they say so you can use it against them. Keep emails or texts, and be confident in your memory so they can't gaslight you later. More importantly, don't tell too much. Say, "I don't feel comfortable sharing that."
 
 3. Psychopathy. "I don't care. Whatever. Eh." They don't have a sense of fear. Or empathy. Or any restraint at all. They have low neuroticism, where neuroticism is being worried and self-conscious all the time. Normal people have some of those. Psychos don't. Plus, they are also generally unkind, but very charming on the outside.
-
    - They don't get scared. Like ever. They don't jump when there's a jumpscare.
-
    - They feel no remorse of their actions.
-
    - They don't feel empathy to you. That's why they appear cold.
-
    - They will do whatever to you, including doing your homework for you for whatever reason or using your money without any guilt.
-
    - They will make drama because they're bored. And did I say that they can't feel guilt?
 
    The only way to deal with them is to ignore them. Remove them for your life. You cannot fix psychos.
@@ -702,107 +710,118 @@ If you want a shortcut on how to deal with them, you mustn't explain yourself (D
 
 Why do you feel *devastated* when you finally confess, but the person you confessed followed [this guide](#i-dont-have-feelings-and-i-dont-want-to-date)? Because of [The Prediction Error](#the-prediction-error) and [The Fear of Rejection](#why-we-hate-rejection). You finally confessed and you *hope* that the other person will confess back, but when they reject, you interpret it badly, so the received reward is much lower than your expectation.
 
+### How To Deal With It?
 To deal with it, you just have to *deal with it*. Like instead of crying in the corner, get back up and do your hobbies, like drawing, or even exercising. If that rejection really got in your way, talk to your trusted friends and they will (hopefully) make you better. Or write a diary. I'm not joking, but naming what you feel will make you less stresesd (Lieberman et al., 2007).
 
+## Blushing
+It's a heck lot more complicated than you think. Like seriously.
+
+### What is Blushing?
+As you all know, it is the reddening of the face, ears, neck, and even the upper chest caused by the dilation of blood vessels near your skin (Leary et al., 1992). The blush region is only on specific areas of the skin, not everywhere (Frijda, 1986).
+
+### Why?
+Blushing happens when we receive attention that we simply don't want, like getting more praise than you are comfortable with, as you appear to get more attention than you deserved. It's not simply becoming more self-aware (Kaufman, 1989; Tompkins, 1963). On top of that, if you simply accept the attention, it will make you arrogant, making you blush to appear less smug. And people also will look away from people who are blushing as they find it uncomfortable seeing other people suffer, which, in turn, reduces attention.
+
+It also acts as a non-verbal apology. It shows people that you messed up, hoping that they will forgive you (see Cupach, Metts, & Hazelton, 1986; Schlenker, 1980). It is sincerer than any spoken apology as you cannot control a blush.
+
+### Why Must It Be The Face?
+The paper says that the blood vessels in the face are more relaxed and can hold a much larger volume of blood than other parts. Plus, it has specific receptors that can trigger vasodilation, which is pretty unusual. And it just so happens to be in a more visible area.
+
+### How Is It Related to Crushing
+In the context of crushes, your brain is, for some reason, trying to apologize for existing near someone so high-value and... cute (look back at the smug part) while trying to get their attention. It's almost a paradox.
+
 ## Some Fun Facts & Tips
-
 1. Did you know that you are attracted to the scents of people with different immune systems with you? This is known as the Sweaty T-Shirt Study (Wedekind et al., 1995). It's to make formidable off-springs.
-
+    - If the woman is on hormonal birth control, this effect often disappears!
 2. Did you know that holding your partner's hand calmed your hypothalamus (Coan et al., 2006)? That also means your immune system will be stronger!
+3. So, they decided to declare you strictly as a friend, but their behaviors are all couple-y. That, my friend, is a situationship. Just take that as a no and retract. If they decided to retract what they said, they *will* come.
+4. Always trade for the hot highs for a warm security. It's much better that way.
+5. Did you know that if other pupils are enlarged when seeing you, they are definitely interested? 
+   - No, it's not just Disney logic. Kret (2017) did a study where people were asked to draw pupils on a happy face and an angry face. The happy face has larger pupils than the angry face.
+   - They dilate from mental effort (Kahneman & Beatty, 1966). You see, the pupils dilate when you are in a high stress situation, as you need a lot of visual information, like letting more light in (Mathôt, 2018).
+   - And also because they want to appear innocent and baby-like.
+   - Don't take this as the *only* evidence. Make sure you are not in a dark room, or they aren't on meds.
+6. I just thought of this, but I invent, the 5Fs in school. Fight, flight, freeze, fawn, and flirt. The first four is psychologically found, but my stupid brain thought that flirting is also a survival mechanism in school.
+7. Wegner (1994) found that when we try to suppress a thought, it becomes more intrusive. In turn, that's why trying to stop thinking of your crush makes you think of your crush.
+8. Take this with a grain of salt, but Williams & Bargh (2008) found that people who held a cup of hot coffee rated a stranger as having a warmer personality than those who held iced coffee. 
+   - The **dorsal posterior insula** (ignore the complex names if you don't understand) is the part of the brain that processes the temperature of your skin. The **frontoinsular cortex** processes trust, empathy, and social emotions. Since, they're neighbors, they can sometimes overlap and accidentally activate one another.
+   - For your first date, go bring them to a cafe that sells warm coffee.
+   - This is where we get "warm person" from!
+   - Lynott et al. (2008) tried to do this research, but they found **zero** correlations between the two.
+9. You like things (and people) more simply because you see them often (Zajonc, 1968). It is because of familiarity!
+10. You think everyone notices your "flaws," but in reality, nobody does. 
+    - Gilovich et al. (2000) ran a study where students had to wear an embarrassing T-shirt to a room. The students thought everyone noticed it, but in reality, fewer than 20% of people even saw it.
+    - The tip? Just chill.
+11. You actually like your crush more if she's involved when doing something scary. It can be applied the other way around.
+    - Dutton & Aron (1974) ran a study on guys where they have to cross a wobbly bridge and a sturdy bridge. An attractive female researcher approached that guy and told the guy to fill out a survey, which included making a short, dramatic story from a picture of a woman covering her face with one hand. After the survey is done, she would say, "I'm in a rush, but if you want to hear more about the results later, here's my number." It's done on the two bridges.
+    - The result? The scary bridge guys wrote much more sensual stories than the sturdy bridge. And also, the scary bridge guys called way more often.
+    - And also, the same experiment is done with a male researcher. This time, almost nobody called him. 
+12. Physiological Arousal + Cognitive Label = Emotion (Dutton & Aron, 1974)
+    - Dutton & Aron (1974) argued that real emotions should have an arousal component and a label as to why it happens.
+    - This is why point number 11 is possible.
+    - If someone is aroused but there are no immediate explanation, they will use the environment to label it.
+    - If there is an obvious explanation, they will not label their feelings using the environmental cues.
+    - If they are in a situation that should make them feel something, but there are no arousal, they don't really feel the emotion.
 
-3. So, they decided to declare you strictly as a friend, but their behaviors are all couple-y. That, my friend, is a situationship. Just take that as a no and retract. If they decided to take back what they said, they *will* come.
-
-### References
-
-- **Dion, K., Berscheid, E., & Walster, E.** (1972). What is beautiful is good. Journal of Personality and Social Psychology, 24(3), 285–290. [https://doi.org/10.1037/h0033731](https://doi.org/10.1037/h0033731)
-
-- **Fisher, H.** (2004). Why We Love: The Nature and Chemistry of Romantic Love. Henry Holt and Co.
-
-- **Haselton, M. G., & Buss, D. M.** (2000). Error management theory: a new perspective on biases in cross-sex mind reading. Journal of personality and social psychology, 78(1), 81–91. https://doi.org/10.1037//0022-3514.78.1.81
-
-- **Skinner, B. F.** (1948). 'Superstition' in the pigeon. Journal of Experimental Psychology, 38(2), 168–172. [https://doi.org/10.1037/h0055873](https://doi.org/10.1037/h0055873)
-
-- **Tennov, D.** (1979). Love and Limerence: The Experience of Being in Love. Stein and Day.
-
-- **Berridge, K. C., & Robinson, T. E.** (1998). What is the role of dopamine in reward: hedonic impact, reward learning, or incentive salience?. Brain research. Brain research reviews, 28(3), 309–369. https://doi.org/10.1016/s0165-0173(98)00019-8
-
-- **Schultz W.** (2016). Dopamine reward prediction error coding. Dialogues in clinical neuroscience, 18(1), 23–32. [https://doi.org/10.31887/DCNS.2016.18.1/wschultz](https://doi.org/10.31887/DCNS.2016.18.1/wschultz)
-
-- **Berridge K. C.** (2009). Wanting and Liking: Observations from the Neuroscience and Psychology Laboratory. Inquiry (Oslo, Norway), 52(4), 378. [https://doi.org/10.1080/00201740903087359](https://doi.org/10.1080/00201740903087359)
-
-- **Kross, E., Berman, M. G., Mischel, W., Smith, E. E., & Wager, T. D.** (2011). Social rejection shares somatosensory representations with physical pain. Proceedings of the National Academy of Sciences of the United States of America, 108(15), 6270–6275. [https://doi.org/10.1073/pnas.1102693108](https://doi.org/10.1073/pnas.1102693108)
-
-- **Fisher, H. E., Brown, L. L., Aron, A., Strong, G., & Mashek, D.** (2010). Reward, addiction, and emotion regulation systems associated with rejection in love. Journal of neurophysiology, 104(1), 51–60. [https://doi.org/10.1152/jn.00784.2009](https://doi.org/10.1152/jn.00784.2009)
-
-- **Daly, M., Wilson, M. I., & Weghorst, S. J.** (1982). Male sexual jealousy. Ethology & Sociobiology, 3(1), 11–27. https://doi.org/10.1016/0162-3095(82)90027-9
-
-- **Parrott, W. G., & Smith, R. H.** (1993). Distinguishing the experiences of envy and jealousy. Journal of Personality and Social Psychology, 64(6), 906–920. [https://doi.org/10.1037/0022-3514.64.6.906](https://doi.org/10.1037/0022-3514.64.6.906)
-
-- **Bertram, Brian.** (2009). Social Factors Influencing Reproduction in Wild Lions. Journal of Zoology. 177. 463 - 482. [https://doi.org/10.1111/j.1469-7998.1975.tb02246.x](https://doi.org/10.1111/j.1469-7998.1975.tb02246.x)
-
-- **Cassidy, J., Jones, J. D., & Shaver, P. R.** (2013). Contributions of attachment theory and research: a framework for future research, translation, and policy. Development and psychopathology, 25(4 Pt 2), 1415–1434. [https://doi.org/10.1017/S0954579413000692](https://doi.org/10.1017/S0954579413000692)
-
-- **Marzola, P., Melzer, T., Pavesi, E., Gil-Mohapel, J., & Brocardo, P. S.** (2023). Exploring the Role of Neuroplasticity in Development, Aging, and Neurodegeneration. Brain sciences, 13(12), 1610. [https://doi.org/10.3390/brainsci13121610](https://doi.org/10.3390/brainsci13121610)
-
-- **Wallin, D. J.** (2007). Attachment in psychotherapy. Guilford press.
-
-- **Gunnar, M. R., & Quevedo, K. M.** (2007). Early care experiences and HPA axis regulation in children: A mechanism for later trauma vulnerability. In E. R. De Kloet, M. S. Oitzl, & E. Vermetten (Eds.), Progress in brain research (Vol. 167, pp. 137–149). Elsevier. https://doi.org/10.1016/S0079-6123(07)67010-1
-
-- **Fearon, R. P., Bakermans-Kranenburg, M. J., van Ijzendoorn, M. H., Lapsley, A. M., & Roisman, G. I.** (2010). The significance of insecure attachment and disorganization in the development of children's externalizing behavior: a meta-analytic study. Child development, 81(2), 435–456. [https://doi.org/10.1111/j.1467-8624.2009.01405.x](https://doi.org/10.1111/j.1467-8624.2009.01405.x)
-
-- **Groh, A. M., Roisman, G. I., van Ijzendoorn, M. H., Bakermans-Kranenburg, M. J., & Fearon, R. P.** (2012). The significance of insecure and disorganized attachment for children's internalizing symptoms: a meta-analytic study. Child development, 83(2), 591–610. [https://doi.org/10.1111/j.1467-8624.2011.01711.x](https://doi.org/10.1111/j.1467-8624.2011.01711.x)
-
-- **Fox, J., Warber, K. M., & Makstaller, D. C.** (2013). The role of Facebook in romantic relationship development: An exploration of Knapp's relational stage model: An exploration of Knapp's relational stage model. Journal of Social and Personal Relationships, 30(6), 771-794. [https://doi.org/10.1177/0265407512468370](https://doi.org/10.1177/0265407512468370) (Original work published 2013)
-
-- **Poerio, G. L., Totterdell, P., Emerson, L.-M., & Miles, E.** (2015). Love is the triumph of the imagination: Daydreams about significant others are associated with increased happiness, love and connection. Consciousness and Cognition, 33, 135–144. [https://doi.org/10.1016/j.concog.2014.12.011](https://doi.org/10.1016/j.concog.2014.12.011)
-
-- **Killingsworth, M. A., & Gilbert, D. T.** (2010). A wandering mind is an unhappy mind. Science (New York, N.Y.), 330(6006), 932. [https://doi.org/10.1126/science.1192439](https://doi.org/10.1126/science.1192439)
-
-- **Song X, Wang X** (2012) Mind Wandering in Chinese Daily Lives – An Experience Sampling Study. PLoS ONE 7(9): e44423. [https://doi.org/10.1371/journal.pone.0044423](https://doi.org/10.1371/journal.pone.0044423)
-
-- **Kosslyn, S. M., Ganis, G., & Thompson, W. L.** (2001). Neural foundations of imagery. Nature reviews. Neuroscience, 2(9), 635–642. [https://doi.org/10.1038/35090055](https://doi.org/10.1038/35090055)
-
-- **Syrek, C. J., Weigelt, O., Peifer, C., & Antoni, C. H.** (2017). Zeigarnik's sleepless nights: How unfinished tasks at the end of the week impair employee sleep on the weekend through rumination. Journal of Occupational Health Psychology, 22(2), 225–238. [https://doi.org/10.1037/ocp0000031](https://doi.org/10.1037/ocp0000031)
-
-- **Zeigarnik, B.** (1938). On finished and unfinished tasks. In W. D. Ellis (Ed.), A source book of Gestalt psychology (pp. 300–314). Kegan Paul, Trench, Trubner & Company. [https://doi.org/10.1037/11496-025](https://doi.org/10.1037/11496-025)
-
-- **Cropley, M., & Zijlstra, F. R. H.** (2011). Work and rumination. In J. Langan-Fox & C. L. Cooper (Eds.), Handbook of stress in the occupations (pp. 487–501). Edward Elgar Publishing. [https://doi.org/10.4337/9780857931153.00061](https://doi.org/10.4337/9780857931153.00061)
-
-- **Vijayakumar, N., Cheng, T. W., & Pfeifer, J. H.** (2017). Neural correlates of social exclusion across ages: A coordinate-based meta-analysis of functional MRI studies. NeuroImage, 153, 359–368. [https://doi.org/10.1016/j.neuroimage.2017.02.050](https://doi.org/10.1016/j.neuroimage.2017.02.050)
-
-- **Eisenberger, N. I., Lieberman, M. D., & Williams, K. D.** (2003). Does rejection hurt? An FMRI study of social exclusion. Science (New York, N.Y.), 302(5643), 290–292. [https://doi.org/10.1126/science.1089134](https://doi.org/10.1126/science.1089134)
-
-- **Vul, E., Harris, C., Winkielman, P., & Pashler, H.** (2009). Puzzlingly High Correlations in fMRI Studies of Emotion, Personality, and Social Cognition. Perspectives on psychological science : a journal of the Association for Psychological Science, 4(3), 274–290. [https://doi.org/10.1111/j.1745-6924.2009.01125.x](https://doi.org/10.1111/j.1745-6924.2009.01125.x)
-
-- **Lieberman, M. D., Berkman, E. T., & Wager, T. D.** (2009). Correlations in Social Neuroscience Aren't Voodoo: Commentary on Vul et al. (2009). Perspectives on psychological science : a journal of the Association for Psychological Science, 4(3), 299–307. [https://doi.org/10.1111/j.1745-6924.2009.01128.x](https://doi.org/10.1111/j.1745-6924.2009.01128.x)
-
-- **Henningsen, D. D.** (2004). Flirting With Meaning: An Examination of Miscommunication in Flirting Interactions. Sex Roles: A Journal of Research, 50(7-8), 481–489. https://doi.org/10.1023/B:SERS.0000023068.49352.4b
-
-- **Apostolou, M., & Christoforou, C.** (2020). The art of flirting: What are the traits that make it effective? Personality and Individual Differences, 158, Article 109866. [https://doi.org/10.1016/j.paid.2020.109866](https://doi.org/10.1016/j.paid.2020.109866)
-
-- **Moore, M. M.** (1985). Nonverbal courtship patterns in women: Context and consequences. Ethology and Sociobiology, 6(4), 237–247. https://doi.org/10.1016/0162-3095(85)90016-0
-
-- **Yarab, P. E., Allgeier, E. R., & Sensibaugh, C. C.** (1999). Looking deeper: Extradyadic behaviors, jealousy, and perceived unfaithfulness in hypothetical dating relationships. Personal Relationships, 6(3), 305–316. [https://doi.org/10.1111/j.1475-6811.1999.tb00194.x](https://doi.org/10.1111/j.1475-6811.1999.tb00194.x)
-
-- **Garrels, S. R.** (2005). Imitation, Mirror Neurons, and Mimetic Desire: Convergence Between the Mimetic Theory of René Girard and Empirical Research on Imitation. Contagion: Journal of Violence, Mimesis, and Culture, 12(1), 47–86. [https://doi.org/10.1353/ctn.0.0004](https://doi.org/10.1353/ctn.0.0004)
-
-- **Peterson, C., & Seligman, M.** (2004). Classification of character strengths and virtues.
-
-- **Wedekind, C., Seebeck, T., Bettens, F., & Paepke, A. J.** (1995). MHC-dependent mate preferences in humans. Proceedings of the Royal Society B: Biological Sciences, 260(1359), 245–249. [https://doi.org/10.1098/rspb.1995.0087](https://doi.org/10.1098/rspb.1995.0087)
-
-- **Godinho, R. M., Spikins, P., & O'Higgins, P.** (2018). Supraorbital morphology and social dynamics in human evolution. Nature Ecology & Evolution, 2(6), 956–961. [https://doi.org/10.1038/s41559-018-0528-0](https://doi.org/10.1038/s41559-018-0528-0)
-
-- **Paulhus, D. L., & Williams, K. M.** (2002). The Dark Triad of personality: Narcissism, Machiavellianism and psychopathy. Journal of Research in Personality, 36(6), 556–563. https://doi.org/10.1016/S0092-6566(02)00505-6
-
-- **Durvasula, R.** (2019). “Don't you know who I am?”: How to stay sane in an era of narcissism, entitlement, and incivility. Post Hill Press.
-
-- **Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M.** (2007). Putting feelings into words: affect labeling disrupts amygdala activity in response to affective stimuli. Psychological science, 18(5), 421–428. [https://doi.org/10.1111/j.1467-9280.2007.01916.x](https://doi.org/10.1111/j.1467-9280.2007.01916.x)
-
+# References
 - **Alotiby A. (2024).** Immunology of Stress: A Review Article. Journal of clinical medicine, 13(21), 6394. [https://doi.org/10.3390/jcm13216394](https://doi.org/10.3390/jcm13216394)
-
+- **Apostolou, M., & Christoforou, C.** (2020). The art of flirting: What are the traits that make it effective? Personality and Individual Differences, 158, Article 109866. [https://doi.org/10.1016/j.paid.2020.109866](https://doi.org/10.1016/j.paid.2020.109866)
+- **Berridge K. C.** (2009). Wanting and Liking: Observations from the Neuroscience and Psychology Laboratory. Inquiry (Oslo, Norway), 52(4), 378. [https://doi.org/10.1080/00201740903087359](https://doi.org/10.1080/00201740903087359)
+- **Berridge, K. C., & Robinson, T. E.** (1998). What is the role of dopamine in reward: hedonic impact, reward learning, or incentive salience?. Brain research. Brain research reviews, 28(3), 309–369. https://doi.org/10.1016/s0165-0173(98)00019-8
+- **Bertram, Brian.** (2009). Social Factors Influencing Reproduction in Wild Lions. Journal of Zoology. 177. 463 - 482. [https://doi.org/10.1111/j.1469-7998.1975.tb02246.x](https://doi.org/10.1111/j.1469-7998.1975.tb02246.x)
+- **Cassidy, J., Jones, J. D., & Shaver, P. R.** (2013). Contributions of attachment theory and research: a framework for future research, translation, and policy. Development and psychopathology, 25(4 Pt 2), 1415–1434. [https://doi.org/10.1017/S0954579413000692](https://doi.org/10.1017/S0954579413000692)
 - **Coan, J. A., Schaefer, H. S., & Davidson, R. J.** (2006). Lending a hand: social regulation of the neural response to threat. Psychological science, 17(12), 1032–1039. [https://doi.org/10.1111/j.1467-9280.2006.01832.x](https://doi.org/10.1111/j.1467-9280.2006.01832.x)
-
+- **Cropley, M., & Zijlstra, F. R. H.** (2011). Work and rumination. In J. Langan-Fox & C. L. Cooper (Eds.), Handbook of stress in the occupations (pp. 487–501). Edward Elgar Publishing. [https://doi.org/10.4337/9780857931153.00061](https://doi.org/10.4337/9780857931153.00061)
+- **Cupach, W. R., Metts, S., & Hazleton, V.** (1986). Coping with embarrassing predicaments: Remedial strategies and their perceived utility. Journal of Language and Social Psychology, 5(3), 181–200. https://doi.org/10.1177/0261927X8600500302
+- **Daly, M., Wilson, M. I., & Weghorst, S. J.** (1982). Male sexual jealousy. Ethology & Sociobiology, 3(1), 11–27. https://doi.org/10.1016/0162-3095(82)90027-9
+- **Dion, K., Berscheid, E., & Walster, E.** (1972). What is beautiful is good. Journal of Personality and Social Psychology, 24(3), 285–290. [https://doi.org/10.1037/h0033731](https://doi.org/10.1037/h0033731)
+- **Durvasula, R.** (2019). “Don't you know who I am?”: How to stay sane in an era of narcissism, entitlement, and incivility. Post Hill Press.
+- **Dutton, D. G., & Aron, A. P.** (1974). Some evidence for heightened sexual attraction under conditions of high anxiety. Journal of Personality and Social Psychology, 30(4), 510–517. https://doi.org/10.1037/h0037031
+- **Eisenberger, N. I., Lieberman, M. D., & Williams, K. D.** (2003). Does rejection hurt? An FMRI study of social exclusion. Science (New York, N.Y.), 302(5643), 290–292. [https://doi.org/10.1126/science.1089134](https://doi.org/10.1126/science.1089134)
+- **Fearon, R. P., Bakermans-Kranenburg, M. J., van Ijzendoorn, M. H., Lapsley, A. M., & Roisman, G. I.** (2010). The significance of insecure attachment and disorganization in the development of children's externalizing behavior: a meta-analytic study. Child development, 81(2), 435–456. [https://doi.org/10.1111/j.1467-8624.2009.01405.x](https://doi.org/10.1111/j.1467-8624.2009.01405.x)
+- **Fisher, H.** (2004). Why We Love: The Nature and Chemistry of Romantic Love. Henry Holt and Co.
+- **Fisher, H. E., Brown, L. L., Aron, A., Strong, G., & Mashek, D.** (2010). Reward, addiction, and emotion regulation systems associated with rejection in love. Journal of neurophysiology, 104(1), 51–60. [https://doi.org/10.1152/jn.00784.2009](https://doi.org/10.1152/jn.00784.2009)
+- **Fox, J., Warber, K. M., & Makstaller, D. C.** (2013). The role of Facebook in romantic relationship development: An exploration of Knapp's relational stage model: An exploration of Knapp's relational stage model. Journal of Social and Personal Relationships, 30(6), 771-794. [https://doi.org/10.1177/0265407512468370](https://doi.org/10.1177/0265407512468370) (Original work published 2013)
+- **Garrels, S. R.** (2005). Imitation, Mirror Neurons, and Mimetic Desire: Convergence Between the Mimetic Theory of René Girard and Empirical Research on Imitation. Contagion: Journal of Violence, Mimesis, and Culture, 12(1), 47–86. [https://doi.org/10.1353/ctn.0.0004](https://doi.org/10.1353/ctn.0.0004)
+- **Gilovich, T., Medvec, V. H., & Savitsky, K.** (2000). The spotlight effect in social judgment: An egocentric bias in estimates of the salience of one's own actions and appearance. Journal of Personality and Social Psychology, 78(2), 211–222. https://doi.org/10.1037/0022-3514.78.2.211
+- **Godinho, R. M., Spikins, P., & O'Higgins, P.** (2018). Supraorbital morphology and social dynamics in human evolution. Nature Ecology & Evolution, 2(6), 956–961. [https://doi.org/10.1038/s41559-018-0528-0](https://doi.org/10.1038/s41559-018-0528-0)
+- **Groh, A. M., Roisman, G. I., van Ijzendoorn, M. H., Bakermans-Kranenburg, M. J., & Fearon, R. P.** (2012). The significance of insecure and disorganized attachment for children's internalizing symptoms: a meta-analytic study. Child development, 83(2), 591–610. [https://doi.org/10.1111/j.1467-8624.2011.01711.x](https://doi.org/10.1111/j.1467-8624.2011.01711.x)
+- **Gunnar, M. R., & Quevedo, K. M.** (2007). Early care experiences and HPA axis regulation in children: A mechanism for later trauma vulnerability. In E. R. De Kloet, M. S. Oitzl, & E. Vermetten (Eds.), Progress in brain research (Vol. 167, pp. 137–149). Elsevier. https://doi.org/10.1016/S0079-6123(07)67010-1
+- **Haselton, M. G., & Buss, D. M.** (2000). Error management theory: a new perspective on biases in cross-sex mind reading. Journal of personality and social psychology, 78(1), 81–91. https://doi.org/10.1037//0022-3514.78.1.81
+- **Henningsen, D. D.** (2004). Flirting With Meaning: An Examination of Miscommunication in Flirting Interactions. Sex Roles: A Journal of Research, 50(7-8), 481–489. https://doi.org/10.1023/B:SERS.0000023068.49352.4b
+- **Kahneman, D., & Beatty, J.** (1966). Pupil Diameter and Load on Memory. Science, 154(3756), 1583–1585. https://doi.org/10.1126/science.154.3756.1583
+- **Kaufman, G.** (1989). The Psychology of Shame: Theory and Treatment of Shame-Based Syndromes.
+- **Killingsworth, M. A., & Gilbert, D. T.** (2010). A wandering mind is an unhappy mind. Science (New York, N.Y.), 330(6006), 932. [https://doi.org/10.1126/science.1192439](https://doi.org/10.1126/science.1192439)
+- **Kosslyn, S. M., Ganis, G., & Thompson, W. L.** (2001). Neural foundations of imagery. Nature reviews. Neuroscience, 2(9), 635–642. [https://doi.org/10.1038/35090055](https://doi.org/10.1038/35090055)
+- **Kret M. E.** (2018). The role of pupil size in communication. Is there room for learning?. Cognition & emotion, 32(5), 1139–1145. https://doi.org/10.1080/02699931.2017.1370417
+- **Kross, E., Berman, M. G., Mischel, W., Smith, E. E., & Wager, T. D.** (2011). Social rejection shares somatosensory representations with physical pain. Proceedings of the National Academy of Sciences of the United States of America, 108(15), 6270–6275. [https://doi.org/10.1073/pnas.1102693108](https://doi.org/10.1073/pnas.1102693108)
 - **Kross, E., Bruehlman-Senecal, E., Park, J., Burson, A., Dougherty, A., Shablack, H., Bremner, R., Moser, J., & Ayduk, O.** (2014). Self-talk as a regulatory mechanism: How you do it matters. Journal of Personality and Social Psychology, 106(2), 304–324. [https://doi.org/10.1037/a0035173](https://doi.org/10.1037/a0035173)
-
+- **Leary, M. R., Britt, T. W., Cutlip, W. D., & Templeton, J. L. (1992).** Social blushing. Psychological Bulletin, 112(3), 446–460. https://doi.org/10.1037/0033-2909.112.3.446
+- **Lieberman, M. D., Berkman, E. T., & Wager, T. D.** (2009). Correlations in Social Neuroscience Aren't Voodoo: Commentary on Vul et al. (2009). Perspectives on psychological science : a journal of the Association for Psychological Science, 4(3), 299–307. [https://doi.org/10.1111/j.1745-6924.2009.01128.x](https://doi.org/10.1111/j.1745-6924.2009.01128.x)
+- **Lieberman, M. D., Eisenberger, N. I., Crockett, M. J., Tom, S. M., Pfeifer, J. H., & Way, B. M.** (2007). Putting feelings into words: affect labeling disrupts amygdala activity in response to affective stimuli. Psychological science, 18(5), 421–428. [https://doi.org/10.1111/j.1467-9280.2007.01916.x](https://doi.org/10.1111/j.1467-9280.2007.01916.x)
+- **Lynott, D., Corker, K. S., Wortman, J., Connell, L., Donnellan, M. B., Lucas, R. E., & O'Brien, K.** (2014). Replication of “Experiencing physical warmth promotes interpersonal warmth” by Williams and Bargh (2008).Social Psychology, 45(3), 216–222. https://doi.org/10.1027/1864-9335/a000187
+- **Marzola, P., Melzer, T., Pavesi, E., Gil-Mohapel, J., & Brocardo, P. S.** (2023). Exploring the Role of Neuroplasticity in Development, Aging, and Neurodegeneration. Brain sciences, 13(12), 1610. [https://doi.org/10.3390/brainsci13121610](https://doi.org/10.3390/brainsci13121610)
+- **Mathôt, S.** (2018). Pupillometry: Psychology, physiology, and function. Journal of Cognition, 1(1), Article 16. https://doi.org/10.5334/joc.18
+- **Moore, M. M.** (1985). Nonverbal courtship patterns in women: Context and consequences. Ethology and Sociobiology, 6(4), 237–247. https://doi.org/10.1016/0162-3095(85)90016-0
+- **Parrott, W. G., & Smith, R. H.** (1993). Distinguishing the experiences of envy and jealousy. Journal of Personality and Social Psychology, 64(6), 906–920. [https://doi.org/10.1037/0022-3514.64.6.906](https://doi.org/10.1037/0022-3514.64.6.906)
+- **Paulhus, D. L., & Williams, K. M.** (2002). The Dark Triad of personality: Narcissism, Machiavellianism and psychopathy. Journal of Research in Personality, 36(6), 556–563. https://doi.org/10.1016/S0092-6566(02)00505-6
+- **Peterson, C., & Seligman, M.** (2004). Classification of character strengths and virtues.
+- **Poerio, G. L., Totterdell, P., Emerson, L.-M., & Miles, E.** (2015). Love is the triumph of the imagination: Daydreams about significant others are associated with increased happiness, love and connection. Consciousness and Cognition, 33, 135–144. [https://doi.org/10.1016/j.concog.2014.12.011](https://doi.org/10.1016/j.concog.2014.12.011)
+- **Schachter, S., & Singer, J.** (1962). Cognitive, social, and physiological determinants of emotional state. Psychological Review, 69(5), 379–399. https://doi.org/10.1037/h0046234
+- **Schlenker, B. R.** (1980). Impression Management: The Self-Concept, Social Identity, and Interpersonal Relations. Monterey, CA: Brooks/Cole.
+- **Schultz W.** (2016). Dopamine reward prediction error coding. Dialogues in clinical neuroscience, 18(1), 23–32. [https://doi.org/10.31887/DCNS.2016.18.1/wschultz](https://doi.org/10.31887/DCNS.2016.18.1/wschultz)
+- **Skinner, B. F.** (1948). 'Superstition' in the pigeon. Journal of Experimental Psychology, 38(2), 168–172. [https://doi.org/10.1037/h0055873](https://doi.org/10.1037/h0055873)
+- **Song X, Wang X** (2012) Mind Wandering in Chinese Daily Lives – An Experience Sampling Study. PLoS ONE 7(9): e44423. [https://doi.org/10.1371/journal.pone.0044423](https://doi.org/10.1371/journal.pone.0044423)
 - **Sternberg, R. J.** (1986). A triangular theory of love. Psychological Review, 93(2), 119–135. [https://doi.org/10.1037/0033-295X.93.2.119](https://doi.org/10.1037/0033-295X.93.2.119)
-
+- **Syrek, C. J., Weigelt, O., Peifer, C., & Antoni, C. H.** (2017). Zeigarnik's sleepless nights: How unfinished tasks at the end of the week impair employee sleep on the weekend through rumination. Journal of Occupational Health Psychology, 22(2), 225–238. [https://doi.org/10.1037/ocp0000031](https://doi.org/10.1037/ocp0000031)
+- **Tennov, D.** (1979). Love and Limerence: The Experience of Being in Love. Stein and Day.
+- **Tompkins, S. S.** (1963). Affect, imagery, consciousness: II. The Negative Affects. Springer.
+- **Vijayakumar, N., Cheng, T. W., & Pfeifer, J. H.** (2017). Neural correlates of social exclusion across ages: A coordinate-based meta-analysis of functional MRI studies. NeuroImage, 153, 359–368. [https://doi.org/10.1016/j.neuroimage.2017.02.050](https://doi.org/10.1016/j.neuroimage.2017.02.050)
+- **Vul, E., Harris, C., Winkielman, P., & Pashler, H.** (2009). Puzzlingly High Correlations in fMRI Studies of Emotion, Personality, and Social Cognition. Perspectives on psychological science : a journal of the Association for Psychological Science, 4(3), 274–290. [https://doi.org/10.1111/j.1745-6924.2009.01125.x](https://doi.org/10.1111/j.1745-6924.2009.01125.x)
+- **Wallin, D. J.** (2007). Attachment in psychotherapy. Guilford press.
+- **Wedekind, C., Seebeck, T., Bettens, F., & Paepke, A. J.** (1995). MHC-dependent mate preferences in humans. Proceedings of the Royal Society B: Biological Sciences, 260(1359), 245–249. [https://doi.org/10.1098/rspb.1995.0087](https://doi.org/10.1098/rspb.1995.0087)
+- **Wegner, D. M.** (1994). Ironic processes of mental control. Psychological Review, 101(1), 34–52. https://doi.org/10.1037/0033-295X.101.1.34
+- **Williams, L. E., & Bargh, J. A.** (2008). Experiencing physical warmth promotes interpersonal warmth. Science, 322(5901), 606–607. https://doi.org/10.1126/science.1162548
+- **Yarab, P. E., Allgeier, E. R., & Sensibaugh, C. C.** (1999). Looking deeper: Extradyadic behaviors, jealousy, and perceived unfaithfulness in hypothetical dating relationships. Personal Relationships, 6(3), 305–316. [https://doi.org/10.1111/j.1475-6811.1999.tb00194.x](https://doi.org/10.1111/j.1475-6811.1999.tb00194.x)
+- **Zajonc, R. B.** (1968). Attitudinal effects of mere exposure. Journal of Personality and Social Psychology, 9(2, Pt.2), 1–27. https://doi.org/10.1037/h0025848
+- **Zeigarnik, B.** (1938). On finished and unfinished tasks. In W. D. Ellis (Ed.), A source book of Gestalt psychology (pp. 300–314). Kegan Paul, Trench, Trubner & Company. [https://doi.org/10.1037/11496-025](https://doi.org/10.1037/11496-025) 

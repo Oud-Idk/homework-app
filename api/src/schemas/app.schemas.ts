@@ -59,10 +59,6 @@ export const voteSchema = z.object({
 });
 
 // Preferences
-export const notificationPrefSchema = z.object({
-    daysBefore: z.number().int().min(0),
-    timeOfDay: z.string()
-});
 
 export const updateJournalSchema = z.object({
     date: z.coerce.date().optional(),
@@ -71,13 +67,6 @@ export const updateJournalSchema = z.object({
         description: z.string().optional(),
     })).min(1).optional(),
 });
-
-// Replies usually just update content
-export const updateReplySchema = z.object({
-    content: z.string().min(1, "Reply content cannot be empty")
-});
-
-// --- HOMEWORK ---
 
 // Reuses the create schema but makes everything optional
 export const updateHomeworkSchema = z.object({
@@ -136,26 +125,12 @@ export const userIdParamSchema = z.object({
 
 export const classParamsSchema = z.object({
     name: z.string().min(1).max(100),
-    students: z.array(z.object({
-        name: z.string().min(1).max(100),
-        dateOfBirth: z.iso.date(),
-        gender: z.enum(['male', 'female'], {
-            error: () => ({ message: "Gender must be 'male' or 'female'" })
-        }),
-    }))
 })
 
 
 export const updateClassSchema = z.object({
     id: objectIdSchema,
     name: z.string().min(1).max(100).optional(),
-    students: z.array(z.object({
-        name: z.string().min(1).max(100),
-        dateOfBirth: z.iso.date(),
-        gender: z.enum(['male', 'female'], {
-            error: () => ({ message: "Gender must be 'male' or 'female'" })
-        }),
-    })).optional()
 })
 
 export const deleteClassSchema = z.object({

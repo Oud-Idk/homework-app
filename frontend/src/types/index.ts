@@ -25,7 +25,6 @@ export interface Student {
 export interface Classroom {
     _id: string;
     name: string;
-    students: Student[];
 }
 
 export interface Author {
