@@ -257,8 +257,9 @@ export default function PreferencesPage() {
                 </ul>
             </div>
 
-            <div className="p-6 border rounded-lg shadow-sm space-y-3">
+            <div className="p-6 border rounded-lg shadow-sm space-y-1">
                 <h2 className="text-2xl font-semibold mb-4">My Relationships</h2>
+                <p>Note: This information will not be shared to anyone. Not even I know who you like.</p>
                 <form onSubmit={saveRelationships}>
                     <div className="flex gap-5 items-center mb-6">
                         <p>Classroom:</p>
@@ -272,7 +273,7 @@ export default function PreferencesPage() {
                     </div>
 
                     <div className={`grid grid-cols-[min-content_1fr] gap-x-5 gap-y-4 items-center mb-6 transition-opacity ${isLoadingRelationships ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
-                        <p className="whitespace-nowrap font-medium">Inseparable</p>
+                        <p className="whitespace-nowrap text-sm">Inseparable</p>
                         <SearchableMultiSelect<User>
                             items={getAvailableStudents(selectedInseparable)}
                             selected={selectedInseparable}
@@ -282,7 +283,7 @@ export default function PreferencesPage() {
                             placeholder="Select people..."
                         />
 
-                        <p className="whitespace-nowrap font-medium">Great Vibes</p>
+                        <p className="whitespace-nowrap text-sm">Great Vibes</p>
                         <SearchableMultiSelect<User>
                             items={getAvailableStudents(selectedGreatVibes)}
                             selected={selectedGreatVibes}
@@ -292,7 +293,7 @@ export default function PreferencesPage() {
                             placeholder="Select people..."
                         />
 
-                        <p className="whitespace-nowrap font-medium">Good Company</p>
+                        <p className="whitespace-nowrap text-sm">Good Company</p>
                         <SearchableMultiSelect<User>
                             items={getAvailableStudents(selectedGoodCompany)}
                             selected={selectedGoodCompany}
@@ -302,7 +303,7 @@ export default function PreferencesPage() {
                             placeholder="Select people..."
                         />
 
-                        <p className="whitespace-nowrap font-medium">Prefer Space</p>
+                        <p className="whitespace-nowrap text-sm">Prefer Space</p>
                         <SearchableMultiSelect<User>
                             items={getAvailableStudents(selectedPreferSpace)}
                             selected={selectedPreferSpace}
@@ -312,7 +313,7 @@ export default function PreferencesPage() {
                             placeholder="Select people..."
                         />
 
-                        <p className="whitespace-nowrap font-medium">Mortal Enemies</p>
+                        <p className="whitespace-nowrap text-sm">Mortal Enemies</p>
                         <SearchableMultiSelect<User>
                             items={getAvailableStudents(selectedNuclear)}
                             selected={selectedNuclear}

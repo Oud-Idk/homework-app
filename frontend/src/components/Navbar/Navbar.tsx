@@ -14,6 +14,7 @@ import { ProfileDropdown } from "@/components/Navbar/NavbarComponents/ProfileDro
 
 import { navigationConfig, NavItem } from '@/lib/navigation';
 import { useSession } from "next-auth/react";
+import {usePathname} from "next/navigation";
 
 import { DropdownDesktop } from "@/components/Navbar/NavbarComponents/Desktop/DropdownDesktop";
 import { DropdownMobile } from "@/components/Navbar/NavbarComponents/Mobile/DropdownMobile";
@@ -28,6 +29,7 @@ export default function Navbar() {
     const { data: session } = useSession();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [openPopover, setOpenPopover] = useState<string | null>(null);
+    const pathname = usePathname();
 
     const renderDesktopNavItem = (item: NavItem) => {
         if (item.type === 'link') {
@@ -55,7 +57,7 @@ export default function Navbar() {
             <nav aria-label="Global" className="mx-auto flex max-w-7xl text-sm items-center justify-between p-4 lg:p-5 lg:py-2.5">
                 <div className="flex lg:flex-1">
                     <Link href="/" className="flex flex-row items-center gap-4">
-                        <h1>{navigationConfig.brandName}</h1>
+                        <h1>{navigationConfig.brandName} {pathname === "/love" && <span className="animate-pulse text-pink-500">💘</span>}</h1>
                     </Link>
                 </div>
 

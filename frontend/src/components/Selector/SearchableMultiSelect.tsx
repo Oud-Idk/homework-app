@@ -105,7 +105,7 @@ export const SearchableMultiSelect = <T,>({
                 <div className="relative">
                     <div
                         ref={containerRef}
-                        className="flex flex-wrap items-center border rounded-md bg-white dark:bg-black min-h-8.5 relative pr-8"
+                        className="flex flex-wrap items-center border rounded-md bg-white dark:bg-black min-h-10 relative"
                     >
                         {selected.map((item) => (
                             <span
@@ -128,7 +128,7 @@ export const SearchableMultiSelect = <T,>({
 
                         <ComboboxInput
                             ref={inputRef}
-                            className="flex-1 min-w-20 bg-transparent border-none py-1 pl-2 text-sm outline-none ring-0 focus:ring-0 dark:text-white"
+                            className="flex-1 bg-transparent border-none py-1 pl-2 text-sm dark:text-white"
                             placeholder={selected.length === 0 ? placeholder : ""}
                             displayValue={() => ""}
                             onChange={(event) => setQuery(event.target.value)}
