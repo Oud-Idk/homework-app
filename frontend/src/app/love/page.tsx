@@ -1,6 +1,7 @@
 import { MarkdownRenderer } from "@/components/Markdown/MarkdownRenderer";
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { headers } from "next/headers";
 
 function countLinesAfterString(text: string, target: string) {
     const lines = text.split('\n');
@@ -11,8 +12,37 @@ function countLinesAfterString(text: string, target: string) {
     return (lines.length - 1) - index;
 }
 
+async function sendDiscordNotification() {
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+    if (!webhookUrl) return;
+
+    // Grab headers to see who the "intruder" is
+    const headerList = await headers();
+    const userAgent = headerList.get('user-agent') || 'Unknown Toaster';
+    const referer = headerList.get('referer') || 'Direct Link/Easter Egg';
+
+    await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: "Love Bot 💘",
+            embeds: [{
+                title: "🚨 Love Page Intruder Detected!",
+                description: `Someone just found the secret link. Their brain is officially a toaster.`,
+                color: 0xff69b4,
+                fields: [
+                    { name: "Agent", value: userAgent, inline: true },
+                    { name: "Source", value: referer, inline: true },
+                    { name: "Status", value: "Arousal + Cognitive Labeling in progress...", inline: false }
+                ],
+                timestamp: new Date().toISOString()
+            }]
+        })
+    }).catch(err => console.error("Webhook failed to narc:", err));
+}
 
 export default async function LovePage() {
+    void sendDiscordNotification();
     const filePath = path.join(process.cwd(), 'Love.md');
     const content = await fs.readFile(filePath, 'utf8');
 

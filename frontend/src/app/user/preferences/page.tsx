@@ -14,11 +14,15 @@ import { SearchableSelect } from "@/components/Selector/SearchableSelect";
 import { Classroom, User } from "@/types";
 import { SearchableMultiSelect } from "@/components/Selector/SearchableMultiSelect";
 import { Title } from "@/components/EaseOfUse/Title";
+import { useRouter } from "next/navigation";
 
 export default function PreferencesPage() {
     const { data: session, status, update } = useSession();
     const [isInitializing, setIsInitializing] = useState(true);
     const hasFetchedGlobalData = useRef(false);
+
+    const router = useRouter();
+    const [secretLoveClicks, setSecretLoveClicks] = useState(0);
 
     // Gender State
     const [gender, setGender] = useState<string>('');
@@ -52,6 +56,14 @@ export default function PreferencesPage() {
         isLoadingRelationships,
         isSavingRelationships,
     } = useRelationshipSetter();
+
+    const handleSecretLove = () => {
+        if (secretLoveClicks + 1 >= 5) {
+            router.push('/love');
+        } else {
+            setSecretLoveClicks(prev => prev + 1);
+        }
+    };
 
     useEffect(() => {
         if (status === 'loading') return;
@@ -259,9 +271,8 @@ export default function PreferencesPage() {
 
             <div className="p-6 border rounded-lg shadow-sm space-y-1">
                 <h2 className="text-2xl font-semibold mb-4">My Relationships</h2>
-                <p>Note: This information will not be shared to anyone. Not even I know who you like.</p>
                 <form onSubmit={saveRelationships}>
-                    <div className="flex gap-5 items-center mb-6">
+                    <div className="flex gap-5 items-center mb-3">
                         <p>Classroom:</p>
                         <SearchableSelect<Classroom, string>
                             items={classes}
@@ -271,57 +282,71 @@ export default function PreferencesPage() {
                             getValue={classroom => classroom._id}
                         />
                     </div>
+                    <div className={`items-center mb-6 transition-opacity ${isLoadingRelationships ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+                        <div>
+                            <p className="whitespace-nowrap">BESTIES!!</p>
+                            <SearchableMultiSelect<User>
+                                items={getAvailableStudents(selectedInseparable)}
+                                selected={selectedInseparable}
+                                onChange={setSelectedInseparable}
+                                getLabel={(s) => s.name}
+                                getValue={(s) => s._id}
+                                placeholder="Select people..."
+                                className="mb-2"
+                            />
+                        </div>
 
-                    <div className={`grid grid-cols-[min-content_1fr] gap-x-5 gap-y-4 items-center mb-6 transition-opacity ${isLoadingRelationships ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
-                        <p className="whitespace-nowrap text-sm">Inseparable</p>
-                        <SearchableMultiSelect<User>
-                            items={getAvailableStudents(selectedInseparable)}
-                            selected={selectedInseparable}
-                            onChange={setSelectedInseparable}
-                            getLabel={(s) => s.name}
-                            getValue={(s) => s._id}
-                            placeholder="Select people..."
-                        />
+                        <div>
+                            <p className="whitespace-nowrap">Great Vibes</p>
+                            <SearchableMultiSelect<User>
+                                items={getAvailableStudents(selectedGreatVibes)}
+                                selected={selectedGreatVibes}
+                                onChange={setSelectedGreatVibes}
+                                getLabel={(s) => s.name}
+                                getValue={(s) => s._id}
+                                placeholder="Select people..."
+                                className="mb-2"
+                            />
+                        </div>
 
-                        <p className="whitespace-nowrap text-sm">Great Vibes</p>
-                        <SearchableMultiSelect<User>
-                            items={getAvailableStudents(selectedGreatVibes)}
-                            selected={selectedGreatVibes}
-                            onChange={setSelectedGreatVibes}
-                            getLabel={(s) => s.name}
-                            getValue={(s) => s._id}
-                            placeholder="Select people..."
-                        />
+                        <div>
+                            <p className="whitespace-nowrap">Good Company</p>
+                            <SearchableMultiSelect<User>
+                                items={getAvailableStudents(selectedGoodCompany)}
+                                selected={selectedGoodCompany}
+                                onChange={setSelectedGoodCompany}
+                                getLabel={(s) => s.name}
+                                getValue={(s) => s._id}
+                                placeholder="Select people..."
+                                className="mb-2"
+                            />
+                        </div>
 
-                        <p className="whitespace-nowrap text-sm">Good Company</p>
-                        <SearchableMultiSelect<User>
-                            items={getAvailableStudents(selectedGoodCompany)}
-                            selected={selectedGoodCompany}
-                            onChange={setSelectedGoodCompany}
-                            getLabel={(s) => s.name}
-                            getValue={(s) => s._id}
-                            placeholder="Select people..."
-                        />
+                        <div>
+                            <p className="whitespace-nowrap">Prefer Space</p>
+                            <SearchableMultiSelect<User>
+                                items={getAvailableStudents(selectedPreferSpace)}
+                                selected={selectedPreferSpace}
+                                onChange={setSelectedPreferSpace}
+                                getLabel={(s) => s.name}
+                                getValue={(s) => s._id}
+                                placeholder="Select people..."
+                                className="mb-2"
+                            />
+                        </div>
 
-                        <p className="whitespace-nowrap text-sm">Prefer Space</p>
-                        <SearchableMultiSelect<User>
-                            items={getAvailableStudents(selectedPreferSpace)}
-                            selected={selectedPreferSpace}
-                            onChange={setSelectedPreferSpace}
-                            getLabel={(s) => s.name}
-                            getValue={(s) => s._id}
-                            placeholder="Select people..."
-                        />
-
-                        <p className="whitespace-nowrap text-sm">Mortal Enemies</p>
-                        <SearchableMultiSelect<User>
-                            items={getAvailableStudents(selectedNuclear)}
-                            selected={selectedNuclear}
-                            onChange={setSelectedNuclear}
-                            getLabel={(s) => s.name}
-                            getValue={(s) => s._id}
-                            placeholder="Select people..."
-                        />
+                        <div>
+                            <p className="whitespace-nowrap">Separation Required</p>
+                            <SearchableMultiSelect<User>
+                                items={getAvailableStudents(selectedNuclear)}
+                                selected={selectedNuclear}
+                                onChange={setSelectedNuclear}
+                                getLabel={(s) => s.name}
+                                getValue={(s) => s._id}
+                                placeholder="Select people..."
+                                className="mb-2"
+                            />
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-4">
@@ -330,6 +355,8 @@ export default function PreferencesPage() {
                         </SubmitButton>
                         {isLoadingRelationships && <span className="text-gray-500 text-sm">Loading classroom data...</span>}
                     </div>
+
+                    <p className="mt-3">Note: This information will <b>NOT</b> be shared to anyone. Not even I know who you <span onClick={handleSecretLove} className="cursor-default select-none active:text-red-400 transition-colors">like</span> or hate.</p>
                 </form>
             </div>
         </main>

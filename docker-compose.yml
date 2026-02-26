@@ -16,8 +16,6 @@ services:
         - NEXT_PUBLIC_VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
         - NEXT_PUBLIC_API_URL=/api
         - MONGO_URI=mongodb://mongo:27017/homeworkapp?replicaSet=rs0
-        - AUTH_SECRET=${AUTH_SECRET}
-        - NEXTAUTH_URL=https://homework.solartuff.co.id
         - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
         - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
     restart: always
@@ -31,6 +29,7 @@ services:
       - AUTH_URL=https://homework.solartuff.co.id
       - NEXTAUTH_URL=https://homework.solartuff.co.id
       - MONGO_URI=mongodb://mongo:27017/homeworkapp?replicaSet=rs0
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
     depends_on:
       api:
         condition: service_healthy

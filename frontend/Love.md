@@ -752,7 +752,7 @@ In the context of crushes, your brain is, for some reason, trying to apologize f
 10. You think everyone notices your "flaws," but in reality, nobody does. 
     - Gilovich et al. (2000) ran a study where students had to wear an embarrassing T-shirt to a room. The students thought everyone noticed it, but in reality, fewer than 20% of people even saw it.
     - The tip? Just chill.
-11. You actually like your crush more if she's involved when doing something scary. It can be applied the other way around.
+11. You actually like your crush more if they're involved when doing something scary. It can be applied the other way around.
     - Dutton & Aron (1974) ran a study on guys where they have to cross a wobbly bridge and a sturdy bridge. An attractive female researcher approached that guy and told the guy to fill out a survey, which included making a short, dramatic story from a picture of a woman covering her face with one hand. After the survey is done, she would say, "I'm in a rush, but if you want to hear more about the results later, here's my number." It's done on the two bridges.
     - The result? The scary bridge guys wrote much more sensual stories than the sturdy bridge. And also, the scary bridge guys called way more often.
     - And also, the same experiment is done with a male researcher. This time, almost nobody called him. 

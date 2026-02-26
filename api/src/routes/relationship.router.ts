@@ -18,7 +18,7 @@ import {isAdmin, protect} from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.get("/",
-    protect, isAdmin,
+    protect,
     listRelationshipsOfUser
 );
 router.post("/",
@@ -38,7 +38,7 @@ router.patch("/",
 );
 router.delete("/",
     validate({ body: deleteRelationshipSchema }),
-    protect, isAdmin,
+    protect,
     deleteRelationship
 );
 
