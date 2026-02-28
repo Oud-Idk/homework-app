@@ -3,6 +3,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { headers } from "next/headers";
 
+export const dynamic = 'force-dynamic';
+
 function countLinesAfterString(text: string, target: string) {
     const lines = text.split('\n');
     const index = lines.findIndex(line => line.includes(target));
