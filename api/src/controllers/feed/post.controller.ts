@@ -165,6 +165,7 @@ export const getAllPosts = async (req: Request, res: Response) => {
         }
 
         const postsFromDb = await Post.find({ '_id': { $in: postIds } })
+            .sort({ createdAt: -1 })
             .populate('author', 'name email')
             .populate('homework', 'title')
             .lean<PopulatedPost[]>();

@@ -38,10 +38,10 @@ const Relationships = mongoose.model('Relationship', RelationshipSchema);
 export default Relationships;
 
 /*
-Inseparable +1,000
+BESTIES!!! +1,000
 Great Vibes +20
 Good Company +5
 Neutral 0
 Prefer Space -50
-The Nuclear Option -10,000
+Separation Needed -10,000
 */

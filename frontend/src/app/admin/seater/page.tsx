@@ -397,7 +397,7 @@ export default function SeatingOptimizer() {
                     />
                 </div>
 
-                <div ref={containerRef} className="flex-1 border relative rounded-xl overflow-hidden bg-neutral-50 dark:bg-neutral-900 transition-colors duration-200">
+                <div ref={containerRef} className="flex-1 border relative rounded-xl overflow-hidden transition-colors duration-200">
                     <div className="absolute inset-0 cursor-grab active:cursor-grabbing">
                         <Stage
                             width={dimensions.width} height={dimensions.height}
@@ -425,7 +425,7 @@ export default function SeatingOptimizer() {
                                         const sum = (matrix[sIdx1][sIdx2] || 0) + (matrix[sIdx2][sIdx1] || 0);
                                         if (Math.abs(sum) < 6) return null;
 
-                                        return <Line key={`line-${tIdx1}-${tIdx2}`} points={[s1.x * SCALE, s1.y * SCALE, s2.x * SCALE, s2.y * SCALE]} stroke={sum > 0 ? C.linePos : C.lineNeg} strokeWidth={Math.min(20, Math.max(1, Math.abs(sum) / 100))} dash={sum < 0 ? [5, 5] : undefined} opacity={0.6} listening={false} />
+                                        return <Line key={`line-${tIdx1}-${tIdx2}`} points={[s1.x * SCALE, s1.y * SCALE, s2.x * SCALE, s2.y * SCALE]} stroke={sum > 0 ? C.linePos : C.lineNeg} strokeWidth={Math.min(5, Math.max(1, Math.abs(sum) / 100))} dash={sum < 0 ? [5, 5] : undefined} opacity={0.6} listening={false} />
                                     })
                                 )}
 
