@@ -37,17 +37,15 @@ export const SearchableMultiSelect = <T,>({
 }: MultiSelectProps<T>) => {
     const [query, setQuery] = useState('');
 
-    // --- OUR CUSTOM ANCHOR LOGIC ---
     const { refs, floatingStyles } = useFloating({
         placement: 'bottom-start',
-        strategy: 'fixed', // Keeps it floating above the DOM without shifting layout
-        whileElementsMounted: autoUpdate, // Auto recalculates on scroll/resize
+        strategy: 'fixed',
+        whileElementsMounted: autoUpdate,
         middleware: [
-            offset(4), // 4px gap between input and dropdown
-            flip({ padding: 8 }), // Flips UP if there's no space DOWN
+            offset(4),
+            flip({ padding: 8 }),
             size({
                 apply({ rects, elements }) {
-                    // Force the dropdown to exactly match the container's width
                     Object.assign(elements.floating.style, {
                         width: `${rects.reference.width}px`,
                     });
@@ -78,24 +76,26 @@ export const SearchableMultiSelect = <T,>({
         <div className={className}>
             <Combobox
                 value={selected}
-                onChange={onChange}
+                onChange={(newValues) => {
+                    onChange(newValues);
+                    setQuery('');
+                }}
                 multiple
                 disabled={disabled}
                 onClose={() => setQuery('')}
             >
                 {label && (
-                    <Label className="block text-sm font-medium mb-1 text-neutral-900 dark:text-neutral-200">
+                    <Label className="block text-sm font-medium mb-1">
                         {label}
                     </Label>
                 )}
 
-                {/* 1. setReference points at our OUTER container, not the input! */}
                 <div ref={refs.setReference} className="relative">
-                    <div className="flex flex-wrap items-center border rounded-md bg-white dark:bg-black min-h-10 pr-8">
+                    <div className="flex flex-wrap items-center border rounded-md bg-white dark:bg-black min-h-10 pr-8 transition-all">
                         {selected.map((item) => (
                             <span
                                 key={getValue(item)}
-                                className="flex max-w-[calc(100%-8px)] ml-1 my-1 items-center gap-1 rounded px-2 py-0.5 text-sm font-medium border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-neutral-200"
+                                className="flex max-w-[calc(100%-8px)] ml-1 my-1 items-center gap-1 rounded px-2 py-0.5 text-sm font-medium border border-neutral-500"
                             >
                                 <span className="truncate min-w-0">
                                     {getLabel(item)}
@@ -114,10 +114,14 @@ export const SearchableMultiSelect = <T,>({
                         ))}
 
                         <ComboboxInput
-                            className="flex-1 min-w-[60px] bg-transparent outline-none border-none py-1 pl-2 text-sm dark:text-white"
+                            className="flex-1 min-w-[60px] bg-transparent outline-none border-none py-2 pl-2 text-sm dark:text-white"
                             placeholder={selected.length === 0 ? placeholder : ""}
-                            displayValue={() => ""}
+                            // FIX 2: Bind the input value to the query state (Controlled Component)
+                            value={query}
+                            // FIX 3: Keep displayValue returning the query or an empty string
+                            displayValue={() => query}
                             onChange={(event) => setQuery(event.target.value)}
+                            autoComplete="off"
                         />
 
                         <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -126,11 +130,6 @@ export const SearchableMultiSelect = <T,>({
                     </div>
                 </div>
 
-                {/*
-                  2. We use Headless UI's Portal so it completely escapes your DOM layout.
-                  3. We attach setFloating and floatingStyles to physically position it.
-                  4. NO `anchor` prop used here!
-                */}
                 <Portal>
                     <ComboboxOptions
                         ref={refs.setFloating}
@@ -149,7 +148,7 @@ export const SearchableMultiSelect = <T,>({
                                     value={item}
                                     className={({ focus }) =>
                                         `relative cursor-default select-none py-2 pl-10 pr-4 outline-none ${
-                                            focus ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white' : 'text-neutral-900 dark:text-neutral-200'
+                                            focus ? 'bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white' : ''
                                         }`
                                     }
                                 >

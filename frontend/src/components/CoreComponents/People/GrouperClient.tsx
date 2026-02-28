@@ -65,7 +65,7 @@ export function GrouperClient({ classrooms }: { classrooms: Classroom[] }) {
 
         const idealSize = students.length / numGroups;
         const variance = groupCounts.reduce((acc, c) => acc + Math.pow(c - idealSize, 2), 0);
-        return score - (variance * 50); // Penalize uneven groups
+        return score - (variance * 1000);
     }, [numGroups, students.length, matrix]);
 
     const mutate = useCallback((genome: number[], rate: number) => {
