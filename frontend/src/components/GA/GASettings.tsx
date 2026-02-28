@@ -21,7 +21,7 @@ export function GASettings({
                 <div className="flex justify-between text-[9px] text-neutral-500 font-bold uppercase">
                     <span>Pop</span> <span>{popSize}</span>
                 </div>
-                <input type="range" min="10" max="500" step="10" value={popSize} onChange={e => setPopSize(parseInt(e.target.value))} className="h-1.5 rounded-lg appearance-none cursor-pointer border" />
+                <input type="range" min="10" max="5000" step="10" value={popSize} onChange={e => setPopSize(parseInt(e.target.value))} className="h-1.5 rounded-lg appearance-none cursor-pointer border" />
             </div>
         </div>
     );

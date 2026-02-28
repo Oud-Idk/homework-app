@@ -139,25 +139,54 @@ export default function SeatingOptimizer() {
         return dists;
     }, [tables, seatCoords]);
 
-    // --- Genetic Algorithm Configuration ---
     const calculateFitness = useCallback((genome: number[]) => {
         let totalScore = 0;
+        const CUTOFF_SQ = 6.25; // 2.5 meters
+
         for (let i = 0; i < genome.length; i++) {
             for (let j = i + 1; j < genome.length; j++) {
                 const distSq = distanceMatrix[i][j];
-                if (distSq > 16 || distSq === 0) continue;
+                if (distSq === 0) continue;
 
                 const w1 = matrix[genome[i]][genome[j]] || 0;
                 const w2 = matrix[genome[j]][genome[i]] || 0;
-                let affinity = (w1 < 0 || w2 < 0)
-                    ? Math.min(w1, w2) * 20
-                    : (w1 + w2) - Math.abs(w1 - w2);
+                const weight = (w1 + w2); // Combined weight for simplicity
 
-                totalScore += affinity / Math.max(distSq, 0.1);
+                // --- 1. THE "SEPARATION NEEDED" LOGIC (-10,000) ---
+                if (w1 <= -10000 || w2 <= -10000) {
+                    // If they are closer than 2 meters (roughly adjacent tables/chairs)
+                    if (distSq < 4.0) {
+                        totalScore -= 10000; // Nuclear penalty
+                    }
+                    // NOTICE: No 'else' or 'falloff' here.
+                    // Once they are > 2m apart, the penalty drops to ZERO.
+                    continue;
+                }
+
+                // --- 2. THE "PREFER SPACE" LOGIC (-50) ---
+                if (w1 <= -50 || w2 <= -50) {
+                    if (distSq < CUTOFF_SQ) {
+                        // Small linear penalty that fades
+                        totalScore -= 50 / Math.sqrt(distSq);
+                    }
+                    continue;
+                }
+
+                // --- 3. THE FRIEND LOGIC (+5 to +1000) ---
+                if (weight > 0) {
+                    if (distSq > CUTOFF_SQ) continue;
+
+                    // Use the 2.5th power for friends
+                    const falloff = distSq * Math.sqrt(Math.sqrt(distSq));
+
+                    // If they are Besties (1000), we REALLY want them at the same table (dist ~1)
+                    // At dist 1, score is 1000. At dist 2, score is 176.
+                    totalScore += weight / Math.max(falloff, 0.8);
+                }
             }
         }
         return totalScore;
-    }, [matrix, seatCoords]);
+    }, [matrix, distanceMatrix]);
 
     const mutate = useCallback((genome: number[], rate: number) => {
         const child = [...genome];
