@@ -13,8 +13,13 @@ function countLinesAfterString(text: string, target: string) {
 }
 
 async function sendDiscordNotification() {
+    console.log("DEBUG: Love Bot Attempting to Narc...");
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-    if (!webhookUrl) return console.error("Webhook URL missing");
+
+    if (!webhookUrl) {
+        console.log("DEBUG: Webhook URL is MISSING from env!");
+        return;
+    }
 
     // Grab headers to see who the "intruder" is
     const headerList = await headers();
@@ -42,7 +47,7 @@ async function sendDiscordNotification() {
 }
 
 export default async function LovePage() {
-    void sendDiscordNotification();
+    await sendDiscordNotification();
     const filePath = path.join(process.cwd(), 'Love.md');
     const content = await fs.readFile(filePath, 'utf8');
 
