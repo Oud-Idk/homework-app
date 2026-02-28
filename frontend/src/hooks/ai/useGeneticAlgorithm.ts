@@ -10,6 +10,7 @@ export type GAConfig = {
     calculateFitness: (genome: number[]) => number;
     mutate: (genome: number[], mutationRate: number) => number[];
     onComplete?: (bestGenome: number[]) => void;
+    crossover: (p1: number[], p2: number[]) => number[];
 };
 
 export function useGeneticAlgorithm(config: GAConfig) {
@@ -31,53 +32,23 @@ export function useGeneticAlgorithm(config: GAConfig) {
 
     const evolve = useCallback((pop: number[][]) => {
         const scored = pop.map(g => ({ genome: g, score: calculateFitness(g) }));
-        scored.sort((a, b) => b.score - a.score); // Highest score first
+        scored.sort((a, b) => b.score - a.score);
 
         const best = scored[0];
         const nextPop = scored.slice(0, elitismCount).map(s => s.genome);
 
         while (nextPop.length < popSize) {
-            // Simple tournament / random selection
             const p1 = scored[Math.floor(Math.random() * (popSize / 2))].genome;
             const p2 = scored[Math.floor(Math.random() * (popSize / 2))].genome;
 
-            // --- FIX: Order Crossover (OX1) to guarantee uniqueness ---
-            const length = p1.length;
-            const start = Math.floor(Math.random() * length);
-            const end = Math.floor(Math.random() * length);
-            const min = Math.min(start, end);
-            const max = Math.max(start, end);
+            // USE THE PROVIDED CROSSOVER
+            const child = config.crossover(p1, p2);
 
-            const child = new Array(length).fill(-1);
-            const used = new Set<number>();
-
-            // 1. Copy a random contiguous slice from Parent 1
-            for (let i = min; i <= max; i++) {
-                child[i] = p1[i];
-                used.add(p1[i]);
-            }
-
-            // 2. Fill the remaining spots with unused genes from Parent 2
-            let p2Index = 0;
-            for (let i = 0; i < length; i++) {
-                if (child[i] === -1) {
-                    // Skip genes we already took from Parent 1
-                    while (used.has(p2[p2Index])) {
-                        p2Index++;
-                    }
-                    child[i] = p2[p2Index];
-                    used.add(p2[p2Index]);
-                    p2Index++;
-                }
-            }
-            // -----------------------------------------------------------
-
-            // Mutation (Your existing swap mutation is already permutation-safe)
             nextPop.push(mutate(child, mutationRate));
         }
 
         return { nextPop, bestGenome: best.genome, bestScore: best.score, allScored: scored };
-    }, [calculateFitness, mutate, popSize, mutationRate, elitismCount]);
+    }, [calculateFitness, mutate, config.crossover, popSize, mutationRate, elitismCount]);
 
     const runVisual = useCallback(() => {
         if (!isOptimizingRef.current) return;

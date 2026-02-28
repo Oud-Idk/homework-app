@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { Group, Layer, Line, Rect, Shape, Stage, Text, Transformer } from 'react-konva';
 import { useTheme } from 'next-themes';
-import { Grip, Maximize, Plus, Trash2 } from 'lucide-react';
+import { Grip, Maximize, Plus, Trash2, ZoomIn, ZoomOut } from 'lucide-react';
 import { useSession } from "next-auth/react";
 import { Classroom } from "@/types";
 import { reqToApi } from "@/lib/utils";
@@ -78,11 +78,15 @@ export default function SeatingOptimizer() {
     const [history, setHistory] = useState<any[][]>([[]]);
     const [historyStep, setHistoryStep] = useState(0);
 
+    // Zoom & Pan State
+    const [stageScale, setStageScale] = useState(1);
+    const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
+
     const stageRef = useRef<any>(null);
     const transformerRef = useRef<any>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Data Hook (Added relationships here so it doesn't error out below)
+    // Data Hook
     const { students, matrix, relationships } = useClassroomData(currentClassId, session, true);
 
     // Settings
@@ -98,7 +102,7 @@ export default function SeatingOptimizer() {
         reqToApi("class").then(r => r.json()).then(c => setClasses(c)).catch(console.error);
     }, []);
 
-    // Resize observer (FIX 3: Works in tandem with absolute wrapper below)
+    // Resize observer
     useEffect(() => {
         if (!containerRef.current) return;
         const observer = new ResizeObserver((entries) => {
@@ -117,19 +121,37 @@ export default function SeatingOptimizer() {
         });
     }, [tables]);
 
+    const distanceMatrix = useMemo(() => {
+        const dists: number[][] = Array(tables.length).fill(0).map(() => Array(tables.length).fill(0));
+
+        for (let i = 0; i < tables.length; i++) {
+            for (let j = i + 1; j < tables.length; j++) {
+                const t1 = seatCoords[i];
+                const t2 = seatCoords[j];
+                if (!t1 || !t2) continue;
+
+                // Calculate once, reuse millions of times
+                const dSq = Math.pow(t1.x - t2.x, 2) + Math.pow(t1.y - t2.y, 2);
+                dists[i][j] = dSq;
+                dists[j][i] = dSq;
+            }
+        }
+        return dists;
+    }, [tables, seatCoords]);
+
     // --- Genetic Algorithm Configuration ---
     const calculateFitness = useCallback((genome: number[]) => {
         let totalScore = 0;
         for (let i = 0; i < genome.length; i++) {
             for (let j = i + 1; j < genome.length; j++) {
-                if (!seatCoords[i] || !seatCoords[j]) continue;
-
-                const distSq = Math.pow(seatCoords[i].x - seatCoords[j].x, 2) + Math.pow(seatCoords[i].y - seatCoords[j].y, 2);
-                if (distSq > 16) continue; // Ignore far interactions
+                const distSq = distanceMatrix[i][j];
+                if (distSq > 16 || distSq === 0) continue;
 
                 const w1 = matrix[genome[i]][genome[j]] || 0;
                 const w2 = matrix[genome[j]][genome[i]] || 0;
-                let affinity = (w1 < 0 || w2 < 0) ? Math.min(w1, w2) * 20 : w1 + w2;
+                let affinity = (w1 < 0 || w2 < 0)
+                    ? Math.min(w1, w2) * 20
+                    : (w1 + w2) - Math.abs(w1 - w2);
 
                 totalScore += affinity / Math.max(distSq, 0.1);
             }
@@ -142,7 +164,7 @@ export default function SeatingOptimizer() {
         if (Math.random() < rate) {
             const idxA = Math.floor(Math.random() * child.length);
             const idxB = Math.floor(Math.random() * child.length);
-            [child[idxA], child[idxB]] = [child[idxB], child[idxA]]; // Swap to keep uniqueness
+            [child[idxA], child[idxB]] = [child[idxB], child[idxA]];
         }
         return child;
     }, []);
@@ -152,12 +174,38 @@ export default function SeatingOptimizer() {
         return Array.from({ length: size }, () => [...indices].sort(() => Math.random() - 0.5));
     }, [peopleCount]);
 
+    const crossover = useCallback((p1: number[], p2: number[]) => {
+        const length = p1.length;
+        const start = Math.floor(Math.random() * length);
+        const end = Math.floor(Math.random() * length);
+        const min = Math.min(start, end);
+        const max = Math.max(start, end);
+
+        const child = new Array(length).fill(-1);
+        const used = new Set<number>();
+
+        for (let i = min; i <= max; i++) {
+            child[i] = p1[i];
+            used.add(p1[i]);
+        }
+
+        let p2Index = 0;
+        for (let i = 0; i < length; i++) {
+            if (child[i] === -1) {
+                while (used.has(p2[p2Index])) p2Index++;
+                child[i] = p2[p2Index];
+                used.add(p2[p2Index]);
+                p2Index++;
+            }
+        }
+        return child;
+    }, []);
+
     const ga = useGeneticAlgorithm({
         popSize, mutationRate, maxInstantGens: 5000, visualDelayMs: 100,
-        createInitialPop, calculateFitness, mutate
+        createInitialPop, calculateFitness, mutate, crossover
     });
 
-    // Generate quick assignments map mapping TableIndex -> StudentIndex
     const assignments = useMemo(() => {
         const map: Record<number, number> = {};
         if (ga.bestGenome) ga.bestGenome.forEach((studentIdx, tableIdx) => {
@@ -166,7 +214,7 @@ export default function SeatingOptimizer() {
         return map;
     }, [ga.bestGenome, tables.length]);
 
-    // History and Canvas Actions
+    // --- Canvas Actions & Handlers ---
     const recordHistory = (newTables: any[]) => {
         const newHistory = history.slice(0, historyStep + 1);
         newHistory.push(newTables);
@@ -199,21 +247,93 @@ export default function SeatingOptimizer() {
         setTables(newTables);
         recordHistory(newTables);
         setSelectedIds([]);
-    }
-
-    const resetView = () => stageRef.current?.to({ x: 0, y: 0, scaleX: 1, scaleY: 1, duration: 0.3 });
+    };
 
     const handleDragEnd = () => {
         const nodes = transformerRef.current.nodes();
+        const gap = GRID_SIZE * SCALE;
+
         const newTables = tables.map(t => {
             const node = nodes.find((n: any) => n.id() === t.id) || stageRef.current.findOne('#' + t.id);
-            return node ? { ...t, x: node.x() / SCALE, y: node.y() / SCALE, rotation: node.rotation() } : t;
+            if (node) {
+                // mathematically snap local coords before saving
+                const snappedX = Math.round(node.x() / gap) * gap;
+                const snappedY = Math.round(node.y() / gap) * gap;
+                return { ...t, x: snappedX / SCALE, y: snappedY / SCALE, rotation: Math.round(node.rotation()) };
+            }
+            return t;
         });
+
         if (JSON.stringify(newTables) !== JSON.stringify(tables)) {
             setTables(newTables);
             recordHistory(newTables);
         }
     };
+
+    // --- Zoom & Pan Logic ---
+    const handleWheel = useCallback((e: any) => {
+        e.evt.preventDefault();
+        const stage = stageRef.current;
+        if (!stage) return;
+
+        const scaleBy = 1.1;
+        const oldScale = stageScale;
+        const pointer = stage.getPointerPosition();
+        if (!pointer) return;
+
+        const mousePointTo = {
+            x: (pointer.x - stagePos.x) / oldScale,
+            y: (pointer.y - stagePos.y) / oldScale,
+        };
+
+        const direction = e.evt.deltaY > 0 ? -1 : 1;
+        let newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+        newScale = Math.max(0.1, Math.min(newScale, 5)); // clamp zoom
+
+        setStageScale(newScale);
+        setStagePos({
+            x: pointer.x - mousePointTo.x * newScale,
+            y: pointer.y - mousePointTo.y * newScale,
+        });
+    }, [stageScale, stagePos]);
+
+    const handleZoomButton = (direction: 1 | -1) => {
+        const scaleBy = 1.2;
+        const oldScale = stageScale;
+        let newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+        newScale = Math.max(0.1, Math.min(newScale, 5));
+
+        const centerX = dimensions.width / 2;
+        const centerY = dimensions.height / 2;
+
+        const centerPointTo = {
+            x: (centerX - stagePos.x) / oldScale,
+            y: (centerY - stagePos.y) / oldScale,
+        };
+
+        setStageScale(newScale);
+        setStagePos({
+            x: centerX - centerPointTo.x * newScale,
+            y: centerY - centerPointTo.y * newScale,
+        });
+    };
+
+    const resetView = () => {
+        setStageScale(1);
+        setStagePos({ x: 0, y: 0 });
+    };
+
+    // Calculate dynamic physical scale based on zoom
+    const scaleProps = useMemo(() => {
+        let m = 1;
+        let p = SCALE * stageScale;
+        if (p > 250) m = 0.5;
+        if (p > 500) m = 0.25;
+        if (p < 50) m = 2;
+        if (p < 25) m = 5;
+        if (p < 10) m = 10;
+        return { meters: m, pixels: p * m };
+    }, [stageScale]);
 
     // Keep transformer aligned
     useEffect(() => {
@@ -222,23 +342,28 @@ export default function SeatingOptimizer() {
         transformerRef.current.getLayer().batchDraw();
     }, [selectedIds, tables]);
 
-    // Auto-stop optimizer on class change
     const onChangeClass = (id: string) => {
         setCurrentClassId(id);
         ga.stop();
-    }
+    };
 
     if (!mounted) return null;
 
     return (
         <div className="flex flex-row h-full select-none transition-colors duration-200">
-            <div className="flex-1 flex flex-col  gap-6 h-full">
+            <div className="flex-1 flex flex-col gap-6 h-full">
                 <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 rounded-xl shadow-sm border transition-colors duration-200">
                     <div className="flex gap-2">
                         <button onClick={addTable} className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm font-medium shadow-sm cursor-pointer hover:bg-neutral-500/10"><Plus size={16} /> Table</button>
                         <button onClick={quickFill} className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm font-medium shadow-sm cursor-pointer hover:bg-neutral-500/10"><Grip size={16} /> Fill</button>
-                        <button onClick={resetView} className="flex items-center gap-2 border px-3 py-2 rounded-lg text-sm font-medium shadow-sm cursor-pointer hover:bg-neutral-500/10"><Maximize size={16} /></button>
-                        <button onClick={deleteSelected} disabled={selectedIds.length === 0} className="flex items-center gap-2 text-red-500 border px-3 py-2 rounded-lg disabled:opacity-50 hover:bg-neutral-500/10 cursor-pointer"><Trash2 size={16} /></button>
+
+                        <div className="flex ml-2 gap-1 border rounded-lg bg-neutral-500/5 p-1 shadow-sm">
+                            <button onClick={() => handleZoomButton(-1)} className="p-1.5 rounded-md hover:bg-neutral-500/10 text-neutral-600 dark:text-neutral-400"><ZoomOut size={16} /></button>
+                            <button onClick={resetView} className="p-1.5 rounded-md hover:bg-neutral-500/10 text-neutral-600 dark:text-neutral-400" title="Reset View"><Maximize size={16} /></button>
+                            <button onClick={() => handleZoomButton(1)} className="p-1.5 rounded-md hover:bg-neutral-500/10 text-neutral-600 dark:text-neutral-400"><ZoomIn size={16} /></button>
+                        </div>
+
+                        <button onClick={deleteSelected} disabled={selectedIds.length === 0} className="flex items-center gap-2 ml-2 text-red-500 border px-3 py-2 rounded-lg disabled:opacity-50 hover:bg-neutral-500/10 cursor-pointer"><Trash2 size={16} /></button>
                     </div>
 
                     <div className="flex items-center gap-3">
@@ -262,6 +387,7 @@ export default function SeatingOptimizer() {
                         </div>
                     </div>
                 </div>
+
                 <div className="border p-4 rounded-xl">
                     <GASettings
                         mutationRate={mutationRate} setMutationRate={setMutationRate}
@@ -271,9 +397,21 @@ export default function SeatingOptimizer() {
                     />
                 </div>
 
-                <div ref={containerRef} className="flex-1 border relative rounded-xl overflow-hidden cursor-grab active:cursor-grabbing transition-colors duration-200">
-                    <div className="absolute inset-0">
-                        <Stage width={dimensions.width} height={dimensions.height} ref={stageRef} draggable onMouseDown={e => e.target === e.target.getStage() && setSelectedIds([])}>
+                <div ref={containerRef} className="flex-1 border relative rounded-xl overflow-hidden bg-neutral-50 dark:bg-neutral-900 transition-colors duration-200">
+                    <div className="absolute inset-0 cursor-grab active:cursor-grabbing">
+                        <Stage
+                            width={dimensions.width} height={dimensions.height}
+                            ref={stageRef}
+                            draggable
+                            scaleX={stageScale} scaleY={stageScale}
+                            x={stagePos.x} y={stagePos.y}
+                            onWheel={handleWheel}
+                            onMouseDown={e => e.target === e.target.getStage() && setSelectedIds([])}
+                            onDragEnd={e => {
+                                // Save pan position only if stage itself was dragged
+                                if (e.target === stageRef.current) setStagePos({ x: e.target.x(), y: e.target.y() });
+                            }}
+                        >
                             <Layer>
                                 <InfiniteGrid width={dimensions.width} height={dimensions.height} gap={GRID_SIZE * SCALE} color={C.grid} />
 
@@ -287,8 +425,7 @@ export default function SeatingOptimizer() {
                                         const sum = (matrix[sIdx1][sIdx2] || 0) + (matrix[sIdx2][sIdx1] || 0);
                                         if (Math.abs(sum) < 6) return null;
 
-                                        {/* FIX 2: Use table indexes for lines to guarantee absolute uniqueness */}
-                                        return <Line key={`line-${tIdx1}-${tIdx2}`} points={[s1.x * SCALE, s1.y * SCALE, s2.x * SCALE, s2.y * SCALE]} stroke={sum > 0 ? C.linePos : C.lineNeg} strokeWidth={Math.max(1, Math.abs(sum) / 100)} dash={sum < 0 ? [5, 5] : undefined} opacity={0.6} listening={false} />
+                                        return <Line key={`line-${tIdx1}-${tIdx2}`} points={[s1.x * SCALE, s1.y * SCALE, s2.x * SCALE, s2.y * SCALE]} stroke={sum > 0 ? C.linePos : C.lineNeg} strokeWidth={Math.min(20, Math.max(1, Math.abs(sum) / 100))} dash={sum < 0 ? [5, 5] : undefined} opacity={0.6} listening={false} />
                                     })
                                 )}
 
@@ -299,7 +436,26 @@ export default function SeatingOptimizer() {
                                     const displayName = isAssigned ? (students[sIdx]?.name || "Unknown").split(' ')[0] : tIndex.toString();
 
                                     return (
-                                        <Group key={table.id} id={table.id} x={table.x * SCALE} y={table.y * SCALE} rotation={table.rotation} draggable onDragEnd={handleDragEnd} onTransformEnd={handleDragEnd} onClick={e => { e.cancelBubble = true; setSelectedIds(prev => e.evt.shiftKey ? prev.includes(table.id) ? prev.filter(i => i !== table.id) : [...prev, table.id] : [table.id])}}>
+                                        <Group
+                                            key={table.id} id={table.id}
+                                            x={table.x * SCALE} y={table.y * SCALE} rotation={table.rotation}
+                                            draggable
+                                            dragBoundFunc={(pos) => {
+                                                // Convert absolute pos to local stage coords for flawless snapping
+                                                const stage = stageRef.current;
+                                                if (!stage) return pos;
+                                                const localPos = stage.getAbsoluteTransform().copy().invert().point(pos);
+                                                const gap = GRID_SIZE * SCALE;
+                                                const snappedLocal = {
+                                                    x: Math.round(localPos.x / gap) * gap,
+                                                    y: Math.round(localPos.y / gap) * gap,
+                                                };
+                                                // Convert back to absolute
+                                                return stage.getAbsoluteTransform().point(snappedLocal);
+                                            }}
+                                            onDragEnd={handleDragEnd} onTransformEnd={handleDragEnd}
+                                            onClick={e => { e.cancelBubble = true; setSelectedIds(prev => e.evt.shiftKey ? prev.includes(table.id) ? prev.filter(i => i !== table.id) : [...prev, table.id] : [table.id])}}
+                                        >
                                             <Rect x={-50} y={-50} width={100} height={100} fill={C.tableFill} stroke={table.colliding ? C.colliding : isSelected ? C.selected : C.tableStroke} strokeWidth={isSelected ? 3 : 2} cornerRadius={8} />
                                             <Group y={SEAT_OFFSET * SCALE}>
                                                 <Rect x={-20} y={0} width={40} height={12} fill={C.chair} cornerRadius={2} />
@@ -318,6 +474,23 @@ export default function SeatingOptimizer() {
                                 <Transformer ref={transformerRef} resizeEnabled={false} rotateEnabled={true} rotationSnaps={[0, 45, 90, 135, 180, 225, 270, 315]} anchorCornerRadius={5} anchorSize={10} borderStroke={C.selected} borderStrokeWidth={2} anchorFill={C.selected} anchorStroke={C.tableFill} />
                             </Layer>
                         </Stage>
+                    </div>
+
+                    {/* Visual Scale HUD */}
+                    <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 px-3 py-2 rounded-lg shadow-sm pointer-events-none flex items-center gap-4 transition-all duration-200">
+                        <div className="text-xs font-jetbrains-mono text-neutral-600 dark:text-neutral-400 font-semibold w-10 text-right">
+                            {Math.round(stageScale * 100)}%
+                        </div>
+                        <div className="w-px h-5 bg-neutral-300 dark:bg-neutral-600"></div>
+                        <div className="flex flex-col items-center gap-1 min-w-12.5">
+                            <div
+                                className="h-1 border-x-2 border-neutral-800 dark:border-neutral-200 bg-neutral-800 dark:bg-neutral-200 transition-all duration-200 ease-out origin-left"
+                                style={{ width: `${scaleProps.pixels}px` }}
+                            />
+                            <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider leading-none">
+                                {scaleProps.meters}m
+                            </span>
+                        </div>
                     </div>
                 </div>
 

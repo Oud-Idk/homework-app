@@ -14,7 +14,7 @@ function countLinesAfterString(text: string, target: string) {
 
 async function sendDiscordNotification() {
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-    if (!webhookUrl) return;
+    if (!webhookUrl) return console.error("Webhook URL missing");
 
     // Grab headers to see who the "intruder" is
     const headerList = await headers();

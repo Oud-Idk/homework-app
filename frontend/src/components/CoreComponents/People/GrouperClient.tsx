@@ -83,9 +83,14 @@ export function GrouperClient({ classrooms }: { classrooms: Classroom[] }) {
         );
     }, [students.length, numGroups]);
 
+    const crossover = useCallback((p1: number[], p2: number[]) => {
+        // Uniform Crossover: 50/50 chance to inherit from p1 or p2
+        return p1.map((gene, i) => Math.random() > 0.5 ? gene : p2[i]);
+    }, []);
+
     const ga = useGeneticAlgorithm({
         popSize, mutationRate, maxInstantGens: 2000, visualDelayMs: 50,
-        createInitialPop, calculateFitness, mutate,
+        createInitialPop, calculateFitness, mutate, crossover, // <--- Add it here
         onComplete: () => setIsResolving(false)
     });
 
@@ -212,7 +217,7 @@ export function GrouperClient({ classrooms }: { classrooms: Classroom[] }) {
                     <div className="bg-orange-50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-800/30 rounded-xl p-3 flex items-center gap-3 text-xs shrink-0">
                         <ExclamationTriangleIcon className="w-5 h-5 text-orange-500 shrink-0" />
                         <span className="text-orange-800 dark:text-orange-200">
-                            Balanced strategy unavailable. Missing genders for <span className="font-semibold">{studentsMissingGender.length}</span> students.
+                            Balanced strategy unavailable. Missing genders for <span className="font-semibold">{studentsMissingGender.length}</span> students: {studentsMissingGender.map(s => `${s.name}, `)}
                         </span>
                     </div>
                 )}
