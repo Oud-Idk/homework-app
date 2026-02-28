@@ -34,6 +34,7 @@ export const DesktopTableView = ({
                                     <div className="ml-4">
                                         <div className="text-sm font-medium">{user.name}</div>
                                         <div className="text-sm text-neutral-500">{user.email}</div>
+                                        <div className="text-sm text-neutral-500">{user.classroomName ?? "No Class"}</div>
                                     </div>
                                 </div>
                             </td>

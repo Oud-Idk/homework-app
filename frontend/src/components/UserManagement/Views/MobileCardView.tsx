@@ -26,7 +26,10 @@ export const MobileCardView = ({
                                 </div>
                             </div>
                             <div className="flex flex-row items-center justify-between gap-5 text-sm w-full">
-                                <span className="capitalize text-xs mt-1">{user.role}</span>
+                                <div>
+                                    <span className="capitalize text-xs mt-1 text-neutral-500">{user.role}</span>
+                                    <div className="text-xs text-neutral-500">{user.classroomName ?? "No Class"}</div>
+                                </div>
                                 <ActionButtons user={user} updatingId={updatingId} handleRoleChange={handleRoleChange} />
                             </div>
                         </div>

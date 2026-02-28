@@ -11,6 +11,7 @@ export interface UserForAdmin {
     email?: string | null;
     image?: string | null;
     role?: string;
+    classroomName?: string;
 }
 
 const USERS_PER_PAGE = 10;
@@ -21,35 +22,66 @@ async function getUsers(
 ): Promise<{ users: UserForAdmin[], totalCount: number }> {
     const client = await clientPromise;
     const db = client.db();
-    const usersCollection = db.collection<UserForAdmin>("users");
+    const usersCollection = db.collection("users");
 
-    const searchFilter: Filter<UserForAdmin> = query
+    const searchFilter = query
         ? {
             $or: [
-                { name: { $regex: query, $options: 'i' } }, // Case-insensitive search on name
-                { email: { $regex: query, $options: 'i' } }, // Case-insensitive search on email
+                { name: { $regex: query, $options: 'i' } },
+                { email: { $regex: query, $options: 'i' } },
             ],
         }
         : {};
 
     const totalCount = await usersCollection.countDocuments(searchFilter);
-
-    // Calculate the number of documents to skip
     const skip = (page - 1) * limit;
 
-    const usersData = await usersCollection
-        .find(searchFilter)
-        .project({ name: 1, email: 1, image: 1, role: 1 })
-        .sort({ name: 1 })
-        .skip(skip)
-        .limit(limit)
-        .toArray();
+    const usersData = await usersCollection.aggregate([
+        // 1. Filter the users
+        { $match: searchFilter },
 
-    // Serialize the _id for the client component
-    // The `user._id` here is an ObjectId, so .toString() is correct.
+        // 2. Sort users (important to do before skip/limit)
+        { $sort: { name: 1 } },
+
+        // 3. Pagination
+        { $skip: skip },
+        { $limit: limit },
+
+        // 4. Join with the "classrooms" collection
+        {
+            $lookup: {
+                from: "classrooms",           // The name of the collection to join with
+                localField: "classroomId",    // The field in the 'users' collection
+                foreignField: "_id",          // The field in the 'classrooms' collection
+                as: "classroomInfo"           // The temporary array field to store results
+            }
+        },
+
+        // 5. Flatten the classroomInfo array (since lookup always returns an array)
+        {
+            $unwind: {
+                path: "$classroomInfo",
+                preserveNullAndEmptyArrays: true // Keeps the user even if they don't have a classroom
+            }
+        },
+
+        // 6. Project only the fields you need
+        {
+            $project: {
+                name: 1,
+                email: 1,
+                image: 1,
+                role: 1,
+                classroomId: 1,
+                classroomName: "$classroomInfo.name" // Extract the name from the joined object
+            }
+        }
+    ]).toArray();
+
     const users = usersData.map(user => ({
         ...user,
         _id: user._id.toString(),
+        classroomId: user.classroomId?.toString()
     })) as UserForAdmin[];
 
     return { users, totalCount };
@@ -64,7 +96,6 @@ export default async function ManageUsersPage({
         page?: string;
     };
 }) {
-    // The admin layout already protects this page.
     if (!searchParams) {
         return;
     }
