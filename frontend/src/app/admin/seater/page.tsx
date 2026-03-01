@@ -121,24 +121,6 @@ export default function SeatingOptimizer() {
         });
     }, [tables]);
 
-    const distanceMatrix = useMemo(() => {
-        const dists: number[][] = Array(tables.length).fill(0).map(() => Array(tables.length).fill(0));
-
-        for (let i = 0; i < tables.length; i++) {
-            for (let j = i + 1; j < tables.length; j++) {
-                const t1 = seatCoords[i];
-                const t2 = seatCoords[j];
-                if (!t1 || !t2) continue;
-
-                // Calculate once, reuse millions of times
-                const dSq = Math.pow(t1.x - t2.x, 2) + Math.pow(t1.y - t2.y, 2);
-                dists[i][j] = dSq;
-                dists[j][i] = dSq;
-            }
-        }
-        return dists;
-    }, [tables, seatCoords]);
-
     const { pullMatrix, pushMatrix } = useMemo(() => {
         const len = tables.length;
         const pull = Array(len).fill(0).map(() => new Float32Array(len));
@@ -155,7 +137,6 @@ export default function SeatingOptimizer() {
 
                 // SAFEGUARD: If user accidentally stacks tables on top of each other, prevent Infinity/NaN
                 const safeDist = Math.max(dist, 0.8);
-                const safeDistSq = Math.max(distSq, 0.64);
 
                 // --- FRIEND PULL (+ Positive Relationships) ---
                 // Base gravity: 1 / safeDist (At 1m: 1.0 | At 2m: 0.5 | At 5m: 0.2)
@@ -170,13 +151,12 @@ export default function SeatingOptimizer() {
 
                 pull[i][j] = pull[j][i] = pullValue;
 
-                // --- ENEMY PUSH (- Negative Relationships) ---
-                // Inverse square (1 / dist^2) creates a massive penalty at 1m that drops off nicely
-                // At 1.0m: Multiplier is 1.00 (Separation Needed = -10,000)
-                // At 1.4m: Multiplier is 0.50 (Separation Needed = -5,000)
-                // At 2.0m: Multiplier is 0.25 (Separation Needed = -2,500)
-                // At 4.0m: Multiplier is 0.06 (Separation Needed = -600)
-                push[i][j] = push[j][i] = 1 / safeDistSq;
+                // --- ENEMY PUSH (Separation Needed) ---
+                // At 0.8m (Overlap): Penalty ~1.75 (Harsher than ^2 which was 1.56)
+                // At 1.0m (Touch):   Penalty 1.00
+                // At 1.4m (Diag):    Penalty 0.43 (Lower than ^2 which was 0.50)
+                // At 2.0m (Away):    Penalty 0.17 (Much lower than ^2 which was 0.25)
+                push[i][j] = push[j][i] = 1 / Math.pow(safeDist, 2.5);
             }
         }
         return { pullMatrix: pull, pushMatrix: push };
