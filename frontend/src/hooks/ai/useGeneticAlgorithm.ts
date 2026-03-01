@@ -41,9 +41,7 @@ export function useGeneticAlgorithm(config: GAConfig) {
             const p1 = scored[Math.floor(Math.random() * (popSize / 2))].genome;
             const p2 = scored[Math.floor(Math.random() * (popSize / 2))].genome;
 
-            // USE THE PROVIDED CROSSOVER
             const child = config.crossover(p1, p2);
-
             nextPop.push(mutate(child, mutationRate));
         }
 
@@ -71,26 +69,49 @@ export function useGeneticAlgorithm(config: GAConfig) {
         setGeneration(0);
 
         if (mode === 'instant') {
-            let pop = populationRef.current;
-            let currentBestG = pop[0], currentBestS = -Infinity, finalScored: any[] = [];
+            // Calculate how many generations equals exactly 1% progress
+            const chunkSize = Math.max(1, Math.floor(maxInstantGens / 100));
 
-            for (let i = 0; i < maxInstantGens; i++) {
-                const res = evolve(pop);
-                pop = res.nextPop;
-                if (res.bestScore > currentBestS) {
-                    currentBestG = res.bestGenome;
-                    currentBestS = res.bestScore;
+            const runInstantChunk = (currentGen: number, currentPop: number[][], currentBestG: number[], currentBestS: number) => {
+                // Allows stopping midway via the Stop button
+                if (!isOptimizingRef.current) return;
+
+                const targetGen = Math.min(maxInstantGens, currentGen + chunkSize);
+                let pop = currentPop;
+                let bestG = currentBestG;
+                let bestS = currentBestS;
+                let finalScored: any[] = [];
+
+                // Process exactly 1 chunk (1%)
+                for (let i = currentGen; i < targetGen; i++) {
+                    const res = evolve(pop);
+                    pop = res.nextPop;
+                    if (res.bestScore > bestS) {
+                        bestG = res.bestGenome;
+                        bestS = res.bestScore;
+                    }
+                    if (i === maxInstantGens - 1) finalScored = res.allScored;
                 }
-                if (i === maxInstantGens - 1) finalScored = res.allScored;
-            }
 
-            setBestGenome(currentBestG);
-            setBestScore(currentBestS);
-            setTopGenomes(finalScored.slice(0, 25));
-            setGeneration(maxInstantGens);
+                // Update state to trigger React re-render of the progress bar
+                populationRef.current = pop;
+                setGeneration(targetGen);
+                setBestGenome(bestG);
+                setBestScore(bestS);
 
-            stop();
-            if (onComplete) onComplete(currentBestG);
+                if (targetGen < maxInstantGens) {
+                    // Schedule next chunk, giving the browser time to paint UI
+                    timeoutRef.current = setTimeout(() => runInstantChunk(targetGen, pop, bestG, bestS), 0);
+                } else {
+                    // Finished
+                    setTopGenomes(finalScored.slice(0, 25));
+                    stop();
+                    if (onComplete) onComplete(bestG);
+                }
+            };
+
+            // Kick off the first chunk
+            runInstantChunk(0, populationRef.current, populationRef.current[0], -Infinity);
         } else {
             runVisual();
         }

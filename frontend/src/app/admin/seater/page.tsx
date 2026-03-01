@@ -58,6 +58,13 @@ export default function SeatingOptimizer() {
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
 
+    const adaptiveTracker = useRef({
+        generation: 0,
+        bestFitness: -Infinity,
+        stagnation: 0,
+        mutationsThisGen: 0
+    });
+
     const isDark = mounted && resolvedTheme === 'dark';
 
     const C = {
@@ -86,6 +93,9 @@ export default function SeatingOptimizer() {
     const transformerRef = useRef<any>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
+    // Keyboard Tracking for Ctrl Snapping
+    const isCtrlPressed = useRef(false);
+
     // Data Hook
     const { students, matrix, relationships } = useClassroomData(currentClassId, session, true);
 
@@ -93,6 +103,7 @@ export default function SeatingOptimizer() {
     const [visMode, setVisMode] = useState<'visual' | 'instant'>('visual');
     const [popSize, setPopSize] = useState(100);
     const [mutationRate, setMutationRate] = useState(0.3);
+    const [maxGenerations, setMaxGenerations] = useState(2000);
 
     const peopleCount = students.length;
     const unfulfilled = tables.length !== peopleCount || peopleCount === 0;
@@ -113,6 +124,24 @@ export default function SeatingOptimizer() {
         return () => observer.disconnect();
     }, [mounted]);
 
+    // Global Key Bindings
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Control' || e.metaKey) isCtrlPressed.current = true;
+        };
+        const handleKeyUp = (e: KeyboardEvent) => {
+            if (e.key === 'Control' || !e.metaKey) isCtrlPressed.current = false;
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
+
     // Seat Coords Tracker
     const seatCoords = useMemo(() => {
         return tables.map(t => {
@@ -132,37 +161,17 @@ export default function SeatingOptimizer() {
                 const t2 = seatCoords[j];
                 if (!t1 || !t2) continue;
 
-                const distSq = Math.pow(t1.x - t2.x, 2) + Math.pow(t1.y - t2.y, 2);
-                const dist = Math.sqrt(distSq);
+                const dist = Math.sqrt(Math.pow(t1.x - t2.x, 2) + Math.pow(t1.y - t2.y, 2));
 
-                // SAFEGUARD: If user accidentally stacks tables on top of each other, prevent Infinity/NaN
-                const safeDist = Math.max(dist, 0.8);
+                const distNorm = Math.max(dist, 0.8);
 
-                // --- FRIEND PULL (+ Positive Relationships) ---
-                // Base gravity: 1 / safeDist (At 1m: 1.0 | At 2m: 0.5 | At 5m: 0.2)
-                let pullValue = 1 / safeDist;
-
-                // ADJACENCY BONUS (Catches both 1.0m neighbors AND 1.41m diagonal neighbors)
-                if (safeDist < 1.8) {
-                    // At 1.0m: Bonus is 2.4. Total Multiplier = ~3.4
-                    // At 1.4m: Bonus is 1.2. Total Multiplier = ~1.9
-                    pullValue += (1.8 - safeDist) * 3;
-                }
-
-                pull[i][j] = pull[j][i] = pullValue;
-
-                // --- ENEMY PUSH (Separation Needed) ---
-                // At 0.8m (Overlap): Penalty ~1.75 (Harsher than ^2 which was 1.56)
-                // At 1.0m (Touch):   Penalty 1.00
-                // At 1.4m (Diag):    Penalty 0.43 (Lower than ^2 which was 0.50)
-                // At 2.0m (Away):    Penalty 0.17 (Much lower than ^2 which was 0.25)
-                push[i][j] = push[j][i] = 1 / Math.pow(safeDist, 2.5);
+                pull[i][j] = pull[j][i] = (2 / (Math.pow(distNorm, 2.2))) - Math.pow(0.08 * distNorm, 0.7);
+                push[i][j] = push[j][i] = Math.max(0, (2.5 / (distNorm  * distNorm)) - 0.4)
             }
         }
         return { pullMatrix: pull, pushMatrix: push };
     }, [tables, seatCoords]);
 
-    // 2. Precompute student relationship matrix
     const relMatrix = useMemo(() => {
         const len = peopleCount;
         const mat = Array(len).fill(0).map(() => new Float32Array(len));
@@ -171,22 +180,18 @@ export default function SeatingOptimizer() {
             for (let j = i + 1; j < len; j++) {
                 const w1 = matrix[i]?.[j] || 0;
                 const w2 = matrix[j]?.[i] || 0;
-                // Combine their relationship weights
                 mat[i][j] = mat[j][i] = w1 + w2;
             }
         }
         return mat;
     }, [peopleCount, matrix]);
 
-    // 3. The Hot Loop: Now using continuous forces!
     const calculateFitness = useCallback((genome: number[]) => {
         let totalScore = 0;
         const len = genome.length;
 
         for (let i = 0; i < len; i++) {
             const studentA = genome[i];
-
-            // Safety check against desynced lengths during React renders
             if (!pullMatrix[i]) continue;
 
             for (let j = i + 1; j < len; j++) {
@@ -194,33 +199,64 @@ export default function SeatingOptimizer() {
                 const weight = relMatrix[studentA]?.[studentB];
 
                 if (weight > 0) {
-                    // POSITIVE (+): Pull them together
                     totalScore += weight * pullMatrix[i][j];
                 } else if (weight < 0) {
-                    // NEGATIVE (-): Push them apart aggressively
                     totalScore += weight * pushMatrix[i][j];
-                } else {
-                    // NEUTRAL (0): The "Stranger Danger" penalty
-                    // pushMatrix at 1.0m is 1.00. Multiplied by 2 = -2.0 penalty.
-                    // pushMatrix at 1.4m is 0.50. Multiplied by 2 = -1.0 penalty.
-                    // This creates a mild annoyance that forces the GA to keep shuffling
-                    // students until it finds someone with a >0 relationship.
-                    totalScore -= 2 * pushMatrix[i][j];
                 }
             }
         }
+
+        if (totalScore > adaptiveTracker.current.bestFitness) {
+            adaptiveTracker.current.bestFitness = totalScore;
+            adaptiveTracker.current.stagnation = 0;
+        }
+
         return totalScore;
     }, [relMatrix, pullMatrix, pushMatrix]);
 
-    const mutate = useCallback((genome: number[], rate: number) => {
-        const child = [...genome];
-        if (Math.random() < rate) {
-            const idxA = Math.floor(Math.random() * child.length);
-            const idxB = Math.floor(Math.random() * child.length);
-            [child[idxA], child[idxB]] = [child[idxB], child[idxA]];
+    const mutate = useCallback((genome: number[], baselineRate: number) => {
+        const tracker = adaptiveTracker.current;
+
+        // 1. Advance our internal generation tracker
+        tracker.mutationsThisGen++;
+        if (tracker.mutationsThisGen >= popSize) {
+            tracker.generation++;
+            tracker.stagnation++; // Assume stagnation; calculateFitness will reset this to 0 if we improve
+            tracker.mutationsThisGen = 0;
         }
+
+        // 2. Strategy 3 Logic: Best of Both Worlds
+        const MAX_RATE = 4.0;
+        const MIN_RATE = Math.max(0.1, baselineRate); // The UI slider determines the minimum floor
+        const DECAY = 0.015; // Slow decay (optimized for your 2000 maxGens)
+
+        // Calculate standard exponential cooling rate
+        let currentRate = MIN_RATE + (MAX_RATE - MIN_RATE) * Math.exp(-DECAY * tracker.generation);
+
+        // If stuck for 30+ generations, trigger a "mini-quake" hypermutation to escape the local minimum
+        if (tracker.stagnation > 30) {
+            currentRate = Math.min(MAX_RATE, currentRate * 3); // Triple the rate, capped at MAX_RATE
+        }
+
+        // 3. Apply the actual mutation using the adaptive rate
+        const child = [...genome];
+        const length = child.length;
+        const prob = currentRate / length;
+
+        for (let i = 0; i < length; i++) {
+            if (Math.random() < prob) {
+                const swapIdx = Math.floor(Math.random() * length);
+                // Swapping with self optimization
+                if (i !== swapIdx) {
+                    const temp = child[i];
+                    child[i] = child[swapIdx];
+                    child[swapIdx] = temp;
+                }
+            }
+        }
+
         return child;
-    }, []);
+    }, [popSize])
 
     const createInitialPop = useCallback((size: number) => {
         const indices = Array.from({ length: peopleCount }, (_, i) => i);
@@ -255,9 +291,86 @@ export default function SeatingOptimizer() {
     }, []);
 
     const ga = useGeneticAlgorithm({
-        popSize, mutationRate, maxInstantGens: 5000, visualDelayMs: 100,
+        popSize, mutationRate, maxInstantGens: maxGenerations, visualDelayMs: 50,
         createInitialPop, calculateFitness, mutate, crossover
     });
+
+    useEffect(() => {
+        if (ga.isOptimizing) {
+            adaptiveTracker.current = {
+                generation: 0,
+                bestFitness: -Infinity,
+                stagnation: 0,
+                mutationsThisGen: 0
+            };
+        }
+    }, [ga.isOptimizing]);
+
+    // Reactive Score: Live updates when you drag a table (matrices recalculate instantly)
+    const currentScore = useMemo(() => {
+        if (!ga.bestGenome || ga.bestGenome.length === 0 || tables.length === 0) return null;
+        return calculateFitness(ga.bestGenome);
+    }, [ga.bestGenome, calculateFitness, tables]);
+
+    const progressPercent = useMemo(() => {
+        if (!ga.isOptimizing || visMode === 'visual') return 0;
+        return Math.min(100, Math.round((ga.generation / maxGenerations) * 100));
+    }, [ga.generation, maxGenerations, ga.isOptimizing, visMode]);
+
+    // Extract top contributing/damaging connections from the current layout
+    const connectionScores = useMemo(() => {
+        if (!ga.bestGenome || tables.length === 0 || peopleCount === 0) return { positives: [], negatives: [] };
+
+        const genome = ga.bestGenome;
+        const len = genome.length;
+        const connections = [];
+
+        for (let i = 0; i < len; i++) {
+            const studentA = genome[i];
+            if (!pullMatrix[i]) continue;
+
+            for (let j = i + 1; j < len; j++) {
+                const studentB = genome[j];
+                const weight = relMatrix[studentA]?.[studentB] || 0;
+
+                if (weight === 0) continue;
+
+                let score = 0;
+                if (weight > 0) {
+                    score = weight * pullMatrix[i][j];
+                } else if (weight < 0) {
+                    score = weight * pushMatrix[i][j];
+                }
+
+                if (Math.abs(score) > 0.01) { // Filter out microscopic scores
+                    connections.push({
+                        studentA,
+                        studentB,
+                        tableA: i,    // Capture table index for the canvas line
+                        tableB: j,    // Capture table index for the canvas line
+                        weight,       // Raw relationship weight for line styling
+                        nameA: students[studentA]?.name.split(' ')[0] || 'Unknown',
+                        nameB: students[studentB]?.name.split(' ')[0] || 'Unknown',
+                        score
+                    });
+                }
+            }
+        }
+
+        // Sort Highest positive score first
+        const positives = connections
+            .filter(c => c.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 8); // Top 8 contributors
+
+        // Sort Lowest negative score first (most damaging)
+        const negatives = connections
+            .filter(c => c.score < 0)
+            .sort((a, b) => a.score - b.score)
+            .slice(0, 8); // Top 8 offenders
+
+        return { positives, negatives };
+    }, [ga.bestGenome, pullMatrix, pushMatrix, relMatrix, students, tables.length, peopleCount]);
 
     const assignments = useMemo(() => {
         const map: Record<number, number> = {};
@@ -276,6 +389,7 @@ export default function SeatingOptimizer() {
     };
 
     const deleteSelected = () => {
+        if (ga.isOptimizing) return;
         const newTables = tables.filter(t => !selectedIds.includes(t.id));
         setTables(newTables);
         setSelectedIds([]);
@@ -284,6 +398,7 @@ export default function SeatingOptimizer() {
     };
 
     const addTable = () => {
+        if (ga.isOptimizing) return;
         const offset = tables.length * 0.1;
         const newTables = [...tables, { id: `t-${Date.now()}`, x: 2 + offset, y: 2 + offset, rotation: 0, colliding: false }];
         setTables(newTables);
@@ -291,14 +406,14 @@ export default function SeatingOptimizer() {
     };
 
     const quickFill = () => {
+        if (ga.isOptimizing) return;
         const count = peopleCount || 0;
         if (count === 0) return;
 
-        // These MUST be multiples of GRID_SIZE (0.25)
-        const TABLE_W = 1.0;  // Center-to-center for touching tables
-        const AISLE = 1;   // 75cm walking space between pairs
-        const ROW_H = 1.75;    // 1.5m between rows
-        const OFFSET_X = 1.5; // Starting position
+        const TABLE_W = 1.0;
+        const AISLE = .75;
+        const ROW_H = 1.75;
+        const OFFSET_X = 1.5;
         const OFFSET_Y = 1.5;
         const PAIRS_PER_ROW = 4;
 
@@ -306,15 +421,14 @@ export default function SeatingOptimizer() {
             const pairIndex = Math.floor(i / 2);
             const row = Math.floor(pairIndex / PAIRS_PER_ROW);
             const colInRow = pairIndex % PAIRS_PER_ROW;
-            const sideIndex = i % 2; // 0 for left, 1 for right
+            const sideIndex = i % 2;
 
-            // All math here results in multiples of 0.25
             const x = OFFSET_X + (colInRow * (TABLE_W * 2 + AISLE)) + (sideIndex * TABLE_W);
             const y = OFFSET_Y + (row * ROW_H);
 
             return {
                 id: `t-${Date.now()}-${i}`,
-                x, // Meter units
+                x,
                 y,
                 rotation: 0,
                 colliding: false
@@ -333,10 +447,16 @@ export default function SeatingOptimizer() {
         const newTables = tables.map(t => {
             const node = nodes.find((n: any) => n.id() === t.id) || stageRef.current.findOne('#' + t.id);
             if (node) {
-                // mathematically snap local coords before saving
-                const snappedX = Math.round(node.x() / gap) * gap;
-                const snappedY = Math.round(node.y() / gap) * gap;
-                return { ...t, x: snappedX / SCALE, y: snappedY / SCALE, rotation: Math.round(node.rotation()) };
+                let newX = node.x() / SCALE;
+                let newY = node.y() / SCALE;
+
+                // Only snap to grid on drop if Ctrl is held down
+                if (isCtrlPressed.current) {
+                    newX = Math.round(node.x() / gap) * gap / SCALE;
+                    newY = Math.round(node.y() / gap) * gap / SCALE;
+                }
+
+                return { ...t, x: newX, y: newY, rotation: Math.round(node.rotation()) };
             }
             return t;
         });
@@ -365,7 +485,7 @@ export default function SeatingOptimizer() {
 
         const direction = e.evt.deltaY > 0 ? -1 : 1;
         let newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-        newScale = Math.max(0.1, Math.min(newScale, 5)); // clamp zoom
+        newScale = Math.max(0.1, Math.min(newScale, 5));
 
         setStageScale(newScale);
         setStagePos({
@@ -400,7 +520,6 @@ export default function SeatingOptimizer() {
         setStagePos({ x: 0, y: 0 });
     };
 
-    // Calculate dynamic physical scale based on zoom
     const scaleProps = useMemo(() => {
         let m = 1;
         let p = SCALE * stageScale;
@@ -412,7 +531,6 @@ export default function SeatingOptimizer() {
         return { meters: m, pixels: p * m };
     }, [stageScale]);
 
-    // Keep transformer aligned
     useEffect(() => {
         if (!transformerRef.current || !stageRef.current) return;
         transformerRef.current.nodes(selectedIds.map(id => stageRef.current.findOne('#' + id)));
@@ -431,8 +549,12 @@ export default function SeatingOptimizer() {
             <div className="flex-1 flex flex-col gap-6 h-full">
                 <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 rounded-xl shadow-sm border transition-colors duration-200">
                     <div className="flex gap-2">
-                        <button onClick={addTable} className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm font-medium shadow-sm cursor-pointer hover:bg-neutral-500/10"><Plus size={16} /> Table</button>
-                        <button onClick={quickFill} className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm font-medium shadow-sm cursor-pointer hover:bg-neutral-500/10"><Grip size={16} /> Fill</button>
+                        <button onClick={addTable} disabled={ga.isOptimizing} className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm font-medium shadow-sm cursor-pointer hover:bg-neutral-500/10 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <Plus size={16} /> Table
+                        </button>
+                        <button onClick={quickFill} disabled={ga.isOptimizing} className="flex items-center gap-2 border px-4 py-2 rounded-lg text-sm font-medium shadow-sm cursor-pointer hover:bg-neutral-500/10 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <Grip size={16} /> Fill
+                        </button>
 
                         <div className="flex ml-2 gap-1 border rounded-lg bg-neutral-500/5 p-1 shadow-sm">
                             <button onClick={() => handleZoomButton(-1)} className="p-1.5 rounded-md hover:bg-neutral-500/10 text-neutral-600 dark:text-neutral-400"><ZoomOut size={16} /></button>
@@ -440,26 +562,56 @@ export default function SeatingOptimizer() {
                             <button onClick={() => handleZoomButton(1)} className="p-1.5 rounded-md hover:bg-neutral-500/10 text-neutral-600 dark:text-neutral-400"><ZoomIn size={16} /></button>
                         </div>
 
-                        <button onClick={deleteSelected} disabled={selectedIds.length === 0} className="flex items-center gap-2 ml-2 text-red-500 border px-3 py-2 rounded-lg disabled:opacity-50 hover:bg-neutral-500/10 cursor-pointer"><Trash2 size={16} /></button>
+                        <button onClick={deleteSelected} disabled={selectedIds.length === 0 || ga.isOptimizing} className="flex items-center gap-2 ml-2 text-red-500 border px-3 py-2 rounded-lg disabled:opacity-50 hover:bg-neutral-500/10 cursor-pointer disabled:cursor-not-allowed">
+                            <Trash2 size={16} />
+                        </button>
                     </div>
 
                     <div className="flex items-center gap-3">
+                        {/* Score Display */}
                         <div className={`hidden sm:flex px-3 py-2 rounded-lg border text-xs font-jetbrains-mono font-semibold ${
-                            ga.bestScore === null ? 'border-neutral-500 text-neutral-500'
-                                : ga.bestScore >= 0 ? 'border-green-500 text-green-500' : 'border-red-500 text-red-500'
+                            currentScore === null ? 'border-neutral-500 text-neutral-500'
+                                : currentScore >= 0 ? 'border-green-500 text-green-500' : 'border-red-500 text-red-500'
                         }`}>
-                            Score: {ga.bestScore !== null ? Math.round(ga.bestScore * 10) / 10 : '--'}
+                            Score: {currentScore !== null ? Math.round(currentScore * 10) / 10 : '--'}
                         </div>
 
+                        {/* Seat Count */}
                         <div className={`px-3 py-2 rounded-lg border text-xs font-jetbrains-mono font-semibold ${!unfulfilled ? 'text-green-500 border-green-500' : 'text-orange-500 border-orange-500'}`}>
                             {tables.length}/{peopleCount}
                         </div>
 
-                        <div className="flex items-center">
+                        {/* RUN BUTTON AREA */}
+                        <div className="flex items-center w-32 justify-end">
                             {!ga.isOptimizing ? (
-                                <SubmitButton onClick={() => ga.start(visMode)} disabled={unfulfilled} className='rounded-lg font-semibold text-sm shadow-sm'>Run</SubmitButton>
+                                <SubmitButton
+                                    onClick={() => ga.start(visMode)}
+                                    disabled={unfulfilled}
+                                    className='w-full rounded-lg font-semibold text-sm shadow-sm'
+                                >
+                                    {visMode === 'instant' ? `Run (${maxGenerations})` : 'Run Visual'}
+                                </SubmitButton>
                             ) : (
-                                <SubmitButton onClick={ga.stop} className='rounded-lg font-semibold text-sm shadow-sm border-red-500! text-red-500!'>Stop</SubmitButton>
+                                <SubmitButton
+                                    onClick={ga.stop}
+                                    className='w-full rounded-lg font-semibold text-sm shadow-sm border-red-500! text-red-500! relative overflow-hidden'
+                                >
+                                    {visMode === 'instant' ? (
+                                        <>
+                                            {/* Progress Background */}
+                                            <div
+                                                className="absolute inset-0 bg-red-100 dark:bg-red-900/30 transition-all duration-200 ease-linear"
+                                                style={{ width: `${progressPercent}%` }}
+                                            />
+                                            {/* Text */}
+                                            <span className="relative z-10 flex items-center justify-center gap-2">
+                                                {progressPercent}% <span className="opacity-50 text-[10px]">Stop</span>
+                                            </span>
+                                        </>
+                                    ) : (
+                                        "Stop"
+                                    )}
+                                </SubmitButton>
                             )}
                         </div>
                     </div>
@@ -470,6 +622,7 @@ export default function SeatingOptimizer() {
                         mutationRate={mutationRate} setMutationRate={setMutationRate}
                         popSize={popSize} setPopSize={setPopSize}
                         visMode={visMode} setVisMode={setVisMode}
+                        setMaxGenerations={setMaxGenerations}
                         iconStyle="lucide"
                     />
                 </div>
@@ -485,27 +638,14 @@ export default function SeatingOptimizer() {
                             onWheel={handleWheel}
                             onMouseDown={e => e.target === e.target.getStage() && setSelectedIds([])}
                             onDragEnd={e => {
-                                // Save pan position only if stage itself was dragged
                                 if (e.target === stageRef.current) setStagePos({ x: e.target.x(), y: e.target.y() });
                             }}
                         >
                             <Layer>
+                                {/* 1. BOTTOM: The Background Grid */}
                                 <InfiniteGrid width={dimensions.width} height={dimensions.height} gap={GRID_SIZE * SCALE} color={C.grid} />
 
-                                {(ga.isOptimizing || ga.bestScore !== null) && Object.entries(assignments).map(([tIdx1, sIdx1]) =>
-                                    Object.entries(assignments).map(([tIdx2, sIdx2]) => {
-                                        if (parseInt(tIdx1) >= parseInt(tIdx2)) return null;
-                                        const s1 = seatCoords[parseInt(tIdx1)];
-                                        const s2 = seatCoords[parseInt(tIdx2)];
-                                        if (!s1 || !s2) return null;
-
-                                        const sum = (matrix[sIdx1][sIdx2] || 0) + (matrix[sIdx2][sIdx1] || 0);
-                                        if (Math.abs(sum) < 6) return null;
-
-                                        return <Line key={`line-${tIdx1}-${tIdx2}`} points={[s1.x * SCALE, s1.y * SCALE, s2.x * SCALE, s2.y * SCALE]} stroke={sum > 0 ? C.linePos : C.lineNeg} strokeWidth={Math.min(5, Math.max(1, Math.abs(sum) / 100))} dash={sum < 0 ? [5, 5] : undefined} opacity={0.6} listening={false} />
-                                    })
-                                )}
-
+                                {/* 2. MIDDLE: The Tables (Moved up so lines draw over them) */}
                                 {tables.map((table, tIndex) => {
                                     const sIdx = assignments[tIndex];
                                     const isAssigned = sIdx !== undefined;
@@ -516,23 +656,23 @@ export default function SeatingOptimizer() {
                                         <Group
                                             key={table.id} id={table.id}
                                             x={table.x * SCALE} y={table.y * SCALE} rotation={table.rotation}
-                                            draggable
+                                            draggable={!ga.isOptimizing}
                                             dragBoundFunc={(pos) => {
-                                                // Convert absolute pos to local stage coords for flawless snapping
+                                                // (Your existing snap logic...)
+                                                if (!isCtrlPressed.current) return pos;
                                                 const stage = stageRef.current;
                                                 if (!stage) return pos;
                                                 const localPos = stage.getAbsoluteTransform().copy().invert().point(pos);
                                                 const gap = GRID_SIZE * SCALE;
-                                                const snappedLocal = {
+                                                return stage.getAbsoluteTransform().point({
                                                     x: Math.round(localPos.x / gap) * gap,
                                                     y: Math.round(localPos.y / gap) * gap,
-                                                };
-                                                // Convert back to absolute
-                                                return stage.getAbsoluteTransform().point(snappedLocal);
+                                                });
                                             }}
                                             onDragEnd={handleDragEnd} onTransformEnd={handleDragEnd}
                                             onClick={e => { e.cancelBubble = true; setSelectedIds(prev => e.evt.shiftKey ? prev.includes(table.id) ? prev.filter(i => i !== table.id) : [...prev, table.id] : [table.id])}}
                                         >
+                                            {/* (Your Table Graphics Rects/Text...) */}
                                             <Rect x={-50} y={-50} width={100} height={100} fill={C.tableFill} stroke={table.colliding ? C.colliding : isSelected ? C.selected : C.tableStroke} strokeWidth={isSelected ? 3 : 2} cornerRadius={8} />
                                             <Group y={SEAT_OFFSET * SCALE}>
                                                 <Rect x={-20} y={0} width={40} height={12} fill={C.chair} cornerRadius={2} />
@@ -548,12 +688,40 @@ export default function SeatingOptimizer() {
                                         </Group>
                                     );
                                 })}
+
+                                {/* 3. TOP: The Connection Lines (Now drawn last = appears on top) */}
+                                {(ga.isOptimizing || currentScore !== null) &&
+                                    [...connectionScores.positives, ...connectionScores.negatives].map((conn, idx) => {
+                                        const s1 = seatCoords[conn.tableA];
+                                        const s2 = seatCoords[conn.tableB];
+                                        if (!s1 || !s2) return null;
+
+                                        return (
+                                            <Line
+                                                key={`line-${conn.tableA}-${conn.tableB}-${idx}`}
+                                                points={[s1.x * SCALE, s1.y * SCALE, s2.x * SCALE, s2.y * SCALE]}
+
+                                                // Color based on score sign (Positive vs Negative impact)
+                                                stroke={conn.score > 0 ? C.linePos : C.lineNeg}
+
+                                                // Thickness based on relationship strength
+                                                strokeWidth={Math.min(2, Math.max(1, Math.abs(conn.weight) / 2500))}
+
+                                                // Dashed if they are enemies (even if score is technically 0/neutral)
+                                                dash={conn.weight < 0 ? [10, 10] : undefined}
+
+                                                opacity={0.8}
+                                                listening={false} // Crucial: Clicks pass through the line to the table below
+                                            />
+                                        );
+                                    })
+                                }
+
                                 <Transformer ref={transformerRef} resizeEnabled={false} rotateEnabled={true} rotationSnaps={[0, 45, 90, 135, 180, 225, 270, 315]} anchorCornerRadius={5} anchorSize={10} borderStroke={C.selected} borderStrokeWidth={2} anchorFill={C.selected} anchorStroke={C.tableFill} />
                             </Layer>
                         </Stage>
                     </div>
 
-                    {/* Visual Scale HUD */}
                     <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 px-3 py-2 rounded-lg shadow-sm pointer-events-none flex items-center gap-4 transition-all duration-200">
                         <div className="text-xs font-jetbrains-mono text-neutral-600 dark:text-neutral-400 font-semibold w-10 text-right">
                             {Math.round(stageScale * 100)}%
@@ -585,10 +753,7 @@ export default function SeatingOptimizer() {
             <div className="pl-4 md:block hidden">
                 <OptimizationLog
                     generation={ga.generation}
-                    topGenomes={ga.topGenomes}
-                    renderGene={(studentIdx: number, tableIdx: number) => (
-                        <div key={tableIdx} className="w-2 h-2 rounded-full" style={{ backgroundColor: `hsl(${(studentIdx * 137.5) % 360}, 60%, 55%)` }} title={students[studentIdx]?.name} />
-                    )}
+                    connections={connectionScores}
                 />
             </div>
         </div>
