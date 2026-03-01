@@ -139,54 +139,98 @@ export default function SeatingOptimizer() {
         return dists;
     }, [tables, seatCoords]);
 
+    const { pullMatrix, pushMatrix } = useMemo(() => {
+        const len = tables.length;
+        const pull = Array(len).fill(0).map(() => new Float32Array(len));
+        const push = Array(len).fill(0).map(() => new Float32Array(len));
+
+        for (let i = 0; i < len; i++) {
+            for (let j = i + 1; j < len; j++) {
+                const t1 = seatCoords[i];
+                const t2 = seatCoords[j];
+                if (!t1 || !t2) continue;
+
+                const distSq = Math.pow(t1.x - t2.x, 2) + Math.pow(t1.y - t2.y, 2);
+                const dist = Math.sqrt(distSq);
+
+                // SAFEGUARD: If user accidentally stacks tables on top of each other, prevent Infinity/NaN
+                const safeDist = Math.max(dist, 0.8);
+                const safeDistSq = Math.max(distSq, 0.64);
+
+                // --- FRIEND PULL (+ Positive Relationships) ---
+                // Base gravity: 1 / safeDist (At 1m: 1.0 | At 2m: 0.5 | At 5m: 0.2)
+                let pullValue = 1 / safeDist;
+
+                // ADJACENCY BONUS (Catches both 1.0m neighbors AND 1.41m diagonal neighbors)
+                if (safeDist < 1.8) {
+                    // At 1.0m: Bonus is 2.4. Total Multiplier = ~3.4
+                    // At 1.4m: Bonus is 1.2. Total Multiplier = ~1.9
+                    pullValue += (1.8 - safeDist) * 3;
+                }
+
+                pull[i][j] = pull[j][i] = pullValue;
+
+                // --- ENEMY PUSH (- Negative Relationships) ---
+                // Inverse square (1 / dist^2) creates a massive penalty at 1m that drops off nicely
+                // At 1.0m: Multiplier is 1.00 (Separation Needed = -10,000)
+                // At 1.4m: Multiplier is 0.50 (Separation Needed = -5,000)
+                // At 2.0m: Multiplier is 0.25 (Separation Needed = -2,500)
+                // At 4.0m: Multiplier is 0.06 (Separation Needed = -600)
+                push[i][j] = push[j][i] = 1 / safeDistSq;
+            }
+        }
+        return { pullMatrix: pull, pushMatrix: push };
+    }, [tables, seatCoords]);
+
+    // 2. Precompute student relationship matrix
+    const relMatrix = useMemo(() => {
+        const len = peopleCount;
+        const mat = Array(len).fill(0).map(() => new Float32Array(len));
+
+        for (let i = 0; i < len; i++) {
+            for (let j = i + 1; j < len; j++) {
+                const w1 = matrix[i]?.[j] || 0;
+                const w2 = matrix[j]?.[i] || 0;
+                // Combine their relationship weights
+                mat[i][j] = mat[j][i] = w1 + w2;
+            }
+        }
+        return mat;
+    }, [peopleCount, matrix]);
+
+    // 3. The Hot Loop: Now using continuous forces!
     const calculateFitness = useCallback((genome: number[]) => {
         let totalScore = 0;
-        const CUTOFF_SQ = 6.25; // 2.5 meters
+        const len = genome.length;
 
-        for (let i = 0; i < genome.length; i++) {
-            for (let j = i + 1; j < genome.length; j++) {
-                const distSq = distanceMatrix[i][j];
-                if (distSq === 0) continue;
+        for (let i = 0; i < len; i++) {
+            const studentA = genome[i];
 
-                const w1 = matrix[genome[i]][genome[j]] || 0;
-                const w2 = matrix[genome[j]][genome[i]] || 0;
-                const weight = (w1 + w2); // Combined weight for simplicity
+            // Safety check against desynced lengths during React renders
+            if (!pullMatrix[i]) continue;
 
-                // --- 1. THE "SEPARATION NEEDED" LOGIC (-10,000) ---
-                if (w1 <= -10000 || w2 <= -10000) {
-                    // If they are closer than 2 meters (roughly adjacent tables/chairs)
-                    if (distSq < 4.0) {
-                        totalScore -= 10000; // Nuclear penalty
-                    }
-                    // NOTICE: No 'else' or 'falloff' here.
-                    // Once they are > 2m apart, the penalty drops to ZERO.
-                    continue;
-                }
+            for (let j = i + 1; j < len; j++) {
+                const studentB = genome[j];
+                const weight = relMatrix[studentA]?.[studentB];
 
-                // --- 2. THE "PREFER SPACE" LOGIC (-50) ---
-                if (w1 <= -50 || w2 <= -50) {
-                    if (distSq < CUTOFF_SQ) {
-                        // Small linear penalty that fades
-                        totalScore -= 50 / Math.sqrt(distSq);
-                    }
-                    continue;
-                }
-
-                // --- 3. THE FRIEND LOGIC (+5 to +1000) ---
                 if (weight > 0) {
-                    if (distSq > CUTOFF_SQ) continue;
-
-                    // Use the 2.5th power for friends
-                    const falloff = distSq * Math.sqrt(Math.sqrt(distSq));
-
-                    // If they are Besties (1000), we REALLY want them at the same table (dist ~1)
-                    // At dist 1, score is 1000. At dist 2, score is 176.
-                    totalScore += weight / Math.max(falloff, 0.8);
+                    // POSITIVE (+): Pull them together
+                    totalScore += weight * pullMatrix[i][j];
+                } else if (weight < 0) {
+                    // NEGATIVE (-): Push them apart aggressively
+                    totalScore += weight * pushMatrix[i][j];
+                } else {
+                    // NEUTRAL (0): The "Stranger Danger" penalty
+                    // pushMatrix at 1.0m is 1.00. Multiplied by 2 = -2.0 penalty.
+                    // pushMatrix at 1.4m is 0.50. Multiplied by 2 = -1.0 penalty.
+                    // This creates a mild annoyance that forces the GA to keep shuffling
+                    // students until it finds someone with a >0 relationship.
+                    totalScore -= 2 * pushMatrix[i][j];
                 }
             }
         }
         return totalScore;
-    }, [matrix, distanceMatrix]);
+    }, [relMatrix, pullMatrix, pushMatrix]);
 
     const mutate = useCallback((genome: number[], rate: number) => {
         const child = [...genome];
@@ -268,11 +312,35 @@ export default function SeatingOptimizer() {
 
     const quickFill = () => {
         const count = peopleCount || 0;
-        const newTables = Array.from({ length: count }, (_, i) => ({
-            id: `t-${Date.now()}-${i}`,
-            x: 1.5 + ((i % 5) * 1.5), y: 1.5 + (Math.floor(i / 5) * 1.5),
-            rotation: 0, colliding: false
-        }));
+        if (count === 0) return;
+
+        // These MUST be multiples of GRID_SIZE (0.25)
+        const TABLE_W = 1.0;  // Center-to-center for touching tables
+        const AISLE = 1;   // 75cm walking space between pairs
+        const ROW_H = 1.75;    // 1.5m between rows
+        const OFFSET_X = 1.5; // Starting position
+        const OFFSET_Y = 1.5;
+        const PAIRS_PER_ROW = 4;
+
+        const newTables = Array.from({ length: count }, (_, i) => {
+            const pairIndex = Math.floor(i / 2);
+            const row = Math.floor(pairIndex / PAIRS_PER_ROW);
+            const colInRow = pairIndex % PAIRS_PER_ROW;
+            const sideIndex = i % 2; // 0 for left, 1 for right
+
+            // All math here results in multiples of 0.25
+            const x = OFFSET_X + (colInRow * (TABLE_W * 2 + AISLE)) + (sideIndex * TABLE_W);
+            const y = OFFSET_Y + (row * ROW_H);
+
+            return {
+                id: `t-${Date.now()}-${i}`,
+                x, // Meter units
+                y,
+                rotation: 0,
+                colliding: false
+            };
+        });
+
         setTables(newTables);
         recordHistory(newTables);
         setSelectedIds([]);
