@@ -60,7 +60,8 @@ Either way, you are curious or have a crush but don't know what to do. In which 
       * [Why Must It Be The Face?](#why-must-it-be-the-face)
       * [How Is it Related to Crushing?](#how-is-it-related-to-crushing)
 21. [Some Fun Facts & Tips](#some-fun-facts--tips)
-22. [References](#references)
+22. [Conflict Management](#conflict-management)
+23. [References](#references)
 
 ## What?
 
@@ -730,18 +731,82 @@ The paper says that the blood vessels in the face are more relaxed and can hold 
 ### How Is It Related to Crushing
 In the context of crushes, your brain is, for some reason, trying to apologize for existing near someone so high-value and... cute (look back at the smug part) while trying to get their attention. It's almost a paradox.
 
+## Conflict Management.
+You got a special person. But you are in a fight with them. Maybe because they like pineapple on pizza (it's a disgrace, I know), or perhaps you think they don't put in effort. How do you deal with it?
+
+Any good relationship must have conflicts. If you say your relationship doesn't have conflicts, you are either the most agreeable person on the planet (aka suppresses everything inevitably) or you're straight up lying. Since it is inevitable, we will focus on *how* to actually handle a conflict like a champ.
+
+### How Conflicts Lead To a Very Bad Day
+Gottman (1994) noted that only four characteristics (The Four Horsemen of the Apocalypse) can predict whether a couple will divorce with up to 90% accuracy. Those are:
+- **Criticism**: Attacking the partner's character or personality rather than a specific behavior. It's different from a complaint for that reason.
+   * "You never do the dishes, you're so lazy!"
+   * It's an attempt to be righteous for their ego, even though objectively, they might be wrong.
+- **Contempt**: Negative thoughts about their partner that persists. The most corrosive horseman. Usually acting from superiority.
+   * "You're such an asshole."
+   * It's to make the partner feel worthless. The single greatest indicator of a relationship failure and even physical illness.
+- **Defensiveness**: Denying any wrongdoing.
+   * "It's not my fault the house is dirty—I did <u>my</u> chores!"
+   * It's an attempt to dodge responsibility. Maybe you are too lazy or too superior to be responsible or wrong. And also ego.
+- **Stonewalling**: The listener just stops listening.
+   * **DPA (Diffuse Physiological Arousal)** causes this. When our heartrate is above baseline, we cannot process any more information anymore. Our IQ drops and ooga-booga brain takes over.
+   * "Mhm." Nods. Looks away. Or acts like a stone wall.
+   * It's usually a survival mechanism, but it usually conveys a lack of actually engaging. It makes the other partner feel ignored, because they probably are, shutting down any chance of resolving the actual issue.
+
+### The Fix
+The antidote in order, by Gottman again, are:
+-  **Gentle Startups & Specific Complaints**: Instead of being direct, soften the approach. "I feel" statements can be an excellent method of starting a conversation about a need or want.
+   * "I feel frustrated because the dishes aren’t done. Can we figure something out together?"
+- **Validation & Fondness**: Showing gratitude towards partners. It is effective in growing appreciation, no matter if we're in a conflict or not. Recognize each other's strengths.
+   * "I understand talking about money can be really stressful for you.  Thanks for having the discussion with me."
+   * It's not all about agreeing; it just means that your partner's feelings  are valid.
+   * Validation is like giving them a snack so they wont go *grr*. It makes the partner feel safe and stop attacking.
+- **Nondefensive Listening & Taking Responsibility**: Instead of defending directly, you could listen until the end and take responsibility. A fight is rarely caused by a person. Both people will have part in the conflict, and being able to identify what you took part in can prevent defensiveness.
+   * "I shouldn't have raised my voice when you disagreed with me. I'm sorry."
+- **Physiological Soothing**: Instead of fighting when your mind is cluttered, the best way to deal with this is to take a break for at least 30 minutes, but no more than 24 hours.
+   * "I feel overwhelmed right now. Can we pause and come back later?"
+
+### I statements
+It's a way of bringing up something without starting a full-blown fight. I'll give you some ways to make this because it's not necessarily manipulation—it's more like a way for the brain to stop fighting and start opening up. Here they are:
+1. **Never Make It About Them.** Never use the word "you" other than for stating facts without feelings. Don't start blaming for no reason. They will get defensive.
+   * **DO NOT** "You are so inconsiderate."
+   * **DO** "I feel a bit ignored when I don't get a text for 10 hours."
+2. If they are involved, make it so that **we** are involved.
+   * **DO NOT** "You are lazy! The dishes aren't done."
+   * **DO** "I feel frustrated because the dishes aren’t done. Can **we** figure something out together?"
+3. **No Absolute Timeframes**. They will retaliate.
+   * **DO NOT**  
+     * A: "You **never** compliment me!"  
+     * B: "But I **actually** complimented you once during the first date."
+   * **DO** "I've been feeling a bit unappreciated **lately**, and I'd really love to hear more of what you like about me."
+   * The DO is heartfelt though! They will listen.
+   * Use "lately", "recently" instead of "always", "never".
+4. **Do Not Attack Directly**. God, I'm repeating myself. Start slow. Then talk. Not start a nuclear war and hope the aftermath is good.
+   * **DO NOT** 
+     * "I am **furious** that you are **neglecting** me."
+     * "Your chewing is **disgusting** and **uncomfortable** and driving me **insane**."
+   * **DO**
+     - "I've been feeling a little lonely lately, and a hang out together is lovely!"
+     - "I'm super sensitive to noise right now. Could you try to chew a bit more quietly?"
+5. **No Linking Words / Relative Pronouns**. It's another way to sneak in "you."
+   * **DO NOT**
+     - "I feel **that** you are being selfish."
+     - "I feel **like** you don't actually care about my day."
+   * **DO**
+     - "I feel **unimportant** now because I really wanted to share this story."
+     - "I feel **worried** when chores start piling up."
+   
 ## Some Fun Facts & Tips
-1. Did you know that you are attracted to the scents of people with different immune systems with you? This is known as the Sweaty T-Shirt Study (Wedekind et al., 1995). It's to make formidable off-springs.
+1. Did you know that you are attracted to the scents of people with different immune systems with you? This is known as the Sweaty T-Shirt Study (Wedekind et al., 1995). It's to make formidable off-spring.
     - If the woman is on hormonal birth control, this effect often disappears!
 2. Did you know that holding your partner's hand calmed your hypothalamus (Coan et al., 2006)? That also means your immune system will be stronger!
 3. So, they decided to declare you strictly as a friend, but their behaviors are all couple-y. That, my friend, is a situationship. Just take that as a no and retract. If they decided to retract what they said, they *will* come.
 4. Always trade for the hot highs for a warm security. It's much better that way.
-5. Did you know that if other pupils are enlarged when seeing you, they are definitely interested? 
+5. Did you know that if their pupils are enlarged when seeing you, they are definitely interested? 
    - No, it's not just Disney logic. Kret (2017) did a study where people were asked to draw pupils on a happy face and an angry face. The happy face has larger pupils than the angry face.
    - They dilate from mental effort (Kahneman & Beatty, 1966). You see, the pupils dilate when you are in a high stress situation, as you need a lot of visual information, like letting more light in (Mathôt, 2018).
    - And also because they want to appear innocent and baby-like.
    - Don't take this as the *only* evidence. Make sure you are not in a dark room, or they aren't on meds.
-6. I just thought of this, but I invent, the 5Fs in school. Fight, flight, freeze, fawn, and flirt. The first four is psychologically found, but my stupid brain thought that flirting is also a survival mechanism in school.
+6. I just thought of this, but I invent, the 5Fs in school. Fight, flight, freeze, fawn, and flirt. The first four is scientifically backed, but my stupid brain thought that flirting is also a survival mechanism in school.
 7. Wegner (1994) found that when we try to suppress a thought, it becomes more intrusive. In turn, that's why trying to stop thinking of your crush makes you think of your crush.
 8. Take this with a grain of salt, but Williams & Bargh (2008) found that people who held a cup of hot coffee rated a stranger as having a warmer personality than those who held iced coffee. 
    - The **dorsal posterior insula** (ignore the complex names if you don't understand) is the part of the brain that processes the temperature of your skin. The **frontoinsular cortex** processes trust, empathy, and social emotions. Since, they're neighbors, they can sometimes overlap and accidentally activate one another.
@@ -753,11 +818,11 @@ In the context of crushes, your brain is, for some reason, trying to apologize f
     - Gilovich et al. (2000) ran a study where students had to wear an embarrassing T-shirt to a room. The students thought everyone noticed it, but in reality, fewer than 20% of people even saw it.
     - The tip? Just chill.
 11. You actually like your crush more if they're involved when doing something scary. It can be applied the other way around.
-    - Dutton & Aron (1974) ran a study on guys where they have to cross a wobbly bridge and a sturdy bridge. An attractive female researcher approached that guy and told the guy to fill out a survey, which included making a short, dramatic story from a picture of a woman covering her face with one hand. After the survey is done, she would say, "I'm in a rush, but if you want to hear more about the results later, here's my number." It's done on the two bridges.
+    - Dutton & Aron (1974) ran a study on guys where they had to cross a wobbly bridge and a sturdy bridge. An attractive female researcher approached that guy and told the guy to fill out a survey, which included making a short, dramatic story from a picture of a woman covering her face with one hand. After the survey is done, she would say, "I'm in a rush, but if you want to hear more about the results later, here's my number." It's done on the two bridges.
     - The result? The scary bridge guys wrote much more sensual stories than the sturdy bridge. And also, the scary bridge guys called way more often.
     - And also, the same experiment is done with a male researcher. This time, almost nobody called him. 
-12. Physiological Arousal + Cognitive Label = Emotion (Dutton & Aron, 1974)
-    - Dutton & Aron (1974) argued that real emotions should have an arousal component and a label as to why it happens.
+12. Physiological Arousal + Cognitive Label = Emotion (Schachter & Singer, 1962)
+    - Schachter & Singer (1962) argued that real emotions should have an arousal component and a label as to why it happens.
     - This is why point number 11 is possible.
     - If someone is aroused but there are no immediate explanation, they will use the environment to label it.
     - If there is an obvious explanation, they will not label their feelings using the environmental cues.
@@ -785,6 +850,7 @@ In the context of crushes, your brain is, for some reason, trying to apologize f
 - **Garrels, S. R.** (2005). Imitation, Mirror Neurons, and Mimetic Desire: Convergence Between the Mimetic Theory of René Girard and Empirical Research on Imitation. Contagion: Journal of Violence, Mimesis, and Culture, 12(1), 47–86. [https://doi.org/10.1353/ctn.0.0004](https://doi.org/10.1353/ctn.0.0004)
 - **Gilovich, T., Medvec, V. H., & Savitsky, K.** (2000). The spotlight effect in social judgment: An egocentric bias in estimates of the salience of one's own actions and appearance. Journal of Personality and Social Psychology, 78(2), 211–222. https://doi.org/10.1037/0022-3514.78.2.211
 - **Godinho, R. M., Spikins, P., & O'Higgins, P.** (2018). Supraorbital morphology and social dynamics in human evolution. Nature Ecology & Evolution, 2(6), 956–961. [https://doi.org/10.1038/s41559-018-0528-0](https://doi.org/10.1038/s41559-018-0528-0)
+- **Gottman, J. M.** (1994). What predicts divorce? The relationship between marital processes and marital outcomes. Lawrence Erlbaum Associates, Inc.
 - **Groh, A. M., Roisman, G. I., van Ijzendoorn, M. H., Bakermans-Kranenburg, M. J., & Fearon, R. P.** (2012). The significance of insecure and disorganized attachment for children's internalizing symptoms: a meta-analytic study. Child development, 83(2), 591–610. [https://doi.org/10.1111/j.1467-8624.2011.01711.x](https://doi.org/10.1111/j.1467-8624.2011.01711.x)
 - **Gunnar, M. R., & Quevedo, K. M.** (2007). Early care experiences and HPA axis regulation in children: A mechanism for later trauma vulnerability. In E. R. De Kloet, M. S. Oitzl, & E. Vermetten (Eds.), Progress in brain research (Vol. 167, pp. 137–149). Elsevier. https://doi.org/10.1016/S0079-6123(07)67010-1
 - **Haselton, M. G., & Buss, D. M.** (2000). Error management theory: a new perspective on biases in cross-sex mind reading. Journal of personality and social psychology, 78(1), 81–91. https://doi.org/10.1037//0022-3514.78.1.81
