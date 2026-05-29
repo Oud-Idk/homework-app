@@ -1,7 +1,6 @@
 use bson::oid::ObjectId;
-use serde::{Deserialize, Serialize, Deserializer};
 use chrono::{DateTime, Utc};
-use bson::DateTime as BsonDateTime;
+use serde::{Deserialize, Deserializer, Serialize};
 
 #[derive(Debug, Deserialize)]
 pub struct User {
@@ -75,7 +74,8 @@ where
         bson::Bson::DateTime(dt) => Ok(dt.to_chrono()),
 
         // Case 2: It's a String (Coming from RabbitMQ/JSON)
-        bson::Bson::String(s) => s.parse::<DateTime<Utc>>()
+        bson::Bson::String(s) => s
+            .parse::<DateTime<Utc>>()
             .map_err(|e| serde::de::Error::custom(format!("Invalid date string: {}", e))),
 
         _ => Err(serde::de::Error::custom("Expected Date or ISO-8601 String")),
