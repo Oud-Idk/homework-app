@@ -54,7 +54,10 @@ services:
       - meili_data:/meili_data
 
   minio:
-    image: minio/minio
+    # Upstream MinIO Community Edition images were withdrawn from Docker Hub in
+    # September 2026. RustFS is an S3 compatible replacement and the `minio`
+    # npm client talks to it unchanged.
+    image: rustfs/rustfs:latest
     restart: always
     ports:
       - "9000:9000"  # API Port
@@ -62,8 +65,8 @@ services:
     volumes:
       - minio_data:/data
     environment:
-      - MINIO_ROOT_USER=changeAtProdIdiot # TODO Change at prod
-      - MINIO_ROOT_PASSWORD=changeAtProdIdiot # TODO Change at prod
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-devuser}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-devpassword}
     command: server /data --console-address ":9001"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
@@ -72,30 +75,18 @@ services:
       retries: 5
 
   minio-setup:
-    image: minio/mc
+    build: ./api
     restart: 'no'
     depends_on:
       minio:
         condition: service_healthy
-    entrypoint: >
-      /bin/sh -c "
-      set -ex;
-      echo 'Waiting for MinIO to fully initialize...';
-      
-      echo '1. Setting up alias for myminio...';
-      /usr/bin/mc alias set myminio http://minio:9000 changeAtProdIdiot changeAtProdIdiot;
-      
-      echo '2. Creating bucket: user-uploads...';
-      /usr/bin/mc mb myminio/user-uploads --ignore-existing;
-      
-      echo '3. Creating policy file locally...';
-      echo '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::user-uploads/*\"]}]}' > /tmp/public-read-policy.json;
-
-      echo '4. Setting policy for user-uploads...';
-      /usr/bin/mc anonymous set-json /tmp/public-read-policy.json myminio/user-uploads;
-      
-      echo 'MinIO setup complete.';
-      "
+    environment:
+      - MINIO_ENDPOINT=minio
+      - MINIO_PORT=9000
+      - MINIO_BUCKET=user-uploads
+      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-devuser}
+      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-devpassword}
+    entrypoint: ["node", "scripts/setup-bucket.mjs"]
 
 volumes:
   mongo-data:

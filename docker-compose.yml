@@ -162,31 +162,26 @@ services:
       - app_net
 
   minio-setup:
-    image: minio/mc
+    build: ./api
     restart: 'no'
     depends_on:
       minio:
         condition: service_healthy
-    volumes:
-      - ./config/minio:/config
-    entrypoint: >
-      /bin/sh -c "
-      set -ex;
-      echo 'Waiting for MinIO to fully initialize...';
-      sleep 5;
-      echo '1. Setting up alias for myminio...';
-      /usr/bin/mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
-      echo '2. Creating bucket: user-uploads...';
-      /usr/bin/mc mb myminio/user-uploads --ignore-existing;
-      echo '3. Setting public read policy for user-uploads...';
-      /usr/bin/mc anonymous set-json /config/public-read-policy.json myminio/user-uploads;
-      echo 'MinIO setup complete.';
-      "
+    environment:
+      - MINIO_ENDPOINT=minio
+      - MINIO_PORT=9000
+      - MINIO_BUCKET=user-uploads
+      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER}
+      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD}
+    entrypoint: ["node", "scripts/setup-bucket.mjs"]
     networks:
       - app_net
 
   minio:
-    image: minio/minio
+    # Upstream MinIO Community Edition images were withdrawn from Docker Hub in
+    # September 2026. RustFS is an S3 compatible replacement and the `minio`
+    # npm client talks to it unchanged.
+    image: rustfs/rustfs:latest
     restart: always
     volumes:
       - minio_data:/data
