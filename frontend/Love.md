@@ -4,7 +4,7 @@ I present you, a self-help document designed for people who hate self-help books
 
 If you found this link, then congratulations, I suppose. Either you were looking for it because someone told you it existed, or you found it by accident, which in that case, you are either a wizard or you've been exploring to pages you are not supposed to explore. Or, the easiest explanation, I sent you the link because you looked like you needed it.
 
-Either way, you are curious or have a crush but don't know what to do. In which case, this is the perfect text for you. After I'm done ruining the mystery of _romance_ into explaining the science behind why your brain is a toaster.
+Either way, you are curious or have a crush but don't know what to do. In which case, this is the perfect text for you. After I'm done ruining the mystery of _romance_ into explaining the science behind why your brain is a stoat.
 
 # Table of Contents
 
@@ -70,8 +70,21 @@ Either way, you are curious or have a crush but don't know what to do. In which 
 22. [Breakups](#breakups)
     - [Why do people breakup](#why-do-people-breakup)
     - [How it feels like and what it does](#how-it-feels-like-and-what-it-does)
-23. [Some Fun Facts & Tips](#some-fun-facts--tips)
-24. [References](#references)
+23. [Sudden Repulsion Syndrome](#sudden-repulsion-syndrome)
+    - [What is that?](#what-is-that)
+    - [Why do we have it?](#why-do-we-have-it)
+    - [Spicy Research](#spicy-research)
+      - [Preliminary Findings](#preliminary-findings)
+      - [Main Findings](#main-findings)
+24. [The Five Love Language](#the-five-love-language)
+    - [Why Did We Make It](#why-did-we-make-it)
+    - [Debunking](#debunking)
+    - [So what?](#so-what-instead-of-that)
+25. [Long Distance Relationships (LDRs)](#long-distance-relationships) (Not to be confused with low dynamic range of DSP)
+26. [Some Fun Facts & Tips](#some-fun-facts--tips)
+27. [Aliases](#aliases)
+28. [Legendary Ass Quotes](#legendary-ass-quotes)
+29. [References](#references)
 
 ## What?
 
@@ -112,9 +125,8 @@ In the modern age, there are specific scenarios to look out for. If you check fo
    - Fun fact, we spend about 30% to 50% of our waking life daydreaming (Killingsworth & Gilbert, 2010), and about 71% of those thoughts involve other people (Song & Wang, 2012).
    - If you are anxious about whether your crush likes you back or not, your daydreams are actually helping you manage it in a way. That is not constantly being sad all the time Poerio et al. (2015) found that we only get a happiness boost from these fantasies when we feel socially disconnected.
    - Your brain can't tell the difference between a real date and the ones you've been imagining for three hours. Well, your big brain can, but your lizard brain can't. Imagining these events makes you feel the same feelings as the real event (Kosslyn et al., 2001).
-8. I think, "What will my crush think if they see this text?"
-
-Ignore my last example. That's just... uhh.
+8. You catch yourself thinking, "What will my crush think if they see this manifesto?"  
+   (Delete this line. Nobody saw that. Not even me)
 
 ## Why in the living hell does Limerence happen
 
@@ -180,7 +192,9 @@ Tennov uses the "salt mine branch" analogy. You take a plain twig (the person), 
 
 ### 3. The Increase in Intensity
 
-This is the caw-caw stage. Oh, God. I need therapy for saying that sentence. A crush needs a specific amount of difficulty to grow. Tennov notes that if they are too easy, i.e., if they say "I love you" on the first date, it doesn't grow; it usually fades into secure love once they and you have committed. If they are playing too hard to get, you give up. If they are hard to get but not _too_ difficult to give up on, like that (not so) small space when you think "I think they like me" and "I'm not sure," that's the sweet spot where feelings grow.
+This is the bird-brain stage. CAW-CAW, let's press this button that I know will only sometimes work and will get me addicted, but I don't care.
+
+A crush needs a specific amount of difficulty to grow. Tennov notes that if they are too easy, i.e., if they say "I love you" on the first date, it doesn't grow; it usually fades into secure love once they and you have committed. If they are playing too hard to get, you give up. If they are hard to get but not _too_ difficult to give up on, like that (not so) small space when you think "I think they like me" and "I'm not sure," that's the sweet spot where feelings grow.
 
 Tennov quoted, "Your degree of involvement increases if obstacles are externally imposed or if you doubt [your crush]'s feelings for you... With some degree of doubt its intensity rises further" (Tennov, 1979).
 
@@ -198,7 +212,7 @@ You suddenly find yourself looking in a mirror, practicing delivering jokes with
 
 "Oh, dear, are you a Wi-Fi signal? Because I'm really feeling a special connection," I said. It was indeed cringy. I should probably come up with a different one, perhaps with my own nerd flair to signal then who I am. I tried again with a wall lean. "Is your name Bluetooth? Because I think we've paired successfully." Why am I practicing when I will probably never say them to my crush out loud? I don't even know myself.
 
-God, I had a stroke making the previous paragraph. Let's not make such things again
+I need to be stopped.
 
 ### 5. The Body Speaks!
 
@@ -303,8 +317,6 @@ You see, when you are limerent, your brain constantly receives dopamine. You are
 
 Your brain goes haywire. Instead of giving up, your brain goes into a state of frustration attraction, also known as adversity-heightened passion, as it is called in the paper. In a 2010 study, Fisher et al. found that looking at a rejecter continues to activate the reward center (VTA). The paper says when a reward is delayed, the dopamine neurons don't suddenly stop; they actually continue (Fisher et al., 2010).
 
-~~This surprised me when I found this out, but scientists have found that social rejection activates the Dorsal Anterior Cingulate Cortex. Basically, the same part that activates when one feels physical pain (Kross et al., 2011). Seeing a photo of your partner who dumped you lights up the part of your brain as if you spilled hot coffee on your lap.~~
-
 ### What part of the brain actually activates?
 
 There was a belief that social pain triggers the same area of the brain as physical pain (Kross et al., 2011). That's where the saying "a broken heart is the same as a broken leg" comes from. But the field is shying away from that conclusion.
@@ -341,7 +353,7 @@ Well, in your mind, it is. Tennov lists "acute longing for reciprocation" as a b
 
 What I described in jealousy section for human males are sexual jealousy, and it differs from limerent jealousy, which focuses on whether the person returns the feelings. Do not confuse these two, though limerent jealousy usually precedes sexual jealousy, and they can happen at the same time.
 
-Tennov notes that jealousy is **NOT** a measure of limerence. You can be limerent without jealousy (a crush with no rival) or jealous without limerence (a prime example is the 4th person of the attendance in my classroom).
+Tennov notes that jealousy is **NOT** a measure of limerence. You can be limerent without jealousy (a crush with no rival) or jealous without limerence.
 
 ### Reconciliation: Daly et al.'s Evolutionary Viewpoint Differs from Yarab et al.'s Statistics.
 
@@ -460,6 +472,10 @@ Cassidy (implicitly) summarized them like this.
    **How they crush:**  
    It's just as boring as you will expect. If they have a crush, they... just tell them. They don't play mind games. If they get rejected, they don't cry; they just go "bummer" and move on. They don't need the dopamine as much.
 
+   HEY, even then, if you're secure, what are you doing reading this? Go enjoy your life with your partner. Set healthy boundaries. Let us deal with the existential crisis.
+
+   And if you made it this far, I doubt that you are secure.
+
 2. Avoidant: They have learned that being stressed doesn't give a helpful, so they try to minimize their feelings and solo everything. Even distancing themselves.
 
    **How they crush:**  
@@ -524,7 +540,7 @@ Ouch, that hurts. But it's fine. Take deep breaths. No need to fight. You will l
 
 That's just called cheating! It irrevocably destroys the trust you had. If you are with this person, leave _now_. Do not interact them ever again because they're ~~likely~~ a jerk. Do not try to salvage what you had. You will be hurt more as that person is likely to be a manipulator if they're not loyal.
 
-## Why "Maybe" is Worse Than "No"
+# Why "Maybe" is Worse Than "No"
 
 So, you finally did it. You confessed. I guess. Congratulations? But they gave a non-committal answer.
 
@@ -540,13 +556,13 @@ You think about it so much it impairs your sleep. And you finally wonder, "Why a
 
 Well, congratulations, you have just been handed an unfinished task. It's not just you; it's actually a phenomenon in humans, and we call it the Zeigarnik Effect (Zeigarnik, 1938).
 
-### What's the Zeigarnik Effect?
+## What's the Zeigarnik Effect?
 
 Back in the 1920s (yes, that long ago), a psychologist named Bluma Zeigarnik noticed that waiters could memorize any unpaid orders perfectly _up until_ the bill was paid. Like everything was forgotten. Zeigarnik found this fascinating, so she designed experiments to know more about it. Then, she wrote a paper and published it as _Über das Behalten von erledigten und unerledigten Handlungen_, or what English speakers call it, _On Finished and Unfinished Tasks_.
 
 It is a habit where people remember unfinished tasks a lot better than finished tasks. She tested this hypothesis by doing some experiments that shows that uncompleted mental tasks (such as puzzles or constructing cardboard boxes) induce a tendency to experience intrusive thoughts and are 90% more likely to be recollected than finished tasks.
 
-### Affective Rumination vs. Problem-Solving Pondering
+## Affective Rumination vs. Problem-Solving Pondering
 
 Cropley & Zijlstra (2011) made it pretty clear that Affective Rumination is different from Problem-Solving Pondering.
 
@@ -554,19 +570,19 @@ Cropley & Zijlstra (2011) made it pretty clear that Affective Rumination is diff
 
 2. Problem-Solving Pondering is a form of long thinking about previous work, and how it can be improved, but does _not_ involve negative thoughts. "In 3 days, if they haven't got to me back, I'll send them a bump. If they don't reply anyway, I'll just continue playing games. Shucks!"
 
-### Why Vague Answers are Bad
+## Why Vague Answers are Bad
 
 When people leave work with unfinished tasks, they are more than twice as likely to spiral into Affective Rumination $\beta\_w=.18,~~SE=.05$ than to trigger the calm Problem-Solving Pondering $\beta\_w=.07,~~SE=.04$ (Syrek, 2017). Consequently, if someone confesses to you, and you give a vague answer, that person literally cannot sleep because they might be ruminating about it.
 
-### So, What?
+## So, What?
 
 It's pretty easy. You should give a direct Yes/No answer. You can think for a while, but not defer it until the following days. And by definition, if you write your thoughts on a piece of paper, it will kill this effect.
 
-## Flirting
+# Flirting
 
 Flirting is usually defined as behaviors individuals use to indicate interest and initiate contact with a person of the opposite gender (Moore, 1985). But flirting is not always used to start a relationship with a person. That'd be too easy. Now, there's quasi-courtship, which is when people flirt for fun with no interest of actually dating (Henningsen, 2004).
 
-### Ambiguity
+## Ambiguity
 
 Henningsen (2004) said that men are more likely to assume flirting is to have physical intimacy, while women are more likely to see flirting as a way to start a relationship or to simply have fun (playful interaction with no end goal). Now, this difference causes _real_ problem. Women might engage in quasi-courtship (flirting for fun), but a man is more likely to interpret it as courtship.
 
@@ -582,23 +598,21 @@ It will get weird. Why does this happen? Henningsten noted that men are basicall
 
 ||And this can have real life consequences too! Sexual harassment can happen in this situation, where men make a move and suddenly, it's a student counselor's nightmare. And even then, men might use sexual coercion to force women to unwanted physical intimacy.||
 
-### What Makes a Good Flirt
+## What Makes a Good Flirt
 
-There are some characteristics that make a good flirt (Apostolou, M., & Christoforou, C., 2020).
+There are some characteristics that make a good flirt (Apostolou & Christoforou, 2020).
 
-1. The most universal one is **non-verbal behaviors**. It is statistically the most significant behavior for people to fold into, no matter the gender. Those behaviors include:
+1. The most universal one is **n**on-verbal behaviors\*\*. It's also where men and women diverge the most. Women rate it noticeably higher than men, more than any other trait in the study. These behaviors include:
    - How one looks at another
    - Intense gaze (must be followed with)
    - Nice smile
-
-2. **Intelligence** also plays a big role in effectiveness of flirting. Women value this more than men by quite a lot. These behaviors include:
-   - How smart you are, duh
+2. **Intelligence** also plays a role, with women rating it modestly higher than men, though the gap here is actually smaller than in several other traits. These behaviors include:
+   - Your intelligence
    - Education
    - Interesting personality
    - Good with words (or wit)
    - Humor
-
-3. To make it even more effective, a **gentle approach** is required. Generally, older people liked this trait more than younger people, but it still applies to young people. Women also liked this trait more than men. These behaviors include:
+3. A **gentle approach** is one of the traits with the second-biggest gender gap, with women valuing it clearly more than men. Age matters here too! Older participants prefer this trait more than younger ones. These behaviors include:
    - They are not moving fast
    - Seriousness
    - Respect
@@ -607,7 +621,11 @@ There are some characteristics that make a good flirt (Apostolou, M., & Christof
 
 So, there you go. If you want to be a good flirt, you generally need these traits.
 
-### How? From Personal Experience
+### (From TikTok) What Makes a Horrible Flirt
+
+Do NOT "neg" or try to be an "alpha male". That's one surefire way to end up in a doomed romance for me to write about later. If you follow them anyway, please reconsider your life choices, delete your account, and go outside.
+
+## How? From Personal Experience
 
 First and foremost, do not be what you are not. If you flirt while being what you are not, when the other finally give in, and you remove your mask, the other person may feel like not getting what you promised and be a bit sad. On top of that, read the room too. If you flirt while the other is being sad, it's a recipe for extreme awkwardness and disasters. It's called Social Intelligence (Peterson & Seligman, 2004). Look it up.
 
@@ -615,11 +633,11 @@ Also, I won't give you specific action for flirting, and you have to make them y
 
 There's a big difference between confidence and bravery/courage. Confidence is where someone thinks for certain that the other person will give in, and that can sound arrogant and/or fake, while bravery is where someone does it anyway even when they are not sure if it will work out or not, and it's genuine and attractive. Examples of bravery include complimenting them while blushing and shaking hard and telling them the truth about your feelings.
 
-### Real Flirting?
+## Real Flirting?
 
 Real flirting is like a game of tennis. Try to initiate or hit them, and wait. It sounds boring and/or anxiety-inducing, but you must wait. If you flirt back, then you flirt back slightly harder. If you flirt back without confirmation from the other person, you're just like hitting empty air instead of a ball.
 
-### Quasi-Courting Outside Established Relationships
+## Quasi-Courting Outside Established Relationships
 
 You may think that things should be fine if you flirt for fun while having an established partner, but research says that it can make your partner _very_ jealous (Yarab, 1999).
 
@@ -629,7 +647,7 @@ Flirting other than your partner makes your partner really jealous. In fact, tha
 
 On a side note, everyone finds sexual cheating worse than romantic attachment. Even though women did care about the emotions more than men did, both still ranked the physical stuff as the dealbreaker.
 
-## The Triangular Theory of Love
+# The Triangular Theory of Love
 
 No, it's not a love triangle. This is different. Sternberg's (1986) triangular theory of love is a theory to describe love. It's just that. The vertices of the triangle are defined as:
 
@@ -655,13 +673,13 @@ Using that, we can define 8 types of love.
 
 - **Fatuous Love** (Passion + Commitment): Instant romance. You meet, get obsessed, exclusively date after one week, get married in one month, and then realize you are an idiot. Fatuous meaning foolish.
 
-- **Consummate Love** (Passion + Intimacy + Commitment): Nobody I know of. It's perfect.
+- **Consummate Love** (Passion + Intimacy + Commitment): Only in legends, alongside true test-driven developers, code working first-try, and high-schoolers who don't overthink.
 
 It's not discrete as it is continuous. What it means is that you can have a bit of something but also a lot of something at the same time. Think of it as like the shape of a triangle. If it's equilateral, it's balance. Otherwise, if it's a scalene, something is off and unbalanced. And the area of the triangle is the total amount.
 
 Satisfaction is linked through your expectation and reality. If the reality of the triangle matches your expectations of the triangle, you will be more satisfied. And if you feel you are 100% committed, but your partner feels otherwise, it will fail.
 
-## The Situationship
+# The Situationship
 
 According to Langlais et al. (2024), situationships are defined as a "romantic relationship with no clarity or label, low levels of commitments, but similar romantic behaviors as established couples by means of affection, sexual behaviors, and time spent together." In short, it's where you put in the effort of a partner but none of the security and without label. Look familiar? You might be going through one right now. Feeling all lovey-dovey but never actually having the talk. Wait–
 
@@ -675,7 +693,7 @@ TL;DR: Labels aren't scary; they're necessary.
 
 You're not dating. But you're also not _not_ dating. Just why? Are you people allergic to talking?
 
-## How to Know if That Person has a Crush On Me?
+# How to Know if That Person has a Crush On Me?
 
 You want to look for body language. Specifically, subconscious signs of proximity and mirroring.
 
@@ -690,11 +708,11 @@ You want to look for body language. Specifically, subconscious signs of proximit
 
 3. You might think that the eyebrows are useless for romantic attraction, but a study found that our eyebrows are specifically designed for social connection (Godinho et al., 2018). For instance, when someone **raised their eyebrow briefly** when they notice you, they are likely surprised and pleased that you were there.
 
-## What If They're Toxic? And How to Deal With Them?
+# What If They're Toxic? And How to Deal With Them?
 
 This doesn't have to apply to _only_ your crushes; it can apply to your bad friends too. First, we have to tell if people are toxic. Most, if not all, bad people have at least one of the \*_Dark Triads_, which are narcissism, machiavellianism, and psychopathy (Paulhus & Williams, 2002). If these words are way too big, let me break it down.
 
-1. Narcissism. "I'm the center of the galaxy. I am the protagonist. I am THE BEST!" They don't just think really high of themselves. They _need_ you to love them. Their behaviors are usually very energetic and sociable to get attention from you, but they have low agreeableness to make themselves stay at the top. They are also quite open, as in getting unique ideas to feel superior, not to genuinely contribute. Plus, they think they are smarter than they are. Examples include Ke–umm... nothing.
+1. Narcissism. "I'm the center of the galaxy. I am the protagonist. I am THE BEST!" They don't just think really high of themselves. They _need_ you to love them. Their behaviors are usually very energetic and sociable to get attention from you, but they have low agreeableness to make themselves stay at the top. They are also quite open, as in getting unique ideas to feel superior, not to genuinely contribute. Plus, they think they are smarter than they are. Examples include \[REDACTED FOR MY OWN SAFETY\]... I mean, purely hypothetical people.
    - They don't listen to what you say. They just want to talk. If you have a bad day, the interrupt, making it about themselves.
    - If you criticize them, they throw a tantrum. They rage and sulk intensely.
    - They can also make you feel like the most important person in the room.
@@ -719,43 +737,43 @@ This doesn't have to apply to _only_ your crushes; it can apply to your bad frie
 
 If you want a shortcut on how to deal with them, you mustn't explain yourself (Durvasula, 2019). Stop defending yourself. Don't try to make them understand. Become boring as hell. No reaction, no compliments, and no anger. It will sound hard, but it will work. They will get bored and find another one to bother.
 
-## The Friendzone
+# The Friendzone
 
 Why do you feel _devastated_ when you finally confess, and the person you confessed followed [rejected](#i-dont-have-feelings-and-i-dont-want-to-date)? Because of [The Prediction Error](#the-prediction-error) and [The Fear of Rejection](#why-we-hate-rejection). You finally confessed, and you _hope_ that the other person will confess back, but when they reject, you interpret it badly, so the received reward is much lower than your expectation.
 
-### How To Deal With It?
+## How To Deal With It?
 
 To deal with it, you just have to _deal with it_. Like instead of crying in the corner, get back up and do your hobbies, like drawing, or even exercising. If that rejection really got in your way, talk to your trusted friends, and they will (hopefully) make you better. Or write a diary. I'm not joking, but naming what you feel will make you less stressed (Lieberman et al., 2007).
 
-## Blushing
+# Blushing
 
 It's a heck lot more complicated than you think. Like seriously.
 
-### What is Blushing?
+## What is Blushing?
 
 As you all know, it is the reddening of the face, ears, neck, and even the upper chest caused by the dilation of blood vessels near your skin (Leary et al., 1992). The blush region is only on specific areas of the skin, not everywhere (Frijda, 1986).
 
-### Why?
+## Why?
 
 Blushing happens when we receive attention that we simply don't want, like getting more praise than you are comfortable with, as you appear to get more attention than you deserved. It's not simply becoming more self-aware (Kaufman, 1989; Tompkins, 1963). On top of that, if you simply accept the attention, it will make you arrogant, making you blush to appear less smug. And people also will look away from people who are blushing as they find it uncomfortable seeing other people suffer, which, in turn, reduces attention.
 
 It also acts as a non-verbal apology. It shows people that you messed up, hoping that they will forgive you (see Cupach, Metts, & Hazelton, 1986; Schlenker, 1980). It is sincerer than any spoken apology as you cannot control a blush.
 
-### Why Must It Be The Face?
+## Why Must It Be The Face?
 
 The paper says that the blood vessels in the face are more relaxed and can hold a much larger volume of blood than other parts. Plus, it has specific receptors that can trigger vasodilation, which is pretty unusual. And it just so happens to be in a more visible area.
 
-### How Is It Related to Crushing
+## How Is It Related to Crushing
 
 In the context of crushes, your brain is, for some reason, trying to apologize for existing near someone so high-value and... cute (look back at the smug part) while trying to get their attention. It's almost a paradox.
 
-## Conflict Management.
+# Conflict Management.
 
 You got a special person. But you are in a fight with them. Maybe because they like pineapple on pizza (it's a disgrace, I know), or perhaps you think they don't put in effort. How do you deal with it?
 
 Any good relationship must have conflicts. If you say your relationship doesn't have conflicts, you are either the most agreeable person on the planet (aka suppresses everything inevitably) or you're straight up lying. Since it is inevitable, we will focus on _how_ to actually handle a conflict like a champ.
 
-### How Conflicts Lead To a Very Bad Day
+## How Conflicts Lead To a Very Bad Day
 
 Gottman (1994) noted that only four characteristics (The Four Horsemen of the Apocalypse) can predict whether a couple will divorce with up to 90% accuracy. Those are:
 
@@ -773,7 +791,7 @@ Gottman (1994) noted that only four characteristics (The Four Horsemen of the Ap
   - Nods. Looks away. Or acts like a stone wall.
   - It's usually a survival mechanism, but it usually conveys a lack of actually engaging. It makes the other partner feel ignored, because they probably are, shutting down any chance of resolving the actual issue.
 
-### The Fix
+## The Fix
 
 The antidote in order, by Gottman again, are:
 
@@ -788,7 +806,7 @@ The antidote in order, by Gottman again, are:
 - **Physiological Soothing**: Instead of fighting when your mind is cluttered, the best way to deal with this is to take a break for at least 30 minutes, but no more than 24 hours.
   - "I feel overwhelmed right now. Can we pause and come back later?"
 
-### I-statements
+## I-statements
 
 It's a way of bringing up something without starting a full-blown fight. I'll give you some ways to make this because it's not necessarily manipulation—it's more like a way for the brain to stop fighting and start opening up. Here they are:
 
@@ -810,8 +828,8 @@ It's a way of bringing up something without starting a full-blown fight. I'll gi
      - "I am **furious** that you are **neglecting** me."
      - "Your chewing is **disgusting** and **uncomfortable** and driving me **insane**."
    - **DO**
-     - "I've been feeling a little lonely lately, and a hang-out together is lovely!"
-     - "I'm super sensitive to noise right now. Could you try to chew a bit more quietly?"
+     - "I've been feeling a **little lonely** lately, and a hang-out together is **lovely**!"
+     - "I'm **super sensitive** to noise right now. Could you try to chew **a bit more quietly**?"
 5. **No Linking Words / Relative Pronouns**. It's another way to sneak in "you."
    - **DO NOT**
      - "I feel **that** you are being selfish."
@@ -819,6 +837,8 @@ It's a way of bringing up something without starting a full-blown fight. I'll gi
    - **DO**
      - "I feel **unimportant** now because I really wanted to share this story."
      - "I feel **worried** when chores start piling up."
+
+I know what you're saying. "But author, I do not want to sound like an unlicensed therapist." To which I say, neither do I. But, isn't it much nicer to say "I feel unsupported when the dishes are left in the sink" than "YOU ARE A LAZY-ASS COUCH CUSHION WITH OPINIONS!"
 
 # Breakups
 
@@ -851,11 +871,221 @@ It feels like crap. Remember the body speaks, so you could probably feel literal
 4. You lost a person and a future, so you need to **substitute your lost future**. Instead of staring at the ceiling, try doing that one hobby that you didn't have the time for because of the relationship. Try programming in Rust, or making 3D models
 5. Be patient with yourself. Your feelings don't just resolve itself in 2 days.
 
+## What should I NOT do?
+
+Under any circumstances, do not do the following:
+
+1. Sit in the dark room listening to sad indie playlists.
+2. Pretend to be an emo protagonist while ruminating and looking out a rain-streaked window.
+3. Check who viewed your Instagram story. You will cry.
+4. Write a 20,000-word manifest on love. Learn from my mistakes.
+5. Draft a 3-paragraph text message in your Notes app that starts with "I just think it's funny how".
+6. Check their Spotify "Recently Played" to see if they're listening to sad songs. They likely aren't.
+7. Convince yourself that their vague instant is aimed at you.
+
+# Sudden Repulsion Syndrome
+
+So... the hell? People actually experience this? Who knew?! Anyway, let's explore.
+
+## What is that?
+
+Also known as "the ick", it is defined as a sudden and strong disgust to a romantic partner or crush, usually because of behaviors that might come across as low mate quality (Collisson et al., 2025). It is shown a lot in pop culture. For example, in the show _Love Island_, participants show a repulsion to people who has an overly bright smile or to awkward hand holding.
+
+It is also influenced by people in your areas. For example, observing others' choices can lead people to internalize those ideas due to cultural norms and the like.
+
+## Why do we have it?
+
+It may be because humans are more sensitive to shitty partners than good ones (Kahneman & Tversky, 1979). We are thought to watch for traits that we might think of as an incompatibility or a relational risk. And even then, small, slightly inconveniencing habits may also be a protective mechanism by our mind to reject 'unfit' partners before investing their time completely.
+
+Evolutionarily, we are wired to do this as a false-positive (i.e. accepting a bad partner) can lead to tiredness, and carry long-term problems, whereas a false negative (i.e. rejecting a good partner) is simply just a missed opportunity (Haselton, M. G. & Galerin, A., 2013).
+
+## Spicy Research
+
+### Preliminary Findings
+
+Collisson et al. (2025) guessed that women, easily disgusted people, narcissists, and perfectionists would all experience "the ick" more commonly than anyone else.
+
+On TikTok, the ick is more commonly discussed by women (78%) than men (22%).
+
+In those videos, the most common women's icks are the following:
+
+- **Gender incongruence** (as in overly feminine. E.g., "when he laid his head on my shoulder"): 40%
+- **Publicly embarrassing** (E.g., "using an app to search for a song while he was in a nightclub"): 38%
+- **Annoying speech** (E.g., “Saying 'wow, without me?' whenever I would do anything”): 24%
+
+While the most commonly discussed icks by men are the following:
+
+- **Overly trendy** (E.g. "She's into astrology"): 29%
+- **Publicly Embarrassing** (E.g. "Girls tripping"): 21%
+- **Annoying speech** (E.g. "Used weird slang"): 21%
+
+### Main Findings
+
+- On average, participants reported experiencing the ick 9.71 times, but if we exclude the wild outlier of 300 icks, it drops to **5.94**.
+- **42%** chose to stop dating that person later, but **26%** stopped immediately.
+- **92%** gossipped to friends (80%), family members (50%), or coworkers (39%).
+- Only **28%** told the ick with the person involved directly, with embarrassment being ~2.86 out of 5.
+- **75%** of women were said to have experienced the ick, versus **57%** of men.
+  - **63%** of women were familiar with the term while only **39%** of men were.
+- The number of icks if experienced is similar across gender.
+- Women's icks tend to be **more** concentrated (i.e., speaking annoyingly matters _way_ more than having a fashion faux pas), than men (i.e., speaking annoyingly matters _about as much as_ being overly masculine).
+- **Perfectionists** usually give other people God standards, which doesn't go well because humans are beautifully imperfect. Because of that, perfectionists get the ick most frequently and most easily.
+- **Narcissists** only care about themselves, so naturally, they get a larger amount of ick when their partner embarrasses them socially or ruins their personal brand.
+- **High Disgust Sensitivity** makes people overly sensitive to, well, disgusting stuff (e.g. annoying speech or gross habits).
+- Some icks are actually helpful (e.g. misogyny or rude behaviors).
+- Other icks just... exists I guess? (e.g. awkwardly chasing a ping-pong ball, posting Instagram polls, etc.).
+- Since people learn from others, social media is making everyone nitpicky. When they see videos of other people's icks, they subconsciously pick up that behavior and display it, making rejection more common.
+- We still don't know if the icks are actually useful or exists just because lol.
+
+# The Five Love Language
+
+People usually define it as quality time, words of affirmation, gifts, acts of service, and physical touch. The truth is it's mostly bullshit, and it has no empirical evidence that this works. Recent research shows that love languages does not predict relationship satisfaction (Impett et al., 2024). Instead, a better way to look at love languages is their Perceived Partner Responsiveness, in other words, whatever your partner want and feels!
+
+## Why Did We Make It?
+
+Humans like to conform into boxes (Fiske & Taylor, 1984; Macrae & Bodenhausen, 2000). You see, the world is complex, and your brain is lazy, so it takes shortcuts wherever it can, so we naturally force people into discrete boxes, but people are way more nuanced than that.
+
+Listen here, I am a man of science, but this isn't. _The Five Love Languages: How to Express Heartfelt Commitment to Your Mate_ (Chapman, 1992) was invented in 1992 by a pastor with zero empirical research and no psychology certificates (I don't have one either, but I actually look up empirical research), yet people still think this is The (Shitty) Bible for loving in Pop Psych.
+
+## Debunking
+
+Impett, Park, & Muise (2024) debunked these assumptions like so:
+
+- People might think that each person has a _primary_ love language  
+  Reality: people just want to love in any way they can. Even if they are forced to choose one love language, it's meaningless!
+- There are _five_ love languages  
+  Reality: those five love languages are about as arbitrary as the `any` type. There are lots of ways human express love.
+- 'Speaking' the _same_ love language leads to greater relationship quality  
+  Reality: No consistent correlations exist. Showing affection in _any_ way improves relationship quality anyway.
+
+## So What, Instead of That?
+
+Think of love as a **balanced diet** (Impett, Park, & Muise, 2024). I know, it may be silly, but it's the easiest way to understand it without combusting
+
+- You need **all** of them. You can't rely solely on carbs (quality time), your (emotional) body needs protein (words of affirmation), healthy fats (acts of service), and vitamins (physical touch).
+- A marathon needs more carbs before a big race. Likewise, if your partner is going through something tough, they might need extra 'supplements' of _physical affection_ to get through their struggle.
+- If your partner may be insecure, they might need _supplemental iron_ (extra appreciation and validation) to feel safe in a relationship.
+
+Remember, there are no miracle fat loss supplements[^1] or cheat codes for love. Real romance is about responsiveness. Paying attention to what gesture your partner needs and giving it to them.
+
+[^1] On a side note, big pharma companies, I beg you to stop selling actual miracle supplements waaaaaaaaaa
+
+# Long Distance Relationships
+
+Holy shit lmfao, the papers actually explain a lot. If you only have the attention span to only read this paragraph, please listen to me and tread carefully in your LDR.
+
+## What is an LDR?
+
+LDR is not technically defined as two people separated by a 12-hour timezone difference, but rather, it is defined by their reality (and convenience).
+
+A **long-distance relationship** is any relationship where it is _"difficult or impossible for partners to see each other in person every day due to geographical distance"_ (Dargie et al., 2013; Holtzman et al., 2021; Maguire, 2007).
+
+The key here is _impossible for partners to see each other in person every day_. If your partner lives 80 km away, but you have quick transportation that makes it practical to see each other every day, that's not an LDR, while even if your partner only lives half the distance, but the logistics make it impossible, it is an LDR.
+
+### What's the Difference From a Geographically Close Relationship (GCR)
+
+In a GCR, if you live half an hour away from your partner and can't bother to hang out together, that's your choice (Stafford & Merolla, 2007). While in an LDR, whether it's a city away or in a different continent, you just cannot hang out together to have dinner (Dellmann-Jenkins et al., 1994).
+
+### Not All LDRs Are Created Equal
+
+According to papers that I read, LDRs are usually split into three different categories (Dargie et al., 2013; Maguire, 2007):
+
+- **Transitory LDRs** are ones where there is a fixed end date (e.g. "We graduate in May").
+- **Perpetual LDRs** are LDRs where there will be no date for when or if you will ever live together (Maguire, 2007). _This is usually where stress peaks_ because as I said 100 times in this paper/blog post/whatever, humans hate uncertainty.
+- **Cyclic LDRs** are couples who cyclically shift from being close together to being long distance (e.g., college students who live together during school year but go home for summer break) (Dargie et al., 2013)
+
+## Halo Effect times 100
+
+Yeah, so, turns out, if you can't see people that often, you invent EVEN MORE stuff than with a conventional crush.
+
+Remember the Halo Effect? That's where your brain sees one good thing and assumes they must be perfect and/or reinterpreting their flaws as a good thing (Tennov, 1979). In LDR, it's exponentially increased. Researchers call this **romantic idealization**. It is when you describe your partner and relationship in an absurdly positive way (Fowers et al., 1996; Stafford & Merolla, 2007).
+
+It's so extreme LDR couples consistently score _significantly higher_ on love, idealistic distortion and perceived agreement than ones who live in the same city (Stafford & Merolla, 2007).
+
+"Why?" You might ask.
+
+---
+
+### No Mundanes to See
+
+In a local relationship, you realize that your partner is... not exactly a deity. You see them chew loudly or get irrationally angry otherwise. In such relationships, you cannot see their full "behavioral repertoire" (Miller et al., 2003; Stafford & Merolla, 2007). Because you don't see their mundane flaws, they just invent the blind spots with good shits.
+
+### Selective Self-Presentation & Conflict Avoidance
+
+In other words, they filter themselves so they're not annoying, angry, or end up starting an argument (Sahlstein, 2004; Stafford & Merolla, 2007). People in such relationships are usually in their best behavior (i.e. charming, loving, avoiding taboo topics) and not showing their _true, true_ selves, therefore you end up dating your imagination.
+
+### Texts are Ambiguous
+
+When communications only in text messages and/or video calls, humans end up doing **behavioral adaptation** (Jiang & Hancock, 2013). You share deeper shits to compensate for distance and the lack of meeting up, and your partner ends up misinterpreting those messages as a sign of soulmates (Jiang & Hancock, 2013; Walther, 1996). For example, a simple "thinking of you :3" might end up being overthought by the other party as a poem.
+
+---
+
+Due to a combination of aforementioned factors, LDR couples actually end up reporting **equal or higher** relationship intimacy than couples who live together (Jiang & Hancock, 2013; Stafford & Merolla, 2007)
+
+It feels like a dream, right? Right until
+
+## You Meet up
+
+And that's exactly when your imagination shatters like a poorly coded JavaScript applet with no regards for type safety and, for that matter, any rational logic. If your attachment is not grounded _at all_, it's not even JavaScript anymore; it's more a script kiddie trying Visual Basic for the first time.
+
+You’d assume that after a very long time of pining for each other across countries, moving to the same city or living together would sound like a dream, right?
+
+In a longitudinal study[^1] of long-distance couples who finally end up living near each other, researchers found that **couples who reunited were TWICE as likely to break up** compared to couples who stayed long-distance (Stafford & Merolla, 2007).
+
+But, you might think, "Huh? How does it work? How can meeting together (from texting) _destroy_ a relationship?" To which I say, good question, lad.
+
+### Your Imagination Shatters
+
+Seeing people's behavior in real life nukes your [Halo Effect time 100](#halo-effect-times-100). It deletes your fantasy like a programmer looking at past code and declares that it should be deleted into the abyss.
+
+When researchers asked couples who used to be in an LDR about their experience, **40% reported discovering new, previously unknown facts** about their partner after moving close together from an LDR (Stafford et al., 2006; Stafford & Merolla, 2007). Oh, good news, it's positive right? Nope, it's about **four times more likely to be negative than positive**
+
+You might find out that they might be a stranger who bickers about who is going to do the dishes, doesn't look as good-looking as they appear from an Instagram filter, and has actual annoying habits that they hid during any voice calls.
+
+### The Selective Best Behavior Can't Stay
+
+Sure, during the LDR phase, you are on your best behavior every phone call, but in real life, you simply can't keep that act for long, like actually having to resolve conflicts normally instead of hanging up, or doing chores together instead of slacking off.
+
+IN FACT, LDRs ARE ACTUALLY VERY **STABLE**... as long as you don't meet up together (Stafford & Merolla, 2007).
+
+[^1] A longitudinal study is a research method where scientists test the exact same people or things over time.
+
+## On: Perpetual LDRs
+
+[Distance doesn't kill LDRs. Open-ended uncertainty does](#why-maybe-is-worse-than-no). In fact, it might be harder as 'no' isn't exactly possible in this circumstance (i.e., "I know them well, and I really, really want to meet up with them!"), Maguire (2007) found that couples who feel uncertain about when (or even if) they are going to live in the same city are going to be ridiculously stressed out. Humans can survive a 12-hour time difference if there's certainty that they'll be meeting up in a reasonable timeframe, but will be stressed out if there's no fixed date for getting together.
+
+TL;DR: have a fixed date for meeting up, please :>
+
+## Advice
+
+So, you want to stay in an LDR? I gochu. Researchers (and me) don't want you feeling perpetually lonely in a landscape where people are fake, so you can do the following:
+
+1. **Set an end date to when you will transition into a conventional relationship.**
+   Agree on a realistic timeline for when, where, and how you will live together (Maguire, 2007). Without a clear plan, there's ambiguity, and with ambiguity, you'll go insane.
+
+2. **Text small, mundane updates instead of forcing 3-hour voice calls.**[^1]  
+   You don't need a 2-hour video call every single night if you both stare into each other's soul through your magic rectangle when you don't have things to say. Instead, try texting frequently ("good morning stupid", "look at this cat, meow!"). It fosters relationship satisfaction by creating a 'virtual co-presence' (i.e. existing together). That way, talking won't feel like a chore anymore (Holtzman et al., 2021).
+
+3. **Purposely talk about boring/flawed things.**  
+   Force yourself to [be grounded in reality](#no-mundanes-to-see) (Stafford & Merolla, 2007). Share your frustrations, your pet peeves, and your annoyances. If you only interact positively, you aren't dating a real human; rather, you're dating an imagination.
+
+4. **Prepare for the awkwardness when you finally meet up**  
+   It _will_ be awkward or surreal, so no trying to avoid that. Your brain is adjusting to the physical, touch-able human in front of you and not just UDP packets[^2] (Stafford et al., 2006). It's like a jet-lag of some sort, and it's normal.
+
+[^1] If you genuinely want to talk, then go on!  
+[^2] I'm not a fan of TCP packets. If you're going to stream affection over the internet, at least use QUIC.
+
+### Nitpicks And Thoughts I Want to Share
+
+1. **Time Zone**. Let's say you're at +08:00 and someone another is -05:00. You might accidentally say "good afternoon" when it's midnight for them lol.
+2. **Logistics** are hard. Like, genuinely, why is a flight from SIN to SFO, like, S\$1,000?! That's just accounting for the flights, don't get me started on hotels, foods, data, and other needs.
+3. When **Wi-Fi** decides to do its own thing, imagine if you had to say, "Hey, can you say whatever you said 30 seconds ago? I didn't pick it up."
+
 # Some Fun Facts, FAQs & Tips
 
 1. Did you know that you are attracted to the scents of people with different immune systems with you? This is known as the Sweaty T-Shirt Study (Wedekind et al., 1995). It's to make formidable off-spring.
    - If the woman is on hormonal birth control, this effect often disappears!
-   - _Do not use this as a pickup line. It's gross._
+   - _Do not use this as a pickup line._ Do not just go to a person, SNIFF obnoxiously, and say, "Mmm, your MHC suggests we'd have a good offspring." You will be a creep.
 2. Did you know that holding your partner's hand calmed your hypothalamus (Coan et al., 2006)? That also means your immune system will be stronger!
 3. So, they decided to declare you strictly as a friend, but their behaviors are all couple-y. That, my friend, is a situationship. Just take that as a no and retract. If they decided to retract what they said, they _will_ come.
 4. Always trade for the hot highs for a warm security. It's much better that way.
@@ -864,7 +1094,7 @@ It feels like crap. Remember the body speaks, so you could probably feel literal
    - They dilate from mental effort (Kahneman & Beatty, 1966). You see, the pupils dilate when you are in a high stress situation, as you need a lot of visual information, like letting more light in (Mathôt, 2018).
    - And also because they want to appear innocent and baby-like.
    - Don't take this as the _only_ evidence. Make sure you are not in a dark room, or they aren't on meds.
-6. I just thought of this, but I invent, the 5Fs in school. Fight, flight, freeze, fawn, and flirt. The first four is scientifically backed, but my stupid brain thought that flirting is also a survival mechanism in school.
+6. I just thought of this, but I am officially coining the 5Fs in school. Fight, flight, freeze, fawn, and flirt. The first four is scientifically backed, but my stupid brain thought that flirting is also a survival mechanism in school.
 7. Wegner (1994) found that when we try to suppress a thought, it becomes more intrusive. In turn, that's why trying to stop thinking of your crush makes you think of your crush.
 8. Take this with a grain of salt, but Williams & Bargh (2008) found that people who held a cup of hot coffee rated a stranger as having a warmer personality than those who held iced coffee.
    - The **dorsal posterior insula** (ignore the complex names if you don't understand) is the part of the brain that processes the temperature of your skin. The fronto-insular cortex processes trust, empathy, and social emotions. Since, they're neighbors, they can sometimes overlap and accidentally activate one another.
@@ -898,6 +1128,36 @@ It feels like crap. Remember the body speaks, so you could probably feel literal
       3. Confess gently. If they accept, congrats! If they reject, you can recover yourself and your friendship, but you must give yourself space first. You don't recover a burning hand by leaving it on the hot stove.
     - Remember, friendships are bidirectional, and both sides matter, so if you have a crush on your best friend, the foundation of the friendship is already changing. The other person doesn't know it yet.
     - All it takes is braveness, honesty, kindness, and understanding.
+
+# Aliases
+
+1. What to do when I get rejected
+   - [Why We Hate Rejection](#why-we-hate-rejection)
+   - [Breakups - What Should I Do](#what-should-i-do)
+   - [Friendzone - How to Deal With It](#how-to-deal-with-it)
+
+   Tealdeer:
+   - Say "All good, thanks for being honest!". Absolutely no guilt-tripping. I will strangle if you do.
+   - For the first 24 hours, **no looking at their contact**. **Do not look at their IG, Discord, X, whatever**.
+   - Journal about it in 3rd person. Then go do hobbies like compiling Rust code.
+
+# Legendary Ass Quotes
+
+> "Love is a temporary madness, it erupts like volcanoes and then subsides."
+
+— Louis de Bernières
+
+> "By all means, marry. If you get a good wife, you'll become happy; if you get a bad one, you'll become a philosopher."
+
+— Socrates
+
+> "Gravitation is not responsible for people falling in love."
+
+— Albert Einstein
+
+> "Honesty is the key to a relationship. If you can fake that, you're in."
+
+— Richard Jeni
 
 # References
 
@@ -964,3 +1224,15 @@ It feels like crap. Remember the body speaks, so you could probably feel literal
 - **Yarab, P. E., Allgeier, E. R., & Sensibaugh, C. C.** (1999). Looking deeper: Extradyadic behaviors, jealousy, and perceived unfaithfulness in hypothetical dating relationships. Personal Relationships, 6(3), 305–316. [https://doi.org/10.1111/j.1475-6811.1999.tb00194.x](https://doi.org/10.1111/j.1475-6811.1999.tb00194.x)
 - **Zajonc, R. B.** (1968). Attitudinal effects of mere exposure. Journal of Personality and Social Psychology, 9(2, Pt.2), 1–27. https://doi.org/10.1037/h0025848
 - **Zeigarnik, B.** (1938). On finished and unfinished tasks. In W. D. Ellis (Ed.), A source book of Gestalt psychology (pp. 300–314). Kegan Paul, Trench, Trubner & Company. [https://doi.org/10.1037/11496-025](https://doi.org/10.1037/11496-025)
+- **Fiske, S. T., & Taylor, S. E.** (1984). Social Cognition. Addison-Wesley
+- **Macrae, C. N., & Bodenhausen, G. V.** (2000). Social cognition: thinking categorically about others. Annual review of psychology, 51, 93–120. [https://doi.org/10.1146/annurev.psych.51.1.93](https://doi.org/10.1146/annurev.psych.51.1.93)
+- **Impett, E. A., Park, H. G., & Muise, A.** (2024). Popular Psychology Through a Scientific Lens: Evaluating Love Languages From a Relationship Science Perspective. Current Directions in Psychological Science, 33(2), 87-92. [https://doi.org/10.1177/09637214231217663](https://doi.org/10.1177/09637214231217663)
+- **Collisson, B., Saunders, E., & Yin, C.** (2025). The ick: Disgust sensitivity, narcissism, and perfectionism in mate choice thresholds. Personality and Individual Differences, 238, 113086. https://doi.org/10.1016/j.paid.2025.113086
+- **Kahneman, D., & Tversky, A.** (1979). Prospect Theory: An Analysis of Decision under Risk. Econometrica, 47(2), 263–291. https://doi.org/10.2307/1914185
+- **Haselton, M. G., & Galperin, A.** (2013). 11 Error Management in Relationships. The Oxford handbook of close relationships, 234.
+- **Jiang, L. C., & Hancock, J. T.** (2013). Absence makes the communication grow fonder: Geographic separation, interpersonal media, and intimacy in dating relationships. Journal of Communication, 63(3), 556–577. https://doi.org/10.1111/jcom.12029
+- **Stafford, L., & Merolla, A. J.** (2007). Idealization, reunions, and stability in long-distance dating relationships. Journal of Social and Personal Relationships, 24(1), 37–54. https://doi.org/10.1177/0265407507072578
+- **Maguire, K. C. (2007)**. "Will It Ever End?": A (Re)examination of Uncertainty in College Student Long-Distance Dating Relationships. Communication Quarterly, 55(4), 415–432. https://doi.org/10.1080/01463370701658002
+- **Dargie, E., Blair, K. L., Goldfinger, C., & Pukall, C. F.** (2015). Go Long! Predictors of Positive Relationship Outcomes in Long-Distance Dating Relationships. Journal of Sex & Marital Therapy, 41(2), 181–202. https://doi.org/10.1080/0092623X.2013.864367
+- **Holtzman, S., Kushlev, K., Wozny, A., & Godard, R.** (2021). Long-distance texting: Text messaging is linked with higher relationship satisfaction in long-distance relationships. Journal of social and personal relationships, 38(12), 3543–3565. https://doi.org/10.1177/02654075211043296
+- **Chapman, G.** (1994). The five love languages: How to express heartfelt commitment to your mate. Moody Publishers.
