@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "dependencies": {
     "amqplib": "^0.10.9",

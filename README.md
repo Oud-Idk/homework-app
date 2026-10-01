@@ -92,8 +92,8 @@ npm run sync:search --prefix api # reindex Meilisearch
 Search indexing, scheduling, and notifications run through RabbitMQ. The Rust
 worker consumes those queues and sends web push through the VAPID keys.
 
-Uploads go to MinIO and are served from `storage.solartuff.co.id`.
+Uploads go to the object store and are served from `storage.solartuff.co.id`.
 
 ## License
 
-No license set yet. Add one before you reuse this.
+GNU General Public License v3.0 or later. See [LICENSE](LICENSE).
